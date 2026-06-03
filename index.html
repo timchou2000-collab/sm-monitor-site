@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SM 控房監測</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3efe7; --panel:#fffdf9; --ink:#23211c; --muted:#8a8478;
+  --line:#e4ddcf; --brand:#1d3b34; --gold:#a9824b;
+  --low:#c0392b; --low-bg:#fbe9e6; --high:#2f6fa0; --high-bg:#e7f0f7;
+  --hot:#c2761f; --hot-bg:#fbeedd; --stay:#3f7a5c; --stay-bg:#e8f2eb;
+  --radius:14px; --shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%);}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+</style>
+</head>
+<body>
+<style>
+header.top{padding:38px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+  background:linear-gradient(90deg,var(--brand),var(--gold))}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(30px,5vw,46px);
+  letter-spacing:-.01em;color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:14px;display:flex;gap:22px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+.meta b{color:var(--ink);font-weight:700}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  font:600 14.5px "Noto Sans TC";padding:10px 20px;border-radius:999px;cursor:pointer;transition:.18s}
+.tab:hover{border-color:var(--gold)}
+.tab.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-left:8px;vertical-align:middle}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:30px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:30px;font-weight:600;line-height:1}
+.stat .l{margin-top:7px;font-size:12.5px;color:var(--muted);font-weight:500}
+.stat.low .n{color:var(--low)} .stat.high .n{color:var(--high)}
+.stat.hot .n{color:var(--hot)} .stat.stay .n{color:var(--stay)} .stat.fast .n{color:var(--hot)}
+</style>
+<style>
+section.blk{margin:0 0 34px}
+.blk-head{display:flex;align-items:baseline;gap:11px;margin-bottom:15px}
+.blk-head .ic{font-size:18px}
+.blk-head h2{font-family:"Noto Serif TC",serif;font-size:19px;font-weight:700}
+.blk-head .sub{color:var(--muted);font-size:12.5px;font-weight:500}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 17px;box-shadow:var(--shadow)}
+.card .room{font-weight:700;font-size:14.5px;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.card .room .tag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px}
+.tag.low{background:var(--low-bg);color:var(--low)} .tag.high{background:var(--high-bg);color:var(--high)}
+.tag.hot{background:var(--hot-bg);color:var(--hot)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:5px 9px;border-radius:8px;border:1px solid transparent;white-space:nowrap;font-variant-numeric:tabular-nums}
+.chip .d{opacity:.62;font-weight:500;margin-right:5px}
+.chip.low{background:var(--low-bg);color:var(--low);border-color:#f2cdc6}
+.chip.high{background:var(--high-bg);color:var(--high);border-color:#cfe0ee}
+.chip.hot{background:var(--hot-bg);color:var(--hot);border-color:#eed4b3}
+.fastcard{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--hot);
+  border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.fastcard .fh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:13px;gap:12px;flex-wrap:wrap}
+.fastcard .fd{font-weight:700;font-size:15px}
+.fastcard .big{font-family:"Fraunces",serif;font-size:26px;font-weight:600;color:var(--hot)}
+.fastcard .thr{color:var(--muted);font-size:12.5px}
+.bars{display:grid;gap:7px}
+.bar{display:grid;grid-template-columns:84px 1fr 30px;align-items:center;gap:10px;font-size:12px}
+.bar .bn{color:var(--muted)}
+.bar .track{height:8px;background:#efe7d7;border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--hot));border-radius:99px}
+.bar .bv{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+</style>
+<style>
+.dip{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--stay);
+  border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.dip .dr{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:9px}
+.dip .range{font-weight:700;font-size:13.5px;font-variant-numeric:tabular-nums}
+.dip .days{color:var(--muted);font-size:12px;font-weight:500}
+.dip .delta{background:var(--stay-bg);color:var(--stay);font-weight:700;font-size:12px;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.dip .pts{display:flex;gap:18px;font-size:12.5px;color:var(--muted);margin-bottom:9px;flex-wrap:wrap}
+.dip .pts b{color:var(--ink)}
+.dip .rec{font-size:12.5px;color:var(--stay);font-weight:600}
+.empty{color:var(--muted);font-size:13.5px;padding:8px 2px}
+footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+.hotel{display:none} .hotel.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:640px){.wrap{padding:0 16px 60px}.bar{grid-template-columns:70px 1fr 26px}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="kicker">SiteMinder Inventory Monitor</div>
+  <h1 class="title"><span class="zh">控房監測</span> · Daily Signals</h1>
+  <div class="meta" id="meta"></div>
+</header>
+<div class="tabs" id="tabs"></div>
+<div id="content"></div>
+<footer id="foot"></footer>
+</div>
+<script>
+const DATA = {"reportDate": "2026-06-03", "generated": "2026-06-03 21:11", "hotels": [{"name": "中壢 VIA Zhongli", "trigger": "2026-06-03T09:02:20", "hot": [], "fast": [], "low": [{"room": "豪華雙人房", "items": [{"date": "2026-07-13", "v": 39}, {"date": "2026-07-14", "v": 39}]}, {"room": "家庭車庫房", "items": [{"date": "2026-06-13", "v": 3}, {"date": "2026-06-21", "v": 4}, {"date": "2026-06-22", "v": 4}, {"date": "2026-07-11", "v": 4}, {"date": "2026-07-13", "v": 5}, {"date": "2026-07-14", "v": 5}, {"date": "2026-07-15", "v": 5}, {"date": "2026-07-16", "v": 3}, {"date": "2026-07-17", "v": 5}]}, {"room": "豪華雙床房", "items": [{"date": "2026-06-19", "v": 4}, {"date": "2026-07-11", "v": 6}, {"date": "2026-07-12", "v": 7}, {"date": "2026-07-13", "v": 2}, {"date": "2026-07-14", "v": 3}, {"date": "2026-07-15", "v": 5}, {"date": "2026-07-16", "v": 3}, {"date": "2026-07-18", "v": 7}, {"date": "2026-07-21", "v": 7}]}], "high": [{"room": "豪華雙人房", "items": [{"date": "2026-06-10", "v": 40}, {"date": "2026-06-11", "v": 44}, {"date": "2026-06-12", "v": 42}, {"date": "2026-06-14", "v": 42}, {"date": "2026-06-15", "v": 44}, {"date": "2026-06-16", "v": 43}, {"date": "2026-06-17", "v": 42}, {"date": "2026-06-18", "v": 46}, {"date": "2026-06-20", "v": 48}, {"date": "2026-06-21", "v": 53}, {"date": "2026-06-22", "v": 52}, {"date": "2026-06-23", "v": 46}, {"date": "2026-06-24", "v": 48}, {"date": "2026-06-25", "v": 48}, {"date": "2026-06-26", "v": 51}, {"date": "2026-06-27", "v": 50}, {"date": "2026-06-28", "v": 51}, {"date": "2026-06-29", "v": 50}, {"date": "2026-06-30", "v": 49}, {"date": "2026-07-01", "v": 48}, {"date": "2026-07-02", "v": 48}, {"date": "2026-07-03", "v": 51}]}, {"room": "家庭車庫房", "items": [{"date": "2026-06-12", "v": 6}, {"date": "2026-06-14", "v": 6}, {"date": "2026-06-15", "v": 7}, {"date": "2026-06-16", "v": 7}, {"date": "2026-06-17", "v": 7}, {"date": "2026-06-18", "v": 7}, {"date": "2026-06-29", "v": 7}, {"date": "2026-06-30", "v": 7}]}, {"room": "豪華雙床房", "items": [{"date": "2026-06-10", "v": 10}, {"date": "2026-06-11", "v": 8}, {"date": "2026-06-12", "v": 9}, {"date": "2026-06-14", "v": 9}, {"date": "2026-06-15", "v": 8}, {"date": "2026-06-16", "v": 10}, {"date": "2026-06-17", "v": 9}, {"date": "2026-06-18", "v": 9}, {"date": "2026-06-24", "v": 8}, {"date": "2026-06-25", "v": 9}, {"date": "2026-06-26", "v": 11}, {"date": "2026-06-27", "v": 9}, {"date": "2026-06-28", "v": 10}, {"date": "2026-06-29", "v": 11}, {"date": "2026-06-30", "v": 10}, {"date": "2026-07-01", "v": 8}, {"date": "2026-07-02", "v": 9}, {"date": "2026-07-03", "v": 10}]}], "minstay": [{"room": "豪華雙人房", "dips": [{"start": "2026-06-10", "end": "2026-06-17", "days": 8, "lowDate": "2026-06-13", "lowQty": 24, "highDate": "2026-06-11", "highQty": 44, "delta": 20}, {"start": "2026-06-17", "end": "2026-06-23", "days": 7, "lowDate": "2026-06-19", "lowQty": 40, "highDate": "2026-06-21", "highQty": 53, "delta": 13}, {"start": "2026-07-09", "end": "2026-07-15", "days": 7, "lowDate": "2026-07-13", "lowQty": 39, "highDate": "2026-07-09", "highQty": 51, "delta": 12}, {"start": "2026-07-13", "end": "2026-07-20", "days": 8, "lowDate": "2026-07-13", "lowQty": 39, "highDate": "2026-07-17", "highQty": 52, "delta": 13}, {"start": "2026-07-20", "end": "2026-07-26", "days": 7, "lowDate": "2026-07-22", "lowQty": 48, "highDate": "2026-07-24", "highQty": 58, "delta": 10}]}, {"room": "家庭車庫房", "dips": [{"start": "2026-06-11", "end": "2026-06-17", "days": 7, "lowDate": "2026-06-13", "lowQty": 3, "highDate": "2026-06-15", "highQty": 7, "delta": 4}, {"start": "2026-06-15", "end": "2026-06-23", "days": 9, "lowDate": "2026-06-19", "lowQty": 0, "highDate": "2026-06-15", "highQty": 7, "delta": 7}, {"start": "2026-07-12", "end": "2026-07-16", "days": 5, "lowDate": "2026-07-16", "lowQty": 3, "highDate": "2026-07-12", "highQty": 7, "delta": 4}, {"start": "2026-07-15", "end": "2026-07-20", "days": 6, "lowDate": "2026-07-16", "lowQty": 3, "highDate": "2026-07-19", "highQty": 7, "delta": 4}]}, {"room": "豪華雙床房", "dips": [{"start": "2026-06-10", "end": "2026-06-14", "days": 5, "lowDate": "2026-06-13", "lowQty": 5, "highDate": "2026-06-10", "highQty": 10, "delta": 5}, {"start": "2026-06-12", "end": "2026-06-17", "days": 6, "lowDate": "2026-06-13", "lowQty": 5, "highDate": "2026-06-16", "highQty": 10, "delta": 5}, {"start": "2026-06-15", "end": "2026-06-22", "days": 8, "lowDate": "2026-06-19", "lowQty": 4, "highDate": "2026-06-16", "highQty": 10, "delta": 6}, {"start": "2026-06-22", "end": "2026-06-27", "days": 6, "lowDate": "2026-06-23", "lowQty": 6, "highDate": "2026-06-26", "highQty": 11, "delta": 5}, {"start": "2026-07-07", "end": "2026-07-20", "days": 14, "lowDate": "2026-07-13", "lowQty": 2, "highDate": "2026-07-08", "highQty": 11, "delta": 9}, {"start": "2026-07-24", "end": "2026-08-01", "days": 9, "lowDate": "2026-07-28", "lowQty": 0, "highDate": "2026-07-25", "highQty": 11, "delta": 11}]}], "key": "中壢", "file": "monitor_2026-06-03_09-02-20.txt"}, {"name": "微風館 Via Hotel Breeze", "trigger": "2026-06-03T09:02:37", "hot": [{"room": "豪華雙人房", "items": [{"date": "2026-06-01", "v": 6}, {"date": "2026-06-03", "v": 8}, {"date": "2026-06-04", "v": 7}, {"date": "2026-06-05", "v": 7}, {"date": "2026-06-06", "v": 5}, {"date": "2026-06-07", "v": 5}]}, {"room": "豪華家庭房", "items": [{"date": "2026-06-03", "v": 10}, {"date": "2026-06-04", "v": 8}]}, {"room": "行政家庭房", "items": [{"date": "2026-06-05", "v": 6}, {"date": "2026-06-06", "v": 6}]}], "fast": [], "low": [{"room": "行政家庭房", "items": [{"date": "2026-06-19", "v": 6}, {"date": "2026-06-20", "v": 4}, {"date": "2026-07-04", "v": 13}, {"date": "2026-07-05", "v": 11}, {"date": "2026-07-06", "v": 12}, {"date": "2026-07-08", "v": 12}, {"date": "2026-07-09", "v": 13}, {"date": "2026-07-10", "v": 6}, {"date": "2026-07-11", "v": 11}, {"date": "2026-07-19", "v": 13}]}, {"room": "豪華家庭房", "items": [{"date": "2026-06-12", "v": 2}, {"date": "2026-06-13", "v": 1}, {"date": "2026-06-14", "v": 2}, {"date": "2026-06-15", "v": 1}, {"date": "2026-06-19", "v": 9}, {"date": "2026-07-03", "v": 8}, {"date": "2026-07-04", "v": 10}, {"date": "2026-07-05", "v": 11}, {"date": "2026-07-06", "v": 10}, {"date": "2026-07-07", "v": 10}]}, {"room": "豪華雙人房", "items": [{"date": "2026-06-19", "v": 3}, {"date": "2026-07-04", "v": 6}, {"date": "2026-07-05", "v": 9}, {"date": "2026-07-07", "v": 10}, {"date": "2026-07-09", "v": 10}, {"date": "2026-07-10", "v": 6}, {"date": "2026-07-12", "v": 8}, {"date": "2026-07-16", "v": 7}, {"date": "2026-07-17", "v": 6}, {"date": "2026-07-18", "v": 5}, {"date": "2026-07-19", "v": 5}, {"date": "2026-07-20", "v": 6}, {"date": "2026-07-21", "v": 7}]}, {"room": "標準雙人房", "items": [{"date": "2026-06-13", "v": 1}, {"date": "2026-06-19", "v": 4}, {"date": "2026-06-26", "v": 3}, {"date": "2026-07-04", "v": 4}, {"date": "2026-07-05", "v": 6}, {"date": "2026-07-07", "v": 6}, {"date": "2026-07-08", "v": 6}, {"date": "2026-07-10", "v": 6}]}], "high": [{"room": "行政家庭房", "items": [{"date": "2026-06-15", "v": 19}, {"date": "2026-06-16", "v": 23}, {"date": "2026-06-17", "v": 22}]}, {"room": "豪華家庭房", "items": [{"date": "2026-06-10", "v": 21}, {"date": "2026-06-11", "v": 23}]}, {"room": "豪華雙人房", "items": [{"date": "2026-06-10", "v": 13}, {"date": "2026-06-11", "v": 13}, {"date": "2026-06-16", "v": 15}, {"date": "2026-06-17", "v": 15}]}, {"room": "標準雙人房", "items": [{"date": "2026-06-17", "v": 12}, {"date": "2026-06-29", "v": 16}]}], "minstay": [{"room": "行政家庭房", "dips": [{"start": "2026-06-11", "end": "2026-06-24", "days": 14, "lowDate": "2026-06-20", "lowQty": 4, "highDate": "2026-06-16", "highQty": 23, "delta": 19}, {"start": "2026-06-24", "end": "2026-07-04", "days": 11, "lowDate": "2026-06-27", "lowQty": 9, "highDate": "2026-06-29", "highQty": 22, "delta": 13}, {"start": "2026-07-06", "end": "2026-07-11", "days": 6, "lowDate": "2026-07-10", "lowQty": 6, "highDate": "2026-07-07", "highQty": 16, "delta": 10}, {"start": "2026-07-09", "end": "2026-07-14", "days": 6, "lowDate": "2026-07-10", "lowQty": 6, "highDate": "2026-07-14", "highQty": 17, "delta": 11}]}, {"room": "豪華家庭房", "dips": [{"start": "2026-06-10", "end": "2026-06-19", "days": 10, "lowDate": "2026-06-13", "lowQty": 1, "highDate": "2026-06-11", "highQty": 23, "delta": 22}]}, {"room": "豪華雙人房", "dips": [{"start": "2026-06-10", "end": "2026-06-24", "days": 15, "lowDate": "2026-06-13", "lowQty": 2, "highDate": "2026-06-22", "highQty": 16, "delta": 14}, {"start": "2026-06-22", "end": "2026-06-28", "days": 7, "lowDate": "2026-06-26", "lowQty": 5, "highDate": "2026-06-22", "highQty": 16, "delta": 11}, {"start": "2026-07-18", "end": "2026-07-25", "days": 8, "lowDate": "2026-07-18", "lowQty": 5, "highDate": "2026-07-25", "highQty": 16, "delta": 11}]}, {"room": "標準雙人房", "dips": [{"start": "2026-06-10", "end": "2026-06-24", "days": 15, "lowDate": "2026-06-14", "lowQty": 0, "highDate": "2026-06-23", "highQty": 13, "delta": 13}, {"start": "2026-06-22", "end": "2026-07-01", "days": 10, "lowDate": "2026-06-26", "lowQty": 3, "highDate": "2026-06-29", "highQty": 16, "delta": 13}, {"start": "2026-06-30", "end": "2026-07-07", "days": 8, "lowDate": "2026-07-04", "lowQty": 4, "highDate": "2026-06-30", "highQty": 14, "delta": 10}, {"start": "2026-07-08", "end": "2026-07-14", "days": 7, "lowDate": "2026-07-08", "lowQty": 6, "highDate": "2026-07-12", "highQty": 14, "delta": 8}]}], "key": "微風", "file": "monitor_2026-06-03_09-02-37.txt"}, {"name": "Sky Gate Hotel", "trigger": "2026-06-03T09:02:54", "hot": [], "fast": [{"date": "2026-05-31", "total": 40, "orders": 13, "threshold": 22, "buckets": [["7 天內", 4], ["7~14 天", 3], ["14~30 天", 4], ["30~60 天", 7], ["60 天以上", 22]]}, {"date": "2026-06-01", "total": 55, "orders": 15, "threshold": 22, "buckets": [["7 天內", 3], ["7~14 天", 3], ["14~30 天", 6], ["30~60 天", 30], ["60 天以上", 13]]}, {"date": "2026-06-02", "total": 48, "orders": 14, "threshold": 22, "buckets": [["7 天內", 8], ["7~14 天", 16], ["14~30 天", 6], ["30~60 天", 8], ["60 天以上", 10]]}], "low": [{"room": "標準雙人房", "items": [{"date": "2026-06-14", "v": 1}, {"date": "2026-06-18", "v": 1}, {"date": "2026-06-19", "v": 2}, {"date": "2026-06-20", "v": 1}, {"date": "2026-07-08", "v": 3}, {"date": "2026-07-09", "v": 4}, {"date": "2026-07-10", "v": 3}, {"date": "2026-07-11", "v": 1}, {"date": "2026-07-12", "v": 5}]}, {"room": "豪華四人房", "items": [{"date": "2026-07-05", "v": 2}, {"date": "2026-07-06", "v": 2}, {"date": "2026-07-09", "v": 2}, {"date": "2026-07-10", "v": 3}, {"date": "2026-07-11", "v": 2}, {"date": "2026-07-12", "v": 3}, {"date": "2026-07-23", "v": 2}, {"date": "2026-07-24", "v": 2}, {"date": "2026-07-27", "v": 3}, {"date": "2026-07-28", "v": 3}, {"date": "2026-07-29", "v": 3}, {"date": "2026-07-30", "v": 1}]}, {"room": "標準四人房", "items": [{"date": "2026-07-04", "v": 1}, {"date": "2026-07-07", "v": 1}, {"date": "2026-07-31", "v": 1}]}, {"room": "豪華雙人房", "items": [{"date": "2026-07-05", "v": 1}, {"date": "2026-07-07", "v": 1}, {"date": "2026-07-12", "v": 1}, {"date": "2026-07-23", "v": 1}]}, {"room": "101景觀雙人房", "items": [{"date": "2026-07-10", "v": 1}, {"date": "2026-07-11", "v": 1}, {"date": "2026-07-12", "v": 1}, {"date": "2026-07-16", "v": 1}]}], "high": [{"room": "標準雙人房", "items": [{"date": "2026-06-10", "v": 9}, {"date": "2026-06-23", "v": 10}, {"date": "2026-06-30", "v": 10}, {"date": "2026-07-01", "v": 13}, {"date": "2026-07-14", "v": 13}, {"date": "2026-07-15", "v": 13}]}, {"room": "豪華四人房", "items": [{"date": "2026-06-23", "v": 5}, {"date": "2026-06-24", "v": 6}, {"date": "2026-06-28", "v": 5}, {"date": "2026-06-29", "v": 5}, {"date": "2026-07-03", "v": 5}, {"date": "2026-07-04", "v": 8}]}, {"room": "豪華雙人房", "items": [{"date": "2026-06-15", "v": 3}, {"date": "2026-06-25", "v": 5}, {"date": "2026-06-26", "v": 4}, {"date": "2026-07-02", "v": 4}, {"date": "2026-07-03", "v": 5}]}, {"room": "101景觀雙人房", "items": [{"date": "2026-06-16", "v": 3}, {"date": "2026-06-17", "v": 4}, {"date": "2026-06-25", "v": 6}, {"date": "2026-06-26", "v": 4}, {"date": "2026-06-28", "v": 4}, {"date": "2026-06-29", "v": 4}, {"date": "2026-07-05", "v": 5}, {"date": "2026-07-06", "v": 6}, {"date": "2026-07-07", "v": 5}, {"date": "2026-07-08", "v": 5}, {"date": "2026-07-26", "v": 5}, {"date": "2026-07-27", "v": 6}, {"date": "2026-07-28", "v": 5}, {"date": "2026-07-29", "v": 5}, {"date": "2026-07-30", "v": 5}, {"date": "2026-07-31", "v": 6}, {"date": "2026-08-01", "v": 6}]}], "minstay": [{"room": "標準雙人房", "dips": [{"start": "2026-06-10", "end": "2026-06-14", "days": 5, "lowDate": "2026-06-13", "lowQty": 0, "highDate": "2026-06-10", "highQty": 9, "delta": 9}, {"start": "2026-06-18", "end": "2026-06-24", "days": 7, "lowDate": "2026-06-18", "lowQty": 1, "highDate": "2026-06-23", "highQty": 10, "delta": 9}, {"start": "2026-06-27", "end": "2026-07-01", "days": 5, "lowDate": "2026-06-27", "lowQty": 5, "highDate": "2026-07-01", "highQty": 13, "delta": 8}, {"start": "2026-07-09", "end": "2026-07-16", "days": 8, "lowDate": "2026-07-11", "lowQty": 1, "highDate": "2026-07-14", "highQty": 13, "delta": 12}]}, {"room": "豪華四人房", "dips": [{"start": "2026-06-19", "end": "2026-06-25", "days": 7, "lowDate": "2026-06-20", "lowQty": 0, "highDate": "2026-06-24", "highQty": 6, "delta": 6}, {"start": "2026-06-30", "end": "2026-07-08", "days": 9, "lowDate": "2026-07-05", "lowQty": 2, "highDate": "2026-07-04", "highQty": 8, "delta": 6}]}, {"room": "豪華雙人房", "dips": [{"start": "2026-06-11", "end": "2026-06-16", "days": 6, "lowDate": "2026-06-12", "lowQty": 0, "highDate": "2026-06-15", "highQty": 3, "delta": 3}, {"start": "2026-06-15", "end": "2026-06-19", "days": 5, "lowDate": "2026-06-19", "lowQty": 0, "highDate": "2026-06-15", "highQty": 3, "delta": 3}, {"start": "2026-06-21", "end": "2026-06-30", "days": 10, "lowDate": "2026-06-21", "lowQty": 0, "highDate": "2026-06-25", "highQty": 5, "delta": 5}, {"start": "2026-06-28", "end": "2026-07-13", "days": 16, "lowDate": "2026-07-08", "lowQty": 0, "highDate": "2026-07-03", "highQty": 5, "delta": 5}, {"start": "2026-07-13", "end": "2026-07-17", "days": 5, "lowDate": "2026-07-17", "lowQty": 0, "highDate": "2026-07-13", "highQty": 3, "delta": 3}, {"start": "2026-07-16", "end": "2026-07-24", "days": 9, "lowDate": "2026-07-17", "lowQty": 0, "highDate": "2026-07-20", "highQty": 3, "delta": 3}, {"start": "2026-07-22", "end": "2026-07-26", "days": 5, "lowDate": "2026-07-22", "lowQty": 0, "highDate": "2026-07-26", "highQty": 3, "delta": 3}]}, {"room": "101景觀雙人房", "dips": [{"start": "2026-06-12", "end": "2026-06-21", "days": 10, "lowDate": "2026-06-12", "lowQty": 0, "highDate": "2026-06-17", "highQty": 4, "delta": 4}, {"start": "2026-06-19", "end": "2026-06-29", "days": 11, "lowDate": "2026-06-21", "lowQty": 0, "highDate": "2026-06-25", "highQty": 6, "delta": 6}, {"start": "2026-06-27", "end": "2026-07-12", "days": 16, "lowDate": "2026-07-01", "lowQty": 0, "highDate": "2026-07-06", "highQty": 6, "delta": 6}, {"start": "2026-07-13", "end": "2026-07-17", "days": 5, "lowDate": "2026-07-13", "lowQty": 0, "highDate": "2026-07-17", "highQty": 3, "delta": 3}]}], "key": "sky_gate", "file": "monitor_2026-06-03_09-02-54.txt"}]};
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const md = d => d ? d.slice(5).replace('-','/') : d;
+const sum = a => a.reduce((t,x)=>t+x,0);
+
+function statRow(h){
+  const defs=[
+    ['fast','進單過快', h.fast.length, h.fast.length+' 次'],
+    ['hot','進單熱點', h.hot.length, h.hot.length+' 房型'],
+    ['low','庫存偏低', h.low.length, sum(h.low.map(g=>g.items.length))+' 天'],
+    ['high','庫存偏高', h.high.length, sum(h.high.map(g=>g.items.length))+' 天'],
+    ['stay','min.stay 建議', h.minstay.length, sum(h.minstay.map(g=>g.dips.length))+' 區段'],
+  ].filter(d=>d[2]>0);
+  return `<div class="stats">`+defs.map(d=>
+    `<div class="stat ${d[0]}"><div class="n">${d[2]}</div><div class="l">${d[1]} · ${d[3]}</div></div>`).join('')+`</div>`;
+}
+
+function chipCards(groups,cls){
+  return `<div class="cards">`+groups.map(g=>
+    `<div class="card"><div class="room">${esc(g.room)}<span class="tag ${cls}">${cls==='low'?'偏低':cls==='high'?'偏高':'熱點'}</span></div>
+     <div class="chips">`+g.items.map(it=>
+       `<span class="chip ${cls}"><span class="d">${md(it.date)}</span>${it.v}${cls==='hot'?' 晚':' 間'}</span>`).join('')+
+     `</div></div>`).join('')+`</div>`;
+}
+</script>
+<script>
+function fastCards(list){
+  return list.map(f=>{
+    const mx=Math.max(1,...f.buckets.map(b=>b[1]));
+    const bars=f.buckets.map(b=>
+      `<div class="bar"><span class="bn">${esc(b[0])}</span><span class="track"><span class="fill" style="width:${b[1]/mx*100}%"></span></span><span class="bv">${b[1]}</span></div>`).join('');
+    return `<div class="fastcard"><div class="fh"><span class="fd">${md(f.date)} 進單</span>
+      <span><span class="big">${f.total}</span> <span class="thr">/ ${f.orders} 單 · 門檻 ${f.threshold}</span></span></div>
+      <div class="bars">${bars}</div></div>`;
+  }).join('');
+}
+
+function dipCards(groups){
+  return groups.map(g=>
+    `<div class="card"><div class="room">${esc(g.room)}<span class="tag" style="background:var(--stay-bg);color:var(--stay)">min.stay=2</span></div>
+     <div style="display:grid;gap:10px">`+g.dips.map(d=>
+       `<div class="dip"><div class="dr"><span class="range">${md(d.start)} – ${md(d.end)}</span><span class="delta">Δ ${d.delta}</span></div>
+        <div class="days">凹陷區間 ${d.days} 天</div>
+        <div class="pts"><span>最低 <b>${md(d.lowDate)}</b> 剩 <b>${d.lowQty}</b> 間</span><span>最高 <b>${md(d.highDate)}</b> 剩 <b>${d.highQty}</b> 間</span></div>
+        <div class="rec">→ 建議 SiteMinder 設 min.stay=2</div></div>`).join('')+
+     `</div></div>`).join('');
+}
+
+function section(ic,title,sub,inner){
+  if(!inner) return '';
+  return `<section class="blk"><div class="blk-head"><span class="ic">${ic}</span><h2>${title}</h2><span class="sub">${sub}</span></div>${inner}</section>`;
+}
+</script>
+<script>
+function renderHotel(h){
+  let s = statRow(h);
+  s += section('⚠️','全館進單過快','SiteMinder 進單速度超出門檻', h.fast.length?fastCards(h.fast):'');
+  s += section('🔥','進單熱點','過去 3 天累計進單偏熱的日期', h.hot.length?chipCards(h.hot,'hot'):'');
+  s += section('🔔','庫存偏低','可考慮收一價或關控的日期', h.low.length?chipCards(h.low,'low'):'');
+  s += section('🔔','庫存偏高','去化偏慢、可考慮促銷的日期', h.high.length?chipCards(h.high,'high'):'');
+  s += section('📊','min.stay = 2 建議','連續低庫存凹陷區，可設最短住宿', h.minstay.length?`<div class="cards">${dipCards(h.minstay)}</div>`:'');
+  if(s===statRow(h)) s+='<div class="empty">本日無觸發訊號。</div>';
+  return s;
+}
+
+function init(){
+  document.getElementById('meta').innerHTML =
+    `<span>報告日期 <b>${DATA.reportDate||'—'}</b></span><span>產生時間 <b>${DATA.generated}</b></span><span>監測館數 <b>${DATA.hotels.length}</b></span>`;
+  const tabs=document.getElementById('tabs'), content=document.getElementById('content');
+  DATA.hotels.forEach((h,i)=>{
+    const b=document.createElement('button');
+    b.className='tab'+(i===0?' active':''); b.innerHTML=esc(h.name);
+    b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.hotel').forEach(t=>t.classList.remove('active'));
+      b.classList.add('active'); document.getElementById('h'+i).classList.add('active');};
+    tabs.appendChild(b);
+    const d=document.createElement('div'); d.className='hotel'+(i===0?' active':''); d.id='h'+i;
+    d.innerHTML=renderHotel(h); content.appendChild(d);
+  });
+  document.getElementById('foot').innerHTML =
+    `資料來源：SM_control monitor（SiteMinder 庫存 / 進單）· 內部營運參考，非機密資料。<br>本頁每日自動更新；訊號為演算法初步建議，實際調價以現場判斷為準。`;
+}
+init();
+</script>
+</body>
+</html>
