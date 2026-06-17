@@ -85,15 +85,16 @@ footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);color:v
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function per(rn,o){return o?(Math.round(rn/o*10)/10).toFixed(1):'—';}
 function chTable(channels,to,trn){
   if(!channels||!channels.length) return '<div class="empty">今日尚無進單</div>';
   var mx=Math.max.apply(null,channels.map(function(c){return c.orders;}));
   var rows=channels.map(function(c){
     var w=mx?Math.round(c.orders/mx*54):0;
-    return '<tr><td>'+esc(c.name)+'<span class="bar" style="width:'+w+'px"></span></td><td>'+c.orders+'</td><td>'+c.roomNights+'</td></tr>';
+    return '<tr><td>'+esc(c.name)+'<span class="bar" style="width:'+w+'px"></span></td><td>'+c.orders+'</td><td>'+c.roomNights+'</td><td>'+per(c.roomNights,c.orders)+'</td></tr>';
   }).join('');
-  return '<table class="tbl"><thead><tr><th>OTA / 通路</th><th>單數</th><th>房晚</th></tr></thead><tbody>'+rows+
-    '<tr class="tot"><td>合計</td><td>'+to+'</td><td>'+trn+'</td></tr></tbody></table>';
+  return '<table class="tbl"><thead><tr><th>OTA / 通路</th><th>單數</th><th>房晚</th><th>晚/單</th></tr></thead><tbody>'+rows+
+    '<tr class="tot"><td>合計</td><td>'+to+'</td><td>'+trn+'</td><td>'+per(trn,to)+'</td></tr></tbody></table>';
 }
 function render(d){
   d=d||{hotels:[],otaTotal:[]};
