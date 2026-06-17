@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="900">
+<title>今日進單看板</title>
+<style>
+:root{--bg:#0f1419;--card:#1a2129;--card2:#222b35;--line:#2d3a47;--fg:#e6edf3;--mut:#8b98a5;--accent:#4fd1c5;--warn:#f6ad55;--bad:#fc8181}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;padding:16px;line-height:1.5}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.meta{color:var(--mut);font-size:13px;margin-bottom:18px}
+.meta b{color:var(--accent)}
+.grand{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.gbox{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.gbox .n{font-size:30px;font-weight:800;color:var(--accent)}
+.gbox .l{color:var(--mut);font-size:13px;margin-top:2px}
+.gbox.cancel .n{color:var(--bad);font-size:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.card h2{font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+.card h2 .sum{font-size:14px;color:var(--mut);font-weight:500}
+.card h2 .sum b{color:var(--accent);font-size:18px;font-weight:800}
+.fail{color:var(--bad);font-size:13px;margin-top:6px}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mut);font-weight:600;font-size:12px}
+tr:last-child td{border-bottom:none}
+.tot td{font-weight:800;color:var(--accent);border-top:2px solid var(--line)}
+.empty{color:var(--mut);font-size:13px;margin-top:8px}
+.sec{font-size:14px;color:var(--mut);font-weight:700;margin:24px 0 8px}
+.foot{color:var(--mut);font-size:12px;margin-top:24px;text-align:center}
+.bar{height:6px;background:var(--accent);border-radius:3px;display:inline-block;vertical-align:middle;margin-left:6px;opacity:.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>今日進單看板</h1>
+<div class="meta">進單日 <b id="d"></b>（由 00:00 起算）｜更新時間 <b id="g"></b>｜每小時自動更新</div>
+<div class="grand" id="grand"></div>
+<div id="ota"></div>
+<div class="sec">各館明細</div>
+<div id="hotels"></div>
+<div class="foot">資料來源：SiteMinder reservations-beef｜房晚 = 房數 x 夜數｜已排除取消單</div>
+</div>
+<script>
+var DATA = {"date": "2026-06-17", "generated": "2026-06-17 09:54", "hotels": [{"name": "中壢 VIA Zhongli", "ok": true, "channels": [{"name": "Booking.com", "orders": 3, "roomNights": 4}, {"name": "Agoda", "orders": 3, "roomNights": 3}, {"name": "ezTravel", "orders": 1, "roomNights": 1}], "totalOrders": 7, "totalRoomNights": 8, "canceled": 1}, {"name": "Sky Gate Hotel", "ok": true, "channels": [{"name": "Agoda", "orders": 1, "roomNights": 4}, {"name": "Trip.com (New)", "orders": 1, "roomNights": 3}, {"name": "Expedia", "orders": 1, "roomNights": 1}], "totalOrders": 3, "totalRoomNights": 8, "canceled": 0}, {"name": "微風館 Via Hotel Breeze", "ok": true, "channels": [{"name": "Agoda", "orders": 7, "roomNights": 36}, {"name": "Trip.com (New)", "orders": 1, "roomNights": 1}], "totalOrders": 8, "totalRoomNights": 37, "canceled": 0}, {"name": "Taipei Station", "ok": true, "channels": [{"name": "Expedia", "orders": 3, "roomNights": 4}, {"name": "Agoda", "orders": 1, "roomNights": 3}, {"name": "Booking.com", "orders": 1, "roomNights": 3}, {"name": "Trip.com (New)", "orders": 1, "roomNights": 3}], "totalOrders": 6, "totalRoomNights": 13, "canceled": 3}, {"name": "Via Loft Hotel", "ok": true, "channels": [{"name": "Agoda", "orders": 3, "roomNights": 7}, {"name": "Expedia", "orders": 2, "roomNights": 3}], "totalOrders": 5, "totalRoomNights": 10, "canceled": 0}, {"name": "丰居一中 VIA Hotel Taichung", "ok": true, "channels": [{"name": "ezTravel", "orders": 2, "roomNights": 2}], "totalOrders": 2, "totalRoomNights": 2, "canceled": 0}, {"name": "丰森 Fosen Hotel", "ok": true, "channels": [{"name": "Booking.com", "orders": 3, "roomNights": 5}, {"name": "Agoda", "orders": 3, "roomNights": 3}], "totalOrders": 6, "totalRoomNights": 8, "canceled": 0}], "otaTotal": [{"name": "Agoda", "orders": 18, "roomNights": 56}, {"name": "Booking.com", "orders": 7, "roomNights": 12}, {"name": "Expedia", "orders": 6, "roomNights": 8}, {"name": "Trip.com (New)", "orders": 3, "roomNights": 7}, {"name": "ezTravel", "orders": 3, "roomNights": 3}], "grandOrders": 37, "grandRoomNights": 86, "grandCanceled": 4};
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function chTable(channels,to,trn){
+  if(!channels.length) return '<div class="empty">今日尚無進單</div>';
+  var max=Math.max.apply(null,channels.map(function(c){return c.orders;}));
+  var rows=channels.map(function(c){
+    var w=max?Math.round(c.orders/max*60):0;
+    return '<tr><td>'+c.name+'<span class="bar" style="width:'+w+'px"></span></td><td>'+c.orders+'</td><td>'+c.roomNights+'</td></tr>';
+  }).join('');
+  return '<table><thead><tr><th>OTA / 通路</th><th>單數</th><th>房晚</th></tr></thead><tbody>'+rows+
+    '<tr class="tot"><td>合計</td><td>'+to+'</td><td>'+trn+'</td></tr></tbody></table>';
+}
+(function(){
+  var d=DATA||{hotels:[],otaTotal:[]};
+  document.getElementById('d').textContent=d.date||'-';
+  document.getElementById('g').textContent=d.generated||'-';
+  var g=document.getElementById('grand');
+  [['grandOrders','今日總單數'],['grandRoomNights','今日總房晚']].forEach(function(p){
+    g.appendChild(el('div','gbox','<div class="n">'+(d[p[0]]||0)+'</div><div class="l">'+p[1]+'</div>'));
+  });
+  if(d.grandCanceled){g.appendChild(el('div','gbox cancel','<div class="n">'+d.grandCanceled+'</div><div class="l">今日取消單</div>'));}
+  if(d.otaTotal&&d.otaTotal.length){
+    var o=document.getElementById('ota');
+    o.appendChild(el('div','sec','全館合計 · 各 OTA'));
+    var card=el('div','card');
+    card.innerHTML=chTable(d.otaTotal,d.grandOrders,d.grandRoomNights);
+    o.appendChild(card);
+  }
+  var box=document.getElementById('hotels');
+  (d.hotels||[]).forEach(function(h){
+    var c=el('div','card');
+    var head='<h2>'+h.name+'<span class="sum">單 <b>'+h.totalOrders+'</b>｜房晚 <b>'+h.totalRoomNights+'</b>'+
+      (h.canceled?'｜取消 '+h.canceled:'')+'</span></h2>';
+    if(!h.ok){c.innerHTML=head+'<div class="fail">撈取失敗：'+(h.error||'')+'</div>';}
+    else{c.innerHTML=head+chTable(h.channels,h.totalOrders,h.totalRoomNights);}
+    box.appendChild(c);
+  });
+})();
+</script>
+</body>
+</html>
