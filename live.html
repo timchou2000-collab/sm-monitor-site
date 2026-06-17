@@ -131,12 +131,16 @@ function runNow(){
     showNotice('連不到即時端點。請確認：①這台裝置在你的 Tailscale 內　②家裡那台開著。沒在 Tailscale 時，可<a href="bookings.html">改看靜態快照</a>。');
   }).finally(function(){b.disabled=false;b.textContent='立即跑一次';});
 }
-fetch(BASE+'/bookings.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
-  if(d&&d.hotels){render(d);setStatus('（上次結果，按按鈕重新抓）');}
-}).catch(function(){
-  setStatus('（尚未載入；按按鈕即時抓取）');
-  showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。沒在 Tailscale 時可<a href="bookings.html">改看靜態快照</a>。');
-});
+if(new URLSearchParams(location.search).get('run')==='1'){
+  runNow();
+}else{
+  fetch(BASE+'/bookings.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(d&&d.hotels){render(d);setStatus('（上次結果，按按鈕重新抓）');}
+  }).catch(function(){
+    setStatus('（尚未載入；按按鈕即時抓取）');
+    showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。沒在 Tailscale 時可<a href="bookings.html">改看靜態快照</a>。');
+  });
+}
 </script>
 </body>
 </html>
