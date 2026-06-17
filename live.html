@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今日進單 · 即時 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--hot:#c2761f;--low:#c0392b;--radius:14px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+header.top{padding:30px 0 22px;border-bottom:1px solid var(--line);margin-bottom:24px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:16px}
+.home:hover{color:var(--brand)}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(28px,5vw,42px);
+letter-spacing:-.01em;color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:13px;color:var(--muted);font-size:13.5px}
+.meta b{color:var(--ink);font-weight:700}
+.runbar{margin:18px 0 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+button.run{appearance:none;border:none;cursor:pointer;background:var(--brand);color:#fffdf9;
+font-family:"Noto Sans TC";font-weight:700;font-size:15px;padding:13px 26px;border-radius:99px;
+box-shadow:var(--shadow);transition:transform .08s,opacity .2s}
+button.run:hover{transform:translateY(-1px)}
+button.run:disabled{opacity:.55;cursor:wait;transform:none}
+.status{font-size:13.5px;color:var(--muted)}
+.status.err{color:var(--low);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:26px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:30px;font-weight:600;line-height:1;color:var(--brand)}
+.stat .l{margin-top:6px;font-size:12.5px;color:var(--muted)}
+.stat.hot .n{color:var(--hot)} .stat.low .n{color:var(--low)}
+.blk-head{display:flex;align-items:baseline;gap:10px;margin:0 0 13px}
+.blk-head h2{font-family:"Noto Serif TC",serif;font-size:18px;font-weight:700}
+.blk-head .sub{color:var(--muted);font-size:12.5px}
+.otawrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);padding:13px 17px;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px;box-shadow:var(--shadow)}
+.card .room{font-weight:700;font-size:15px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card .room .sum{font-size:12.5px;color:var(--muted);font-weight:500}
+.card .room .sum b{color:var(--brand);font-family:"Fraunces",serif;font-size:16px}
+.tbl{width:100%;border-collapse:collapse;margin-top:9px;font-size:13px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line)}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{color:var(--muted);font-weight:600;font-size:11.5px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .tot td{font-weight:700;color:var(--brand);border-top:2px solid var(--line)}
+.bar{height:6px;background:linear-gradient(90deg,var(--gold),var(--hot));border-radius:99px;display:inline-block;vertical-align:middle;margin-left:6px;opacity:.55}
+.fail{color:var(--low);font-size:13px;margin-top:6px}
+.empty{color:var(--muted);font-size:13px;margin-top:8px}
+.notice{background:#fbeedd;border:1px solid #ecd9bf;color:#8a5a1f;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:22px;display:none}
+footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./">← 回首頁</a>
+  <div class="kicker">Today's Reservations · Live</div>
+  <h1 class="title"><span class="zh">今日進單</span> · 即時</h1>
+  <div class="meta" id="meta">載入上次結果…</div>
+</header>
+<div class="notice" id="notice"></div>
+<div class="runbar">
+  <button class="run" id="btn" onclick="runNow()">立即跑一次</button>
+  <span class="status" id="status"></span>
+</div>
+<div class="stats" id="grand"></div>
+<div id="ota"></div>
+<div class="blk-head"><span>🏨</span><h2>各館明細</h2><span class="sub">單數 · 房晚 by OTA</span></div>
+<div class="cards" id="hotels"></div>
+<footer>資料來源：SiteMinder reservations-beef｜進單日(BookedOn) 由 00:00 起算｜房晚 = 房數 × 夜數｜已排除取消單｜即時連線需在 Tailscale 內</footer>
+</div>
+<script>
+var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function chTable(channels,to,trn){
+  if(!channels||!channels.length) return '<div class="empty">今日尚無進單</div>';
+  var mx=Math.max.apply(null,channels.map(function(c){return c.orders;}));
+  var rows=channels.map(function(c){
+    var w=mx?Math.round(c.orders/mx*54):0;
+    return '<tr><td>'+esc(c.name)+'<span class="bar" style="width:'+w+'px"></span></td><td>'+c.orders+'</td><td>'+c.roomNights+'</td></tr>';
+  }).join('');
+  return '<table class="tbl"><thead><tr><th>OTA / 通路</th><th>單數</th><th>房晚</th></tr></thead><tbody>'+rows+
+    '<tr class="tot"><td>合計</td><td>'+to+'</td><td>'+trn+'</td></tr></tbody></table>';
+}
+function render(d){
+  d=d||{hotels:[],otaTotal:[]};
+  document.getElementById('meta').innerHTML=
+    '進單日 <b>'+(d.date||'—')+'</b>（由 00:00 起算）　更新時間 <b>'+(d.generated||'—')+'</b>';
+  var g=document.getElementById('grand');g.innerHTML='';
+  g.appendChild(el('div','stat','<div class="n">'+(d.grandOrders||0)+'</div><div class="l">今日總單數</div>'));
+  g.appendChild(el('div','stat hot','<div class="n">'+(d.grandRoomNights||0)+'</div><div class="l">今日總房晚</div>'));
+  if(d.grandCanceled){g.appendChild(el('div','stat low','<div class="n">'+d.grandCanceled+'</div><div class="l">今日取消單</div>'));}
+  var o=document.getElementById('ota');o.innerHTML='';
+  if(d.otaTotal&&d.otaTotal.length){
+    o.appendChild(el('div','blk-head','<span>📊</span><h2>全館合計 · 各 OTA</h2><span class="sub">哪個通路今天進最多</span>'));
+    var w=el('div','otawrap');w.innerHTML=chTable(d.otaTotal,d.grandOrders,d.grandRoomNights);o.appendChild(w);
+  }
+  var box=document.getElementById('hotels');box.innerHTML='';
+  (d.hotels||[]).forEach(function(h){
+    var c=el('div','card');
+    var head='<div class="room"><span>'+esc(h.name)+'</span><span class="sum">單 <b>'+h.totalOrders+'</b> ｜ 房晚 <b>'+h.totalRoomNights+'</b>'+(h.canceled?' ｜ 取消 '+h.canceled:'')+'</span></div>';
+    if(!h.ok){c.innerHTML=head+'<div class="fail">撈取失敗：'+esc(h.error||'')+'</div>';}
+    else{c.innerHTML=head+chTable(h.channels,h.totalOrders,h.totalRoomNights);}
+    box.appendChild(c);
+  });
+}
+function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
+function showNotice(msg){var n=document.getElementById('notice');n.innerHTML=msg;n.style.display='block';}
+function runNow(){
+  var b=document.getElementById('btn');b.disabled=true;b.textContent='跑取中…（約 10–60 秒）';setStatus('正在連 SiteMinder 抓今日進單…');
+  document.getElementById('notice').style.display='none';
+  fetch(BASE+'/run-bookings').then(function(r){return r.json();}).then(function(res){
+    if(res.ok&&res.payload){render(res.payload);setStatus('已更新 '+(res.payload.generated||''));}
+    else{setStatus('抓取失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200))+'　保留上次結果',true);
+      if(res.payload)render(res.payload);}
+  }).catch(function(e){
+    setStatus('連線不到家裡那台',true);
+    showNotice('連不到即時端點。請確認：①這台裝置在你的 Tailscale 內　②家裡那台開著。沒在 Tailscale 時，可<a href="bookings.html">改看靜態快照</a>。');
+  }).finally(function(){b.disabled=false;b.textContent='立即跑一次';});
+}
+fetch(BASE+'/bookings.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+  if(d&&d.hotels){render(d);setStatus('（上次結果，按按鈕重新抓）');}
+}).catch(function(){
+  setStatus('（尚未載入；按按鈕即時抓取）');
+  showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。沒在 Tailscale 時可<a href="bookings.html">改看靜態快照</a>。');
+});
+</script>
+</body>
+</html>
