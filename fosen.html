@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>丰森 · 近 7 天進單 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--hot:#c2761f;--low:#c0392b;--radius:14px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px 80px}
+header.top{padding:30px 0 22px;border-bottom:1px solid var(--line);margin-bottom:24px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:16px}
+.home:hover{color:var(--brand)}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(26px,5vw,40px);
+letter-spacing:-.01em;color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:13px;color:var(--muted);font-size:13.5px}
+.meta b{color:var(--ink);font-weight:700}
+.runbar{margin:18px 0 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+button.run{appearance:none;border:none;cursor:pointer;background:var(--brand);color:#fffdf9;
+font-family:"Noto Sans TC";font-weight:700;font-size:15px;padding:13px 26px;border-radius:99px;
+box-shadow:var(--shadow);transition:transform .08s,opacity .2s}
+button.run:hover{transform:translateY(-1px)}
+button.run:disabled{opacity:.55;cursor:wait;transform:none}
+.status{font-size:13.5px;color:var(--muted)}
+.status.err{color:var(--low);font-weight:600}
+.notice{background:#fbeedd;border:1px solid #ecd9bf;color:#8a5a1f;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:22px;display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:30px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:30px;font-weight:600;line-height:1;color:var(--brand)}
+.stat .l{margin-top:7px;font-size:12.5px;color:var(--muted)}
+.stat.gold .n{color:var(--gold)} .stat.hot .n{color:var(--hot)} .stat.low .n{color:var(--low)}
+.blk-head{display:flex;align-items:baseline;gap:10px;margin:0 0 13px}
+.blk-head h2{font-family:"Noto Serif TC",serif;font-size:18px;font-weight:700}
+.blk-head .sub{color:var(--muted);font-size:12.5px}
+.tblwrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);padding:14px 18px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line)}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl th{color:var(--muted);font-weight:600;font-size:11.5px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .tot td{font-weight:700;color:var(--brand);border-top:2px solid var(--line)}
+.tbl .adr{color:var(--gold);font-weight:700}
+.bar{height:6px;background:linear-gradient(90deg,var(--gold),var(--hot));border-radius:99px;display:inline-block;vertical-align:middle;margin-left:6px;opacity:.55}
+.empty{color:var(--muted);font-size:13px;margin-top:8px}
+.dayhead{display:flex;align-items:baseline;gap:10px;margin:24px 0 10px}
+.dayhead .d{font-family:"Fraunces",serif;font-size:17px;font-weight:600;color:var(--brand)}
+.dayhead .wd{color:var(--muted);font-size:12.5px}
+.dayhead .sm{margin-left:auto;color:var(--muted);font-size:12.5px;text-align:right}
+.dayhead .sm b{color:var(--ink);font-weight:700}
+.dayhead .sm .adrv{color:var(--gold)}
+.day0 .tblwrap{opacity:.6}
+.noday{color:var(--muted);font-size:12.5px;padding:8px 0 4px}
+footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./">← 回首頁</a>
+  <div class="kicker">Fosen · Past 7 Days</div>
+  <h1 class="title"><span class="zh">丰森</span> · 近 7 天進單</h1>
+  <div class="meta" id="meta">載入上次結果…</div>
+</header>
+<div class="notice" id="notice"></div>
+<div class="runbar">
+  <button class="run" id="btn" onclick="runNow()">立即更新</button>
+  <span class="status" id="status"></span>
+</div>
+<div class="stats" id="grand"></div>
+<div class="blk-head"><span>📊</span><h2>逐日 · 各通路</h2><span class="sub">每天分開：訂單量 · 房晚 · 晚/單 · 營收 · 平均 ADR</span></div>
+<div id="daily"><div class="empty">尚未載入</div></div>
+<footer>資料來源：SiteMinder reservations-beef｜進單日(BookedOn) 落在近 7 天（含今天）｜房晚 = 房數 × 夜數｜ADR = 含稅總額 ÷ 房晚｜已排除取消單｜幣別 TWD｜即時連線需在 Tailscale 內</footer>
+</div>
+<script>
+var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
+function per(rn,o){return o?(Math.round(rn/o*10)/10).toFixed(1):'—';}
+function chTable(channels,d){
+  if(!channels||!channels.length) return '<div class="noday">當日無進單</div>';
+  var mx=Math.max.apply(null,channels.map(function(c){return c.orders;}));
+  var rows=channels.map(function(c){
+    var w=mx?Math.round(c.orders/mx*54):0;
+    return '<tr><td>'+esc(c.name)+'<span class="bar" style="width:'+w+'px"></span></td>'+
+      '<td>'+c.orders+'</td><td>'+c.roomNights+'</td><td>'+per(c.roomNights,c.orders)+'</td>'+
+      '<td>'+num(c.revenue)+'</td><td class="adr">'+num(c.adr)+'</td></tr>';
+  }).join('');
+  return '<table class="tbl"><thead><tr><th>OTA / 通路</th><th>單數</th><th>房晚</th><th>晚/單</th><th>營收</th><th>ADR</th></tr></thead><tbody>'+rows+
+    '<tr class="tot"><td>合計</td><td>'+d.totalOrders+'</td><td>'+d.totalRoomNights+'</td><td>'+per(d.totalRoomNights,d.totalOrders)+'</td><td>'+num(d.totalRevenue)+'</td><td class="adr">'+num(d.adr)+'</td></tr></tbody></table>';
+}
+function render(d){
+  if(!d||!d.daily){return;}
+  document.getElementById('meta').innerHTML=
+    '期間 <b>'+(d.start||'—')+'</b> ~ <b>'+(d.end||'—')+'</b>（進單日，共 '+(d.days||7)+' 天，逐日分開）　更新 <b>'+(d.generated||'—')+'</b>';
+  var g=document.getElementById('grand');g.innerHTML='';
+  g.appendChild(el('div','stat','<div class="n">'+num(d.totalOrders||0)+'</div><div class="l">7 天總單數</div>'));
+  g.appendChild(el('div','stat hot','<div class="n">'+num(d.totalRoomNights||0)+'</div><div class="l">總房晚</div>'));
+  g.appendChild(el('div','stat gold','<div class="n">'+num(d.adr)+'</div><div class="l">整體平均 ADR</div>'));
+  g.appendChild(el('div','stat','<div class="n">'+num(d.totalRevenue||0)+'</div><div class="l">總營收 (TWD)</div>'));
+  if(d.canceled){g.appendChild(el('div','stat low','<div class="n">'+d.canceled+'</div><div class="l">取消單</div>'));}
+  var box=document.getElementById('daily');box.innerHTML='';
+  // 由新到舊顯示
+  var days=(d.daily||[]).slice().reverse();
+  days.forEach(function(day){
+    var sec=el('div',day.totalOrders?'day':'day day0');
+    var head='<div class="dayhead"><span class="d">'+day.date.slice(5)+'</span>'+
+      '<span class="wd">週'+day.weekday+'</span>'+
+      '<span class="sm">單 <b>'+day.totalOrders+'</b> ｜ 房晚 <b>'+day.totalRoomNights+'</b> ｜ ADR <b class="adrv">'+num(day.adr)+'</b>'+
+      (day.canceled?' ｜ 取消 '+day.canceled:'')+'</span></div>';
+    var wrap=el('div','tblwrap'); wrap.innerHTML=chTable(day.channels,day);
+    sec.innerHTML=head; sec.appendChild(wrap);
+    box.appendChild(sec);
+  });
+}
+function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
+function showNotice(m){var n=document.getElementById('notice');n.innerHTML=m;n.style.display='block';}
+function runNow(){
+  var b=document.getElementById('btn');b.disabled=true;b.textContent='跑取中…（約 10–60 秒）';setStatus('正在連 SiteMinder 抓丰森近 7 天進單…');
+  document.getElementById('notice').style.display='none';
+  fetch(BASE+'/run-fosen-week').then(function(r){return r.json();}).then(function(res){
+    if(res.ok&&res.payload){render(res.payload);setStatus('已更新 '+(res.payload.generated||''));}
+    else{setStatus('抓取失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200))+'　保留上次結果',true);
+      if(res.payload)render(res.payload);}
+  }).catch(function(e){
+    setStatus('連線不到家裡那台',true);
+    showNotice('連不到即時端點。請確認：①這台裝置在你的 Tailscale 內　②家裡那台開著。');
+  }).finally(function(){b.disabled=false;b.textContent='立即更新';});
+}
+if(new URLSearchParams(location.search).get('run')==='1'){
+  runNow();
+}else{
+  fetch(BASE+'/fosen-week.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(d&&d.daily){render(d);setStatus('（上次結果，按按鈕重新抓）');}
+  }).catch(function(){
+    setStatus('（尚未載入；按按鈕即時抓取）');
+    showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
+  });
+}
+</script>
+</body>
+</html>

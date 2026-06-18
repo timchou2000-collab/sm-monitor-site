@@ -70,6 +70,17 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     </div>
   </div>
 
+  <div class="card">
+    <span class="freq">點擊即時抓取</span>
+    <div class="ic">🏯</div>
+    <h2>丰森 · 近 7 天 <span class="en">Fosen 7d</span></h2>
+    <div class="desc">丰森過去一週（含今天）各通路的訂單量、房晚與平均 ADR。即時版會當場連 SiteMinder 重新抓取（需在 Tailscale 內）。</div>
+    <div class="live" id="fs-live">載入丰森數字…</div>
+    <div class="actions">
+      <a class="btn-primary" href="fosen.html?run=1">🔄 即時抓取 →</a>
+    </div>
+  </div>
+
   <a class="card" href="monitor.html">
     <span class="freq">每日更新</span>
     <div class="ic">📊</div>
@@ -92,6 +103,16 @@ fetch('bookings.json?t=' + Date.now())
   })
   .catch(function(){ document.getElementById('bk-live').innerHTML =
     '<span class="t">按「即時抓取」連 SiteMinder 取得今日各 OTA 進單</span>'; });
+
+fetch('fosen_week.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    document.getElementById('fs-live').innerHTML =
+      '上次抓取 <b>' + (d.totalOrders||0) + '</b> 單 · ADR <b>' + (d.adr!=null?Number(d.adr).toLocaleString('en-US'):'—') +
+      '</b> <span class="t">（' + (d.generated||'') + '）</span>';
+  })
+  .catch(function(){ document.getElementById('fs-live').innerHTML =
+    '<span class="t">按「即時抓取」連 SiteMinder 取得丰森近 7 天</span>'; });
 </script>
 </body>
 </html>
