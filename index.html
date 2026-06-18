@@ -81,6 +81,17 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     </div>
   </div>
 
+  <div class="card">
+    <span class="freq">建議模式</span>
+    <div class="ic">🎯</div>
+    <h2>中壢 · 調價建議 <span class="en">Pricing</span></h2>
+    <div class="desc">中壢主力大房未來 60 天動態調價建議（存量＋日期遠近＋進單速度，積極版）。目前只建議、不推送。</div>
+    <div class="live" id="pr-live">載入調價摘要…</div>
+    <div class="actions">
+      <a class="btn-primary" href="pricing.html?run=1">🎯 看建議 →</a>
+    </div>
+  </div>
+
   <a class="card" href="monitor.html">
     <span class="freq">每日更新</span>
     <div class="ic">📊</div>
@@ -113,6 +124,17 @@ fetch('fosen_week.json?t=' + Date.now())
   })
   .catch(function(){ document.getElementById('fs-live').innerHTML =
     '<span class="t">按「即時抓取」連 SiteMinder 取得丰森近 7 天</span>'; });
+
+fetch('zhongli_pricing.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    var s = d.summary || {};
+    document.getElementById('pr-live').innerHTML =
+      '建議 <b>↑' + (s.raise||0) + '</b> · <b>↓' + (s.lower||0) + '</b> · ＝' + (s.hold||0) +
+      ' <span class="t">（' + (d.generated||'') + '）</span>';
+  })
+  .catch(function(){ document.getElementById('pr-live').innerHTML =
+    '<span class="t">按「看建議」計算中壢主力房調價</span>'; });
 </script>
 </body>
 </html>
