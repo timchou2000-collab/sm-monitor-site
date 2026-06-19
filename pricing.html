@@ -203,9 +203,15 @@ function applySelected(){
 }
 function showApply(res){
   var box=document.getElementById('applybox'); box.className='applybox show';
-  var h='<h3>'+(res.ok?'✅ 套用完成':'⚠️ 套用結果（部分未成功）')+'</h3>';
+  var h='<h3>'+(res.ok?'✅ 套用完成（已讀回線上確認）':'⚠️ 套用結果（部分未落地）')+'</h3>';
+  var mm={}; (res.mismatch||[]).forEach(function(m){mm[m.date]=m;});
   (res.plan||[]).forEach(function(p){
-    h+='<div class="rowline">'+p.date.slice(5)+'：'+num(p.old)+' → <b>'+num(p.new)+'</b> ✓</div>';
+    if(mm[p.date]){
+      var g=mm[p.date].got;
+      h+='<div class="rowline ng">'+p.date.slice(5)+'：'+num(p.old)+' → '+num(p.new)+' ✗ 未落地（線上仍為 '+(g==null?'?':num(g))+'）</div>';
+    }else{
+      h+='<div class="rowline">'+p.date.slice(5)+'：'+num(p.old)+' → <b>'+num(p.new)+'</b> ✓ 已落地</div>';
+    }
   });
   (res.rejected||[]).forEach(function(p){
     h+='<div class="rowline ng">'+p.date.slice(5)+'：擋下（'+esc(p.reason||'')+'）</div>';
@@ -214,7 +220,7 @@ function showApply(res){
     h+='<div class="rowline ng">'+p.date.slice(5)+'：略過（'+esc(p.reason||'')+'）</div>';
   });
   if(res.error)h+='<div class="rowline ng">'+esc(res.error)+'</div>';
-  if(res.dispatched!=null)h+='<div class="rowline" style="color:var(--muted);margin-top:6px">派發 '+(res.dispatched?'成功':'失敗')+'｜狀態確認 '+(res.statusConfirmed===true?'OK':(res.statusConfirmed===false?'失敗':'逾時(以實際為準)'))+'</div>';
+  if(res.dispatched!=null)h+='<div class="rowline" style="color:var(--muted);margin-top:6px">派發 '+(res.dispatched?'成功':'失敗')+'｜讀回確認落地 '+((res.verified||[]).length)+' 天'+((res.mismatch||[]).length?('、未落地 '+res.mismatch.length+' 天'):'')+'</div>';
   box.innerHTML=h;
 }
 function toggleApplyLog(){
