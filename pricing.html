@@ -32,6 +32,15 @@ button.run{appearance:none;border:none;cursor:pointer;background:var(--brand);co
 font-family:"Noto Sans TC";font-weight:700;font-size:15px;padding:12px 24px;border-radius:99px;box-shadow:var(--shadow);transition:transform .08s,opacity .2s}
 button.run:hover{transform:translateY(-1px)} button.run:disabled{opacity:.55;cursor:wait}
 button.push{background:#cdbfa6;color:#5a513f;cursor:not-allowed}
+button.run.apply{background:var(--gold);color:#fffdf9;cursor:pointer}
+button.run.apply:disabled{opacity:.5;cursor:not-allowed}
+.tbl td.pk,.tbl th.pk{text-align:center;width:30px}
+.tbl input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:pointer}
+.applybox{background:#f0ede6;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:14px 0;font-size:13px;display:none}
+.applybox.show{display:block}
+.applybox h3{font-size:13px;color:var(--brand);margin-bottom:6px}
+.applybox .rowline{padding:2px 0;color:var(--ink)}
+.applybox .ng{color:var(--down)}
 .status{font-size:13px;color:var(--muted)} .status.err{color:var(--down);font-weight:600}
 .notice{background:#fdecea;border:1px solid #f3c0ba;color:#a33027;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:18px;display:none}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:22px}
@@ -62,13 +71,14 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <h1 class="title"><span class="zh">中壢</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">主力大房</span></h1>
   <div class="meta" id="meta">載入上次建議…</div>
 </header>
-<div class="banner">⚠️ 建議模式：以下為系統算出的「建議價」，<b>尚未、也不會自動推送到 SiteMinder</b>。一鍵套用將於 Phase 2（接通寫入 API）後開放。</div>
+<div class="banner">⚠️ 勾選要套用的日期後按「套用勾選的調價」，<b>才會真的寫入 SiteMinder</b>。系統以伺服器端最新建議為準、只寫你勾選且建議有變動的日期，並受地板/天花板/單筆上限硬擋。未勾選不會動。</div>
 <div class="notice" id="notice"></div>
 <div class="runbar">
   <button class="run" id="btn" onclick="runNow()">重新計算建議</button>
-  <button class="run push" id="pushbtn" disabled title="Phase 2 接通 SiteMinder 寫入後開放">套用到 SiteMinder（未開放）</button>
+  <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
   <span class="status" id="status"></span>
 </div>
+<div class="applybox" id="applybox"></div>
 <div class="stats" id="grand"></div>
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
 <footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
@@ -98,7 +108,10 @@ function render(d){
     var arrow=r.action==='raise'?'▲':(r.action==='lower'?'▼':'＝');
     var dlcls=r.delta>0?'dl up':(r.delta<0?'dl dn':'dl');
     var dltxt=r.delta>0?('+'+r.delta):(r.delta<0?(''+r.delta):'0');
+    var changed=(r.action!=='hold'&&r.delta!==0);
+    var pick=changed?('<input type="checkbox" class="pick" value="'+r.date+'" onchange="updateApplyBtn()">'):'';
     return '<tr class="'+cls+'">'+
+      '<td class="pk">'+pick+'</td>'+
       '<td>'+r.date.slice(5)+' '+r.weekday+'</td>'+
       '<td>'+r.lead+'</td>'+
       '<td>'+r.avail+'</td>'+
@@ -110,7 +123,54 @@ function render(d){
       '<td class="rsn">'+esc(r.reason||'')+'</td></tr>';
   }).join('');
   document.getElementById('tbl').innerHTML=
-    '<thead><tr><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>建議</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
+    '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>建議</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
+  updateApplyBtn();
+}
+function pickedDates(){
+  return Array.prototype.slice.call(document.querySelectorAll('.pick:checked')).map(function(c){return c.value;});
+}
+function updateApplyBtn(){
+  var n=pickedDates().length;
+  var b=document.getElementById('pushbtn');
+  b.disabled=(n===0); b.textContent=n?('套用 '+n+' 天的調價 →'):'套用勾選的調價 →';
+}
+function toggleAll(box){
+  Array.prototype.slice.call(document.querySelectorAll('.pick')).forEach(function(c){c.checked=box.checked;});
+  updateApplyBtn();
+}
+function applySelected(){
+  var dates=pickedDates();
+  if(!dates.length) return;
+  if(!confirm('確定把這 '+dates.length+' 天套用建議價、寫入 SiteMinder 線上房價嗎？\n（只會寫建議有變動的日期，且受地板/天花板/上限保護）'))
+    return;
+  var b=document.getElementById('pushbtn'); b.disabled=true; b.textContent='寫入中…';
+  setStatus('正在寫入 SiteMinder…');
+  fetch(BASE+'/apply-pricing',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({dates:dates})}).then(function(r){return r.json();}).then(function(res){
+    showApply(res);
+    if(res.payload){render(res.payload);}
+    setStatus(res.ok?'寫入完成':'寫入未全部成功（見上方明細）',!res.ok);
+    runNow();   // 重新計算，刷新建議與冷卻狀態
+  }).catch(function(){
+    setStatus('連線不到家裡那台，寫入未執行',true);
+    showNotice('連不到端點，沒有送出任何寫入。請確認 Tailscale 與家裡那台。');
+  }).finally(function(){updateApplyBtn();});
+}
+function showApply(res){
+  var box=document.getElementById('applybox'); box.className='applybox show';
+  var h='<h3>'+(res.ok?'✅ 套用完成':'⚠️ 套用結果（部分未成功）')+'</h3>';
+  (res.plan||[]).forEach(function(p){
+    h+='<div class="rowline">'+p.date.slice(5)+'：'+num(p.old)+' → <b>'+num(p.new)+'</b> ✓</div>';
+  });
+  (res.rejected||[]).forEach(function(p){
+    h+='<div class="rowline ng">'+p.date.slice(5)+'：擋下（'+esc(p.reason||'')+'）</div>';
+  });
+  (res.skipped||[]).forEach(function(p){
+    h+='<div class="rowline ng">'+p.date.slice(5)+'：略過（'+esc(p.reason||'')+'）</div>';
+  });
+  if(res.error)h+='<div class="rowline ng">'+esc(res.error)+'</div>';
+  if(res.dispatched!=null)h+='<div class="rowline" style="color:var(--muted);margin-top:6px">派發 '+(res.dispatched?'成功':'失敗')+'｜狀態確認 '+(res.statusConfirmed===true?'OK':(res.statusConfirmed===false?'失敗':'逾時(以實際為準)'))+'</div>';
+  box.innerHTML=h;
 }
 function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
 function showNotice(m){var n=document.getElementById('notice');n.innerHTML=m;n.style.display='block';}
