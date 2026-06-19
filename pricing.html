@@ -34,6 +34,20 @@ button.run:hover{transform:translateY(-1px)} button.run:disabled{opacity:.55;cur
 button.push{background:#cdbfa6;color:#5a513f;cursor:not-allowed}
 button.run.apply{background:var(--gold);color:#fffdf9;cursor:pointer}
 button.run.apply:disabled{opacity:.5;cursor:not-allowed}
+button.run.ghost{background:#fff;color:var(--brand);border:1px solid var(--line);box-shadow:none}
+button.run.ghost:hover{background:#f0ede6}
+.applylog{display:none;background:#f7f4ee;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:6px 0 16px;font-size:13px}
+.applylog.show{display:block}
+.applylog h3{font-size:13px;color:var(--brand);margin-bottom:8px}
+.logentry{border-top:1px dashed var(--line);padding:9px 0;display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.logentry:first-of-type{border-top:none}
+.logentry .info{flex:1;min-width:0}
+.logentry .ts{font-weight:700;color:var(--ink)}
+.logentry .dts{color:var(--muted);margin-top:3px;line-height:1.5;word-break:break-word}
+.logentry .tag{display:inline-block;background:#e9e2d4;color:#6a5e44;border-radius:6px;padding:0 6px;font-size:11px;margin-left:6px}
+button.rb{appearance:none;border:1px solid #d8a48a;background:#fff;color:#a33027;border-radius:8px;
+padding:6px 12px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;flex:none}
+button.rb:hover{background:#fbeae7}
 .tbl td.pk,.tbl th.pk{text-align:center;width:30px}
 .tbl input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:pointer}
 .tbl td.pro{white-space:nowrap}
@@ -81,9 +95,11 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="runbar">
   <button class="run" id="btn" onclick="runNow()">重新計算建議</button>
   <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
+  <button class="run ghost" id="logbtn" onclick="toggleApplyLog()">套用紀錄／回滾</button>
   <span class="status" id="status"></span>
 </div>
 <div class="applybox" id="applybox"></div>
+<div class="applylog" id="applylog"></div>
 <div class="stats" id="grand"></div>
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
 <footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
@@ -200,6 +216,42 @@ function showApply(res){
   if(res.error)h+='<div class="rowline ng">'+esc(res.error)+'</div>';
   if(res.dispatched!=null)h+='<div class="rowline" style="color:var(--muted);margin-top:6px">派發 '+(res.dispatched?'成功':'失敗')+'｜狀態確認 '+(res.statusConfirmed===true?'OK':(res.statusConfirmed===false?'失敗':'逾時(以實際為準)'))+'</div>';
   box.innerHTML=h;
+}
+function toggleApplyLog(){
+  var box=document.getElementById('applylog');
+  if(box.classList.contains('show')){box.classList.remove('show');return;}
+  box.classList.add('show'); box.innerHTML='<h3>最近套用紀錄</h3><div style="color:var(--muted)">載入中…</div>';
+  fetch(BASE+'/pricing-applies').then(function(r){return r.json();}).then(renderApplies)
+    .catch(function(){box.innerHTML='<h3>最近套用紀錄</h3><div class="logentry"><div class="info" style="color:var(--down)">連不到端點，無法載入紀錄。</div></div>';});
+}
+function renderApplies(list){
+  var box=document.getElementById('applylog');
+  if(!list||!list.length){box.innerHTML='<h3>最近套用紀錄</h3><div style="color:var(--muted)">目前沒有套用紀錄。</div>';return;}
+  var h='<h3>最近套用紀錄（點「回滾」把該次的每天寫回舊價）</h3>';
+  list.forEach(function(e){
+    var chg=(e.plan||[]).filter(function(p){return p.old!=null&&p.old!==p.new;});
+    var dts=chg.map(function(p){return p.date.slice(5)+' '+num(p.old)+'→'+num(p.new);}).join('、');
+    var when=(e.ts||'').replace('T',' ').slice(0,16);
+    var tag=e.rollbackOf?'<span class="tag">回滾</span>':'';
+    h+='<div class="logentry"><div class="info"><div class="ts">'+when+' · '+chg.length+' 天'+tag+'</div>'+
+       '<div class="dts">'+(dts||'（無可回滾項目）')+'</div></div>'+
+       (chg.length?'<button class="rb" onclick="doRollback(\''+e.ts+'\','+chg.length+')">↩ 回滾</button>':'')+'</div>';
+  });
+  box.innerHTML=h;
+}
+function doRollback(ts,n){
+  if(!confirm('確定把 '+ts.replace('T',' ').slice(0,16)+' 這次套用的 '+n+' 天，全部寫回「舊價」嗎？\n（一樣受地板/天花板/±400 上限保護）')) return;
+  setStatus('正在回滾…');
+  fetch(BASE+'/rollback',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ts:ts})}).then(function(r){return r.json();}).then(function(res){
+    showApply(res);
+    setStatus(res.ok?'回滾完成':'回滾未全部成功（見上方明細）',!res.ok);
+    toggleApplyLog(); toggleApplyLog();   // 重新載入紀錄
+    runNow();
+  }).catch(function(){
+    setStatus('連線不到家裡那台，回滾未執行',true);
+    showNotice('連不到端點，沒有送出任何回滾。');
+  });
 }
 function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
 function showNotice(m){var n=document.getElementById('notice');n.innerHTML=m;n.style.display='block';}
