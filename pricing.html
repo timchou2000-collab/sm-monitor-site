@@ -96,6 +96,7 @@ function render(d){
     '模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加。地板 週六 '+num(d.floorSat)+' / 平日 '+num(d.floorOther)+
     '｜天花板 '+num(d.ceiling)+'｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
     (d.cooldownDays?'｜穩定：'+d.cooldownDays+'天冷卻、'+d.reversalDays+'天不反向（強訊號破例）':'')+
+    (d.clearanceLead!=null?'｜清餘房：末 '+(d.clearanceLead+1)+' 天不拉高（餘房 ≤'+d.clearanceLowStock+' 例外）':'')+
     '｜資料為當日 09:00 快照｜occ 以歷史最大可售量為容量基準';
   var s=d.summary||{};
   var g=document.getElementById('grand');g.innerHTML='';
