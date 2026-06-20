@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>微風調價建議 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--up:#1d7a3e;--down:#c0392b;--radius:14px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px 80px}
+header.top{padding:30px 0 20px;border-bottom:1px solid var(--line);margin-bottom:18px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:16px}
+.home:hover{color:var(--brand)}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(25px,5vw,38px);color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:12px;color:var(--muted);font-size:13px}
+.meta b{color:var(--ink);font-weight:700}
+.banner{background:#fbeedd;border:1px solid #e6c79a;color:#8a5a1f;border-radius:var(--radius);padding:11px 16px;font-size:13px;font-weight:600;margin:16px 0 18px}
+.runbar{margin:14px 0 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+button.run{appearance:none;border:none;cursor:pointer;background:var(--brand);color:#fffdf9;
+font-family:"Noto Sans TC";font-weight:700;font-size:15px;padding:12px 24px;border-radius:99px;box-shadow:var(--shadow);transition:transform .08s,opacity .2s}
+button.run:hover{transform:translateY(-1px)} button.run:disabled{opacity:.55;cursor:wait}
+button.run.apply{background:var(--gold);color:#fffdf9;cursor:pointer}
+button.run.apply:disabled{opacity:.5;cursor:not-allowed}
+button.run.ghost{background:#fff;color:var(--brand);border:1px solid var(--line);box-shadow:none}
+button.run.ghost:hover{background:#f0ede6}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 16px}
+.tab{appearance:none;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:99px;
+padding:9px 16px;font-family:"Noto Sans TC";font-weight:700;font-size:13.5px;color:var(--ink);box-shadow:var(--shadow);transition:.12s}
+.tab .c{font-family:"Fraunces",serif;font-size:12px;color:var(--muted);margin-left:7px;font-weight:600}
+.tab:hover{border-color:var(--gold)}
+.tab.active{background:var(--brand);color:#fffdf9;border-color:var(--brand)}
+.tab.active .c{color:#e8ddca}
+.applylog{display:none;background:#f7f4ee;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:6px 0 16px;font-size:13px}
+.applylog.show{display:block}
+.applylog h3{font-size:13px;color:var(--brand);margin-bottom:8px}
+.logentry{border-top:1px dashed var(--line);padding:9px 0;display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.logentry:first-of-type{border-top:none}
+.logentry .info{flex:1;min-width:0}
+.logentry .ts{font-weight:700;color:var(--ink)}
+.logentry .dts{color:var(--muted);margin-top:3px;line-height:1.5;word-break:break-word}
+.logentry .tag{display:inline-block;background:#e9e2d4;color:#6a5e44;border-radius:6px;padding:0 6px;font-size:11px;margin-left:6px}
+button.rb{appearance:none;border:1px solid #d8a48a;background:#fff;color:#a33027;border-radius:8px;
+padding:6px 12px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;flex:none}
+button.rb:hover{background:#fbeae7}
+.tbl td.pk,.tbl th.pk{text-align:center;width:30px}
+.tbl input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:pointer}
+.tbl td.pro{white-space:nowrap}
+.tbl .tgt{display:inline-block;min-width:46px;text-align:center;font-weight:700}
+.tbl button.step{appearance:none;border:1px solid var(--line);background:#fff;color:var(--brand);
+width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;font-weight:700;font-size:14px;vertical-align:middle;padding:0}
+.tbl button.step:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.applybox{background:#f0ede6;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:14px 0;font-size:13px;display:none}
+.applybox.show{display:block}
+.applybox h3{font-size:13px;color:var(--brand);margin-bottom:6px}
+.applybox .rowline{padding:2px 0;color:var(--ink)}
+.applybox .ng{color:var(--down)}
+.status{font-size:13px;color:var(--muted)} .status.err{color:var(--down);font-weight:600}
+.notice{background:#fdecea;border:1px solid #f3c0ba;color:#a33027;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:18px;display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;line-height:1;color:var(--brand)}
+.stat .l{margin-top:6px;font-size:12px;color:var(--muted)}
+.stat.up .n{color:var(--up)} .stat.down .n{color:var(--down)}
+.roomhint{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.room-pane{display:none} .room-pane.active{display:block}
+.tblwrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:680px}
+.tbl th,.tbl td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child,.tbl th:last-child,.tbl td:last-child{text-align:left}
+.tbl th{color:var(--muted);font-weight:600;font-size:11px;position:sticky;top:0;background:var(--panel)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td.cur{color:var(--muted)} .tbl td.pro{font-weight:700}
+.tbl tr.r td.pro{color:var(--up)} .tbl tr.d td.pro{color:var(--down)}
+.tbl td.dl.up{color:var(--up);font-weight:700} .tbl td.dl.dn{color:var(--down);font-weight:700}
+.tbl .sat td:first-child{color:var(--gold);font-weight:700}
+.tbl .fri td:first-child{color:#b3702a;font-weight:700}
+.tbl td.rsn{color:var(--muted);font-size:11.5px;white-space:normal;min-width:200px}
+.empty{color:var(--muted);font-size:13px;padding:16px}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./">← 回首頁</a>
+  <div class="kicker">Dynamic Pricing · Advisory</div>
+  <h1 class="title"><span class="zh">微風館</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">四房型 BAR</span></h1>
+  <div class="meta" id="meta">載入上次建議…</div>
+</header>
+<div class="banner">⚠️ 每房型只控一個 <b>BAR（標準價）</b>方案，其餘衍生方案（不退款／媽咪愛等）不動。勾選日期後按「套用」才會寫入 SiteMinder，可跨房型一次套用，受地板/天花板/單筆上限硬擋。</div>
+<div class="notice" id="notice"></div>
+<div class="runbar">
+  <button class="run" id="btn" onclick="runNow()">重新計算建議</button>
+  <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
+  <button class="run ghost" id="logbtn" onclick="toggleApplyLog()">套用紀錄／回滾</button>
+  <span class="status" id="status"></span>
+</div>
+<div class="applybox" id="applybox"></div>
+<div class="applylog" id="applylog"></div>
+<div class="tabs" id="tabs"></div>
+<div class="stats" id="grand"></div>
+<div class="roomhint" id="roomhint"></div>
+<div id="panes"><div class="empty">尚未載入</div></div>
+<footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
+</div>
+<script>
+var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+var DATA=null, ACTIVE=0;
+var TARGET={}, CUR={}, FLOORS={}, CEILS={}, RUUID={};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
+function floorOf(wd,rm){return wd==='六'?rm.floorSat:(wd==='五'?rm.floorFri:rm.floorWeekday);}
+function u8(u){return String(u).slice(0,8);}
+
+function buildPaneHtml(rm,idx){
+  var rows=rm.rows.map(function(r){
+    var cls=(r.weekday==='六'?'sat':(r.weekday==='五'?'fri':''));
+    var k=u8(rm.roomUuid)+'_'+r.date;
+    CUR[k]=r.current; TARGET[k]=r.proposed; CEILS[k]=rm.ceiling;
+    FLOORS[k]=floorOf(r.weekday,rm); RUUID[k]=rm.roomUuid;
+    var dl=r.proposed-r.current;
+    var dlcls=dl>0?'dl up':(dl<0?'dl dn':'dl');
+    var dltxt=dl>0?('+'+dl):(dl<0?(''+dl):'0');
+    return '<tr class="'+cls+'">'+
+      '<td class="pk"><input type="checkbox" class="pick" data-k="'+k+'" id="c_'+k+'" onchange="updateApplyBtn()"></td>'+
+      '<td>'+r.date.slice(5)+' '+r.weekday+'</td>'+
+      '<td>'+r.lead+'</td><td>'+r.avail+'</td>'+
+      '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
+      '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
+      '<td class="cur">'+num(r.current)+'</td>'+
+      '<td class="pro"><button class="step" onclick="bump(\''+k+'\',-100)">−</button>'+
+        '<span class="tgt" id="t_'+k+'">'+num(r.proposed)+'</span>'+
+        '<button class="step" onclick="bump(\''+k+'\',100)">＋</button></td>'+
+      '<td class="'+dlcls+'" id="d_'+k+'">'+dltxt+'</td>'+
+      '<td class="rsn">'+esc(r.reason||'')+'</td></tr>';
+  }).join('');
+  return '<div class="room-pane'+(idx===ACTIVE?' active':'')+'" id="pane_'+idx+'">'+
+    '<div class="tblwrap"><table class="tbl">'+
+    '<thead><tr><th class="pk"><input type="checkbox" onchange="toggleAll(this,'+idx+')" title="全選有變動的"></th>'+
+    '<th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function render(d){
+  if(!d||!d.rooms){return;}
+  DATA=d; TARGET={};CUR={};FLOORS={};CEILS={};RUUID={};
+  document.getElementById('meta').innerHTML='<b>'+esc(d.hotel||'')+'</b> · 四房型 BAR　快照 <b>'+(d.snapshotDate||'—')+'</b>　計算於 <b>'+(d.generated||'—')+'</b>';
+  document.getElementById('foot').innerHTML='模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加。每房型只控一個 BAR 方案，地板分 平日/週五/週六 三段、各房型天花板取自歷史價格｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
+    (d.cooldownDays?'｜穩定：'+d.cooldownDays+'天冷卻、'+d.reversalDays+'天不反向（強訊號破例）':'')+
+    (d.clearanceLead!=null?'｜清餘房：末 '+(d.clearanceLead+1)+' 天不拉高（餘房 ≤'+d.clearanceLowStock+' 例外）':'')+
+    '｜資料為當日 09:00 快照';
+  if(ACTIVE>=d.rooms.length)ACTIVE=0;
+  // tabs
+  var tabs=document.getElementById('tabs');tabs.innerHTML='';
+  d.rooms.forEach(function(rm,i){
+    var ch=(rm.summary.raise||0)+(rm.summary.lower||0);
+    var b=el('button','tab'+(i===ACTIVE?' active':''),esc(rm.label)+'<span class="c">'+(ch?('調'+ch):'維持')+'</span>');
+    b.onclick=function(){selectTab(i);};
+    tabs.appendChild(b);
+  });
+  // panes
+  var panes=document.getElementById('panes');
+  panes.innerHTML=d.rooms.map(function(rm,i){return buildPaneHtml(rm,i);}).join('');
+  // 預設勾選有變動的
+  d.rooms.forEach(function(rm){rm.rows.forEach(function(r){
+    if(r.action!=='hold'&&r.delta!==0){var c=document.getElementById('c_'+u8(rm.roomUuid)+'_'+r.date);if(c)c.checked=true;}
+  });});
+  renderGrand();updateApplyBtn();
+}
+function renderGrand(){
+  var rm=DATA.rooms[ACTIVE], s=rm.summary||{};
+  document.getElementById('roomhint').innerHTML='【'+esc(rm.label)+'】地板 週六 '+num(rm.floorSat)+' / 週五 '+num(rm.floorFri)+' / 平日 '+num(rm.floorWeekday)+' ｜ 天花板 '+num(rm.ceiling);
+  var g=document.getElementById('grand');g.innerHTML='';
+  g.appendChild(el('div','stat up','<div class="n">↑ '+(s.raise||0)+'</div><div class="l">建議調高</div>'));
+  g.appendChild(el('div','stat down','<div class="n">↓ '+(s.lower||0)+'</div><div class="l">建議調低</div>'));
+  g.appendChild(el('div','stat','<div class="n">＝ '+(s.hold||0)+'</div><div class="l">維持</div>'));
+  g.appendChild(el('div','stat','<div class="n">'+(s.total||0)+'</div><div class="l">涵蓋天數</div>'));
+}
+function selectTab(i){
+  ACTIVE=i;
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t,idx){t.classList.toggle('active',idx===i);});
+  Array.prototype.forEach.call(document.querySelectorAll('.room-pane'),function(p,idx){p.classList.toggle('active',idx===i);});
+  renderGrand();
+}
+function bump(k,step){
+  var v=(TARGET[k]!=null?TARGET[k]:(CUR[k]||0))+step;
+  v=Math.max(FLOORS[k]||0,Math.min(CEILS[k]||99999,v));
+  TARGET[k]=v;
+  document.getElementById('t_'+k).textContent=num(v);
+  var dl=v-(CUR[k]||0),dc=document.getElementById('d_'+k);
+  dc.textContent=dl>0?('+'+dl):(dl<0?(''+dl):'0');
+  dc.className=(dl>0?'dl up':(dl<0?'dl dn':'dl'));
+  var cb=document.getElementById('c_'+k);if(cb)cb.checked=(v!==(CUR[k]||0));
+  updateApplyBtn();
+}
+function pickedItems(){
+  return Array.prototype.slice.call(document.querySelectorAll('.pick:checked')).map(function(c){
+    var k=c.getAttribute('data-k');
+    return {date:k.split('_')[1], rate:TARGET[k], roomUuid:RUUID[k]};
+  }).filter(function(it){var k=u8(it.roomUuid)+'_'+it.date;return it.rate!=null&&it.rate!==CUR[k];});
+}
+function updateApplyBtn(){
+  var n=pickedItems().length,b=document.getElementById('pushbtn');
+  b.disabled=(n===0);b.textContent=n?('套用 '+n+' 筆調價 →'):'套用勾選的調價 →';
+}
+function toggleAll(box,idx){
+  Array.prototype.forEach.call(document.querySelectorAll('#pane_'+idx+' .pick'),function(c){
+    var k=c.getAttribute('data-k');c.checked=box.checked&&(TARGET[k]!==CUR[k]);
+  });
+  updateApplyBtn();
+}
+</script>
+<script>
+function roomLabel(u){if(!DATA)return u8(u);var f=DATA.rooms.filter(function(r){return r.roomUuid===u;});return f.length?f[0].label:u8(u);}
+function applySelected(){
+  var items=pickedItems();
+  if(!items.length)return;
+  var lines=items.map(function(it){return roomLabel(it.roomUuid)+' '+it.date.slice(5)+'→'+num(it.rate);}).join('、');
+  if(!confirm('確定把這 '+items.length+' 筆寫入 SiteMinder 線上房價嗎？\n'+lines+'\n（各房型受地板/天花板/單筆 ±600 上限保護）'))return;
+  var b=document.getElementById('pushbtn');b.disabled=true;b.textContent='寫入中…';setStatus('正在寫入 SiteMinder…');
+  fetch(BASE+'/apply-breeze-pricing',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({items:items})}).then(function(r){return r.json();}).then(function(res){
+    showApply(res);setStatus(res.ok?'寫入完成':'寫入未全部成功（見上方明細）',!res.ok);runNow();
+  }).catch(function(){setStatus('連線不到家裡那台，寫入未執行',true);
+    showNotice('連不到端點，沒有送出任何寫入。請確認 Tailscale 與家裡那台。');})
+  .finally(function(){updateApplyBtn();});
+}
+function showApply(res){
+  var box=document.getElementById('applybox');box.className='applybox show';
+  var h='<h3>'+(res.ok?'✅ 套用完成（已讀回線上確認）':'⚠️ 套用結果（部分未落地）')+'</h3>';
+  var mm={};(res.mismatch||[]).forEach(function(m){mm[(m.roomUuid||'')+'|'+m.date]=m;});
+  (res.plan||[]).forEach(function(p){
+    var key=(p.roomUuid||'')+'|'+p.date, rl=p.room||roomLabel(p.roomUuid);
+    if(mm[key]){var g=mm[key].got;
+      h+='<div class="rowline ng">'+esc(rl)+' '+p.date.slice(5)+'：'+num(p.old)+' → '+num(p.new)+' ✗ 未落地（線上仍為 '+(g==null?'?':num(g))+'）</div>';
+    }else{h+='<div class="rowline">'+esc(rl)+' '+p.date.slice(5)+'：'+num(p.old)+' → <b>'+num(p.new)+'</b> ✓ 已落地</div>';}
+  });
+  (res.rejected||[]).forEach(function(p){h+='<div class="rowline ng">'+(p.room?esc(p.room)+' ':'')+(p.date||'').slice(5)+'：擋下（'+esc(p.reason||'')+'）</div>';});
+  (res.skipped||[]).forEach(function(p){h+='<div class="rowline ng">'+(p.date||'').slice(5)+'：略過（'+esc(p.reason||'')+'）</div>';});
+  if(res.error)h+='<div class="rowline ng">'+esc(res.error)+'</div>';
+  if(res.dispatched!=null)h+='<div class="rowline" style="color:var(--muted);margin-top:6px">派發 '+(res.dispatched?'成功':'失敗')+'｜讀回確認落地 '+((res.verified||[]).length)+' 筆'+((res.mismatch||[]).length?('、未落地 '+res.mismatch.length+' 筆'):'')+'</div>';
+  box.innerHTML=h;
+}
+function toggleApplyLog(){
+  var box=document.getElementById('applylog');
+  if(box.classList.contains('show')){box.classList.remove('show');return;}
+  box.classList.add('show');box.innerHTML='<h3>最近套用紀錄</h3><div style="color:var(--muted)">載入中…</div>';
+  fetch(BASE+'/breeze-pricing-applies').then(function(r){return r.json();}).then(renderApplies)
+    .catch(function(){box.innerHTML='<h3>最近套用紀錄</h3><div class="logentry"><div class="info" style="color:var(--down)">連不到端點，無法載入紀錄。</div></div>';});
+}
+function renderApplies(list){
+  var box=document.getElementById('applylog');
+  if(!list||!list.length){box.innerHTML='<h3>最近套用紀錄</h3><div style="color:var(--muted)">目前沒有套用紀錄。</div>';return;}
+  var h='<h3>最近套用紀錄（點「回滾」把該次的每筆寫回舊價）</h3>';
+  list.forEach(function(e){
+    var chg=(e.plan||[]).filter(function(p){return p.old!=null&&p.old!==p.new;});
+    var dts=chg.map(function(p){return (p.room?p.room+' ':'')+p.date.slice(5)+' '+num(p.old)+'→'+num(p.new);}).join('、');
+    var when=(e.ts||'').replace('T',' ').slice(0,16),tag=e.rollbackOf?'<span class="tag">回滾</span>':'';
+    h+='<div class="logentry"><div class="info"><div class="ts">'+when+' · '+chg.length+' 筆'+tag+'</div>'+
+       '<div class="dts">'+(dts||'（無可回滾項目）')+'</div></div>'+
+       (chg.length?'<button class="rb" onclick="doRollback(\''+e.ts+'\','+chg.length+')">↩ 回滾</button>':'')+'</div>';
+  });
+  box.innerHTML=h;
+}
+function doRollback(ts,n){
+  if(!confirm('確定把 '+ts.replace('T',' ').slice(0,16)+' 這次套用的 '+n+' 筆，全部寫回「舊價」嗎？\n（一樣受地板/天花板/±600 上限保護）'))return;
+  setStatus('正在回滾…');
+  fetch(BASE+'/rollback-breeze',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ts:ts})}).then(function(r){return r.json();}).then(function(res){
+    showApply(res);setStatus(res.ok?'回滾完成':'回滾未全部成功（見上方明細）',!res.ok);
+    toggleApplyLog();toggleApplyLog();runNow();
+  }).catch(function(){setStatus('連線不到家裡那台，回滾未執行',true);showNotice('連不到端點，沒有送出任何回滾。');});
+}
+function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
+function showNotice(m){var n=document.getElementById('notice');n.innerHTML=m;n.style.display='block';}
+function runNow(){
+  var b=document.getElementById('btn');b.disabled=true;b.textContent='計算中…';setStatus('讀取最新快照、重新計算建議…');
+  document.getElementById('notice').style.display='none';
+  fetch(BASE+'/run-breeze-pricing').then(function(r){return r.json();}).then(function(res){
+    if(res.ok&&res.payload){render(res.payload);setStatus('已更新 '+(res.payload.generated||''));}
+    else{setStatus('計算失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200)),true);if(res.payload)render(res.payload);}
+  }).catch(function(e){setStatus('連線不到家裡那台',true);
+    showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');})
+  .finally(function(){b.disabled=false;b.textContent='重新計算建議';});
+}
+if(new URLSearchParams(location.search).get('run')==='1'){runNow();}
+else{fetch(BASE+'/breeze-pricing.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(d&&d.rooms){render(d);setStatus('（上次建議，按按鈕重新計算）');}
+  }).catch(function(){setStatus('（尚未載入；按按鈕計算）');
+    showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');});}
+</script>
+</body>
+</html>
