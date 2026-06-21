@@ -89,6 +89,20 @@ width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;font-weigh
 .tbl .fri td:first-child{color:#b3702a;font-weight:700}
 .tbl td.rsn{color:var(--muted);font-size:11.5px;white-space:normal;min-width:200px}
 .empty{color:var(--muted);font-size:13px;padding:16px}
+.compbox{margin:16px 0 4px}
+.comphd{display:flex;align-items:baseline;gap:10px;margin-bottom:7px}
+.comphd #comptitle{font-family:"Noto Serif TC",serif;font-weight:700;font-size:14px;color:var(--brand)}
+.compsub{font-size:11.5px;color:var(--muted)}
+.compwrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);overflow:auto;max-height:240px}
+.ctbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:420px}
+.ctbl th,.ctbl td{padding:6px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.ctbl th:first-child,.ctbl td:first-child{text-align:left}
+.ctbl th{color:var(--muted);font-weight:600;font-size:11px;position:sticky;top:0;background:var(--panel);z-index:1}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl tr.sat td:first-child{color:var(--gold);font-weight:700}
+.ctbl tr.fri td:first-child{color:#b3702a;font-weight:700}
+.ctbl tr.sat,.ctbl tr.fri{background:#faf6ee}
+.ctbl td.lo{color:var(--up);font-weight:700}
 footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
 </style>
 </head>
@@ -100,6 +114,10 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <h1 class="title"><span class="zh">微風館</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">四房型 BAR</span></h1>
   <div class="meta" id="meta">載入上次建議…</div>
 </header>
+<div class="compbox" id="compbox" style="display:none">
+  <div class="comphd"><span id="comptitle">鄰近競品每日房價（參考）</span><span class="compsub" id="compsub"></span></div>
+  <div class="compwrap"><table class="ctbl" id="ctbl"></table></div>
+</div>
 <div class="banner">⚠️ 每房型只控一個 <b>BAR（標準價）</b>方案，其餘衍生方案（不退款／媽咪愛等）不動。勾選日期後按「套用」才會寫入 SiteMinder，可跨房型一次套用，受地板/天花板/單筆上限硬擋。</div>
 <div class="notice" id="notice"></div>
 <div class="runbar">
@@ -160,6 +178,7 @@ function render(d){
   if(!d||!d.rooms){return;}
   DATA=d; TARGET={};CUR={};FLOORS={};CEILS={};RUUID={};
   document.getElementById('meta').innerHTML='<b>'+esc(d.hotel||'')+'</b> · 四房型 BAR　快照 <b>'+(d.snapshotDate||'—')+'</b>　計算於 <b>'+(d.generated||'—')+'</b>';
+  renderComp(d);
   document.getElementById('foot').innerHTML='模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加。每房型只控一個 BAR 方案。地板/天花板逐日跟鄰近競品浮動（樂頤＝地板錨、Two Tails＝天花板錨；豪華家庭/行政家庭天花板維持歷史、不綁競品），競品當日無資料則退回歷史值｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
     (d.cooldownDays?'｜穩定：'+d.cooldownDays+'天冷卻、'+d.reversalDays+'天不反向（強訊號破例）':'')+
     (d.clearanceLead!=null?'｜清餘房：末 '+(d.clearanceLead+1)+' 天不拉高（餘房 ≤'+d.clearanceLowStock+' 例外）':'')+
@@ -223,6 +242,22 @@ function toggleAll(box,idx){
     var k=c.getAttribute('data-k');c.checked=box.checked&&(TARGET[k]!==CUR[k]);
   });
   updateApplyBtn();
+}
+function renderComp(d){
+  var box=document.getElementById('compbox'), t=document.getElementById('ctbl');
+  var c=d.comp||{}, rows=c.rows||[];
+  if(!rows.length){box.style.display='none';return;}
+  box.style.display='block';
+  document.getElementById('compsub').textContent='樂頤＝地板錨、樂樂旅(Two Tails)＝天花板錨　·　競品檔更新 '+(c.generated||'—')+'　·　綠字＝當日最低';
+  var h='<thead><tr><th>日期</th><th>樂頤</th><th>樂樂旅 / Two Tails</th><th>雀客藏居</th></tr></thead><tbody>';
+  rows.forEach(function(r){
+    var cls=(r.weekday==='六'?'sat':(r.weekday==='五'?'fri':''));
+    var vals=[r.leyi,r.twotails,r.queke].filter(function(x){return x!=null;});
+    var mn=vals.length?Math.min.apply(null,vals):null;
+    function cell(v){return '<td'+(v!=null&&v===mn?' class="lo"':'')+'>'+(v==null?'—':Number(v).toLocaleString('en-US'))+'</td>';}
+    h+='<tr class="'+cls+'"><td>'+r.date.slice(5)+' '+r.weekday+'</td>'+cell(r.leyi)+cell(r.twotails)+cell(r.queke)+'</tr>';
+  });
+  t.innerHTML=h+'</tbody>';
 }
 </script>
 <script>
