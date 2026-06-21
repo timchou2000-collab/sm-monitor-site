@@ -103,6 +103,8 @@ width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;font-weigh
 .ctbl tr.fri td:first-child{color:#b3702a;font-weight:700}
 .ctbl tr.sat,.ctbl tr.fri{background:#faf6ee}
 .ctbl td.lo{color:var(--up);font-weight:700}
+.ctbl td.ours{background:rgba(29,59,52,.07);font-weight:700}
+.ctbl th:nth-child(2){background:#eef2f0}
 footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
 </style>
 </head>
@@ -248,14 +250,14 @@ function renderComp(d){
   var c=d.comp||{}, rows=c.rows||[];
   if(!rows.length){box.style.display='none';return;}
   box.style.display='block';
-  document.getElementById('compsub').textContent='樂頤＝地板錨、樂樂旅(Two Tails)＝天花板錨　·　競品檔更新 '+(c.generated||'—')+'　·　綠字＝當日最低';
-  var h='<thead><tr><th>日期</th><th>樂頤</th><th>樂樂旅 / Two Tails</th><th>雀客藏居</th></tr></thead><tbody>';
+  document.getElementById('compsub').textContent='微風館為我們 Booking 當日最低價（同口徑比較）　·　樂頤＝地板錨、樂樂旅(Two Tails)＝天花板錨　·　競品檔更新 '+(c.generated||'—')+'　·　綠字＝當日最低';
+  var h='<thead><tr><th>日期</th><th>微風館（我們）</th><th>樂頤</th><th>樂樂旅 / Two Tails</th><th>雀客藏居</th></tr></thead><tbody>';
   rows.forEach(function(r){
     var cls=(r.weekday==='六'?'sat':(r.weekday==='五'?'fri':''));
-    var vals=[r.leyi,r.twotails,r.queke].filter(function(x){return x!=null;});
+    var vals=[r.ours,r.leyi,r.twotails,r.queke].filter(function(x){return x!=null;});
     var mn=vals.length?Math.min.apply(null,vals):null;
-    function cell(v){return '<td'+(v!=null&&v===mn?' class="lo"':'')+'>'+(v==null?'—':Number(v).toLocaleString('en-US'))+'</td>';}
-    h+='<tr class="'+cls+'"><td>'+r.date.slice(5)+' '+r.weekday+'</td>'+cell(r.leyi)+cell(r.twotails)+cell(r.queke)+'</tr>';
+    function cell(v,extra){var c=(v!=null&&v===mn?'lo':'');if(extra)c+=(c?' ':'')+extra;return '<td'+(c?' class="'+c+'"':'')+'>'+(v==null?'—':Number(v).toLocaleString('en-US'))+'</td>';}
+    h+='<tr class="'+cls+'"><td>'+r.date.slice(5)+' '+r.weekday+'</td>'+cell(r.ours,'ours')+cell(r.leyi)+cell(r.twotails)+cell(r.queke)+'</tr>';
   });
   t.innerHTML=h+'</tbody>';
 }
