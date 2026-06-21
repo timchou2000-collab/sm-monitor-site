@@ -82,6 +82,7 @@ width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;font-weigh
 .tbl th{color:var(--muted);font-weight:600;font-size:11px;position:sticky;top:0;background:var(--panel)}
 .tbl tr:last-child td{border-bottom:none}
 .tbl td.cur{color:var(--muted)} .tbl td.pro{font-weight:700}
+.tbl td.band{color:var(--muted);font-size:11px}
 .tbl tr.r td.pro{color:var(--up)} .tbl tr.d td.pro{color:var(--down)}
 .tbl td.dl.up{color:var(--up);font-weight:700} .tbl td.dl.dn{color:var(--down);font-weight:700}
 .tbl .sat td:first-child{color:var(--gold);font-weight:700}
@@ -129,8 +130,8 @@ function buildPaneHtml(rm,idx){
   var rows=rm.rows.map(function(r){
     var cls=(r.weekday==='六'?'sat':(r.weekday==='五'?'fri':''));
     var k=u8(rm.roomUuid)+'_'+r.date;
-    CUR[k]=r.current; TARGET[k]=r.proposed; CEILS[k]=rm.ceiling;
-    FLOORS[k]=floorOf(r.weekday,rm); RUUID[k]=rm.roomUuid;
+    CUR[k]=r.current; TARGET[k]=r.proposed; CEILS[k]=r.ceiling;
+    FLOORS[k]=r.floor; RUUID[k]=rm.roomUuid;
     var dl=r.proposed-r.current;
     var dlcls=dl>0?'dl up':(dl<0?'dl dn':'dl');
     var dltxt=dl>0?('+'+dl):(dl<0?(''+dl):'0');
@@ -141,6 +142,7 @@ function buildPaneHtml(rm,idx){
       '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
       '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
       '<td class="cur">'+num(r.current)+'</td>'+
+      '<td class="band">'+num(r.floor)+'~'+num(r.ceiling)+'</td>'+
       '<td class="pro"><button class="step" onclick="bump(\''+k+'\',-100)">−</button>'+
         '<span class="tgt" id="t_'+k+'">'+num(r.proposed)+'</span>'+
         '<button class="step" onclick="bump(\''+k+'\',100)">＋</button></td>'+
@@ -150,7 +152,7 @@ function buildPaneHtml(rm,idx){
   return '<div class="room-pane'+(idx===ACTIVE?' active':'')+'" id="pane_'+idx+'">'+
     '<div class="tblwrap"><table class="tbl">'+
     '<thead><tr><th class="pk"><input type="checkbox" onchange="toggleAll(this,'+idx+')" title="全選有變動的"></th>'+
-    '<th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead>'+
+    '<th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>地板~頂(當日)</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead>'+
     '<tbody>'+rows+'</tbody></table></div></div>';
 }
 
@@ -158,10 +160,10 @@ function render(d){
   if(!d||!d.rooms){return;}
   DATA=d; TARGET={};CUR={};FLOORS={};CEILS={};RUUID={};
   document.getElementById('meta').innerHTML='<b>'+esc(d.hotel||'')+'</b> · 四房型 BAR　快照 <b>'+(d.snapshotDate||'—')+'</b>　計算於 <b>'+(d.generated||'—')+'</b>';
-  document.getElementById('foot').innerHTML='模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加。每房型只控一個 BAR 方案，地板分 平日/週五/週六 三段、各房型天花板取自歷史價格｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
+  document.getElementById('foot').innerHTML='模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加。每房型只控一個 BAR 方案。地板/天花板逐日跟鄰近競品浮動（樂頤＝地板錨、Two Tails＝天花板錨；豪華家庭/行政家庭天花板維持歷史、不綁競品），競品當日無資料則退回歷史值｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
     (d.cooldownDays?'｜穩定：'+d.cooldownDays+'天冷卻、'+d.reversalDays+'天不反向（強訊號破例）':'')+
     (d.clearanceLead!=null?'｜清餘房：末 '+(d.clearanceLead+1)+' 天不拉高（餘房 ≤'+d.clearanceLowStock+' 例外）':'')+
-    '｜資料為當日 09:00 快照';
+    '｜競品 '+(d.compDays||0)+' 天｜資料為當日 09:00 快照';
   if(ACTIVE>=d.rooms.length)ACTIVE=0;
   // tabs
   var tabs=document.getElementById('tabs');tabs.innerHTML='';
@@ -182,7 +184,7 @@ function render(d){
 }
 function renderGrand(){
   var rm=DATA.rooms[ACTIVE], s=rm.summary||{};
-  document.getElementById('roomhint').innerHTML='【'+esc(rm.label)+'】地板 週六 '+num(rm.floorSat)+' / 週五 '+num(rm.floorFri)+' / 平日 '+num(rm.floorWeekday)+' ｜ 天花板 '+num(rm.ceiling);
+  document.getElementById('roomhint').innerHTML='【'+esc(rm.label)+'】地板 '+esc(rm.floorDesc||'')+' ｜ 天花板 '+esc(rm.ceilDesc||'')+'　（逐日跟競品浮動，表格「地板~頂」為當日實際值）';
   var g=document.getElementById('grand');g.innerHTML='';
   g.appendChild(el('div','stat up','<div class="n">↑ '+(s.raise||0)+'</div><div class="l">建議調高</div>'));
   g.appendChild(el('div','stat down','<div class="n">↓ '+(s.lower||0)+'</div><div class="l">建議調低</div>'));
