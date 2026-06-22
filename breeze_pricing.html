@@ -67,6 +67,8 @@ width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;font-weigh
 .applybox .rowline{padding:2px 0;color:var(--ink)}
 .applybox .ng{color:var(--down)}
 .status{font-size:13px;color:var(--muted)} .status.err{color:var(--down);font-weight:600}
+.who{font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.who b{color:var(--brand)} .who .chg{color:var(--gold);text-decoration:underline;font-weight:600}
 .notice{background:#fdecea;border:1px solid #f3c0ba;color:#a33027;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:18px;display:none}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:18px}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
@@ -127,6 +129,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <button class="run" id="btn" onclick="runNow()">重新計算建議</button>
   <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
   <button class="run ghost" id="logbtn" onclick="toggleApplyLog()">套用紀錄／回滾</button>
+  <span class="who" id="who" onclick="setOperator()" title="點此設定/更換操作者"></span>
   <span class="status" id="status"></span>
 </div>
 <div class="applybox" id="applybox"></div>
@@ -265,14 +268,30 @@ function renderComp(d){
 </script>
 <script>
 function roomLabel(u){if(!DATA)return u8(u);var f=DATA.rooms.filter(function(r){return r.roomUuid===u;});return f.length?f[0].label:u8(u);}
+function getOperator(){try{return (localStorage.getItem('breeze_operator')||'').trim();}catch(e){return (window._op||'').trim();}}
+function setOperator(){
+  var cur=getOperator();
+  var v=prompt('請輸入你的名字（會記在調價紀錄與 Telegram 通知裡，方便日後追溯是誰改的）：',cur);
+  if(v===null)return cur;
+  v=v.trim().slice(0,40);
+  try{localStorage.setItem('breeze_operator',v);}catch(e){window._op=v;}
+  renderWho();return v;
+}
+function renderWho(){
+  var w=document.getElementById('who');if(!w)return;var o=getOperator();
+  w.innerHTML=o?('操作者：<b>'+esc(o)+'</b>　<span class="chg">更換</span>'):'<span class="chg">⚠ 設定操作者</span>';
+}
+function ensureOperator(){var o=getOperator();if(o)return o;return setOperator();}
 function applySelected(){
   var items=pickedItems();
   if(!items.length)return;
+  var op=ensureOperator();
+  if(!op){setStatus('請先設定操作者再套用',true);return;}
   var lines=items.map(function(it){return roomLabel(it.roomUuid)+' '+it.date.slice(5)+'→'+num(it.rate);}).join('、');
-  if(!confirm('確定把這 '+items.length+' 筆寫入 SiteMinder 線上房價嗎？\n'+lines+'\n（各房型受地板/天花板/單筆 ±600 上限保護）'))return;
+  if(!confirm('操作者：'+op+'\n確定把這 '+items.length+' 筆寫入 SiteMinder 線上房價嗎？\n'+lines+'\n（各房型受地板/天花板/單筆 ±600 上限保護）'))return;
   var b=document.getElementById('pushbtn');b.disabled=true;b.textContent='寫入中…';setStatus('正在寫入 SiteMinder…');
   fetch(BASE+'/apply-breeze-pricing',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({items:items})}).then(function(r){return r.json();}).then(function(res){
+    body:JSON.stringify({items:items,operator:op})}).then(function(r){return r.json();}).then(function(res){
     showApply(res);setStatus(res.ok?'寫入完成':'寫入未全部成功（見上方明細）',!res.ok);runNow();
   }).catch(function(){setStatus('連線不到家裡那台，寫入未執行',true);
     showNotice('連不到端點，沒有送出任何寫入。請確認 Tailscale 與家裡那台。');})
@@ -309,17 +328,20 @@ function renderApplies(list){
     var chg=(e.plan||[]).filter(function(p){return p.old!=null&&p.old!==p.new;});
     var dts=chg.map(function(p){return (p.room?p.room+' ':'')+p.date.slice(5)+' '+num(p.old)+'→'+num(p.new);}).join('、');
     var when=(e.ts||'').replace('T',' ').slice(0,16),tag=e.rollbackOf?'<span class="tag">回滾</span>':'';
-    h+='<div class="logentry"><div class="info"><div class="ts">'+when+' · '+chg.length+' 筆'+tag+'</div>'+
+    var who=e.operator?'<span class="tag">'+esc(e.operator)+'</span>':'';
+    h+='<div class="logentry"><div class="info"><div class="ts">'+when+' · '+chg.length+' 筆'+who+tag+'</div>'+
        '<div class="dts">'+(dts||'（無可回滾項目）')+'</div></div>'+
        (chg.length?'<button class="rb" onclick="doRollback(\''+e.ts+'\','+chg.length+')">↩ 回滾</button>':'')+'</div>';
   });
   box.innerHTML=h;
 }
 function doRollback(ts,n){
-  if(!confirm('確定把 '+ts.replace('T',' ').slice(0,16)+' 這次套用的 '+n+' 筆，全部寫回「舊價」嗎？\n（一樣受地板/天花板/±600 上限保護）'))return;
+  var op=ensureOperator();
+  if(!op){setStatus('請先設定操作者再回滾',true);return;}
+  if(!confirm('操作者：'+op+'\n確定把 '+ts.replace('T',' ').slice(0,16)+' 這次套用的 '+n+' 筆，全部寫回「舊價」嗎？\n（一樣受地板/天花板/±600 上限保護）'))return;
   setStatus('正在回滾…');
   fetch(BASE+'/rollback-breeze',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({ts:ts})}).then(function(r){return r.json();}).then(function(res){
+    body:JSON.stringify({ts:ts,operator:op})}).then(function(r){return r.json();}).then(function(res){
     showApply(res);setStatus(res.ok?'回滾完成':'回滾未全部成功（見上方明細）',!res.ok);
     toggleApplyLog();toggleApplyLog();runNow();
   }).catch(function(){setStatus('連線不到家裡那台，回滾未執行',true);showNotice('連不到端點，沒有送出任何回滾。');});
@@ -336,6 +358,7 @@ function runNow(){
     showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');})
   .finally(function(){b.disabled=false;b.textContent='重新計算建議';});
 }
+renderWho();
 if(new URLSearchParams(location.search).get('run')==='1'){runNow();}
 else{fetch(BASE+'/breeze-pricing.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
     if(d&&d.rooms){render(d);setStatus('（上次建議，按按鈕重新計算）');}
