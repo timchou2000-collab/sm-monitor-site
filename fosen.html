@@ -62,6 +62,12 @@ button.run:disabled{opacity:.55;cursor:wait;transform:none}
 .dayhead .sm .adrv{color:var(--gold)}
 .day0 .tblwrap{opacity:.6}
 .noday{color:var(--muted);font-size:12.5px;padding:8px 0 4px}
+.tbl tr.sat td{background:rgba(169,130,75,.09)}
+.tbl td.mut{color:var(--muted);font-size:11.5px}
+.tbl.pk th{font-size:11px}
+.tbl.pk td:first-child{font-weight:600;color:var(--ink)}
+.tbl.pk .z td{opacity:.42}
+.pktoggle{margin-left:auto;font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
 </style>
 </head>
@@ -81,6 +87,16 @@ footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="stats" id="grand"></div>
 <div class="blk-head"><span>📊</span><h2>逐日 · 各通路</h2><span class="sub">每天分開：訂單量 · 房晚 · 晚/單 · 營收 · 平均 ADR</span></div>
 <div id="daily"><div class="empty">尚未載入</div></div>
+
+<div class="blk-head" style="margin-top:42px"><span>🚀</span><h2>未來兩個月 · 進單速度</h2><span class="sub">每個未來住宿日，最近 3 天 / 7 天各被訂走多少房晚（pickup）</span></div>
+<div class="runbar">
+  <button class="run" id="btnPk" onclick="runPickup()">更新進單速度</button>
+  <span class="status" id="statusPk"></span>
+  <label class="pktoggle"><input type="checkbox" id="pkOnlyHit" onchange="renderPk(PK_DATA)"> 只看有進單的日子</label>
+</div>
+<div class="stats" id="pkGrand"></div>
+<div id="pkBox"><div class="empty">尚未載入</div></div>
+
 <footer>資料來源：SiteMinder reservations-beef｜進單日(BookedOn) 落在近 7 天（含今天）｜房晚 = 房數 × 夜數｜ADR = 含稅總額 ÷ 房晚｜已排除取消單｜幣別 TWD｜即時連線需在 Tailscale 內</footer>
 </div>
 <script>
@@ -139,6 +155,52 @@ function runNow(){
     showNotice('連不到即時端點。請確認：①這台裝置在你的 Tailscale 內　②家裡那台開著。');
   }).finally(function(){b.disabled=false;b.textContent='立即更新';});
 }
+/* ===== 未來兩個月 · 進單速度(pickup) ===== */
+var PK_DATA=null;
+function setPkStatus(t,err){var s=document.getElementById('statusPk');s.textContent=t||'';s.className='status'+(err?' err':'');}
+function renderPk(d){
+  PK_DATA=d;
+  var box=document.getElementById('pkBox');
+  var g=document.getElementById('pkGrand');
+  if(!d||!d.daily){box.innerHTML='<div class="empty">尚未載入</div>';g.innerHTML='';return;}
+  g.innerHTML='';
+  g.appendChild(el('div','stat','<div class="n">'+num(d.totalRn3||0)+'</div><div class="l">近 3 天進單房晚<br>（落未來 '+(d.futureMonths||2)+' 個月）</div>'));
+  g.appendChild(el('div','stat hot','<div class="n">'+num(d.totalRn7||0)+'</div><div class="l">近 7 天進單房晚<br>（落未來 '+(d.futureMonths||2)+' 個月）</div>'));
+  g.appendChild(el('div','stat gold','<div class="n">'+num(d.daysWithPickup7||0)+'</div><div class="l">近 7 天有進單的未來日</div>'));
+  var only=document.getElementById('pkOnlyHit').checked;
+  var list=d.daily.filter(function(x){return only?x.has:true;});
+  var mx=Math.max.apply(null,d.daily.map(function(x){return x.rn7;}).concat([1]));
+  if(!list.length){box.innerHTML='<div class="empty">這段期間沒有近 7 天的進單</div>';return;}
+  var rows=list.map(function(x){
+    var cls=[]; if(x.isSat)cls.push('sat'); if(x.rn7===0&&x.rn3===0)cls.push('z');
+    var w=mx?Math.round(x.rn7/mx*60):0;
+    var bar=x.rn7?'<span class="bar" style="width:'+w+'px"></span>':'';
+    return '<tr'+(cls.length?' class="'+cls.join(' ')+'"':'')+'>'+
+      '<td>'+esc(x.date.slice(5))+'</td>'+
+      '<td>週'+esc(x.weekday)+'</td>'+
+      '<td>'+x.rn3+'</td>'+
+      '<td class="mut">'+x.orders3+'</td>'+
+      '<td>'+x.rn7+bar+'</td>'+
+      '<td class="mut">'+x.orders7+'</td></tr>';
+  }).join('');
+  box.innerHTML='<div class="tblwrap"><table class="tbl pk"><thead><tr>'+
+    '<th>住宿日</th><th>週</th><th>近3天房晚</th><th>單</th><th>近7天房晚</th><th>單</th>'+
+    '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
+    '<div class="empty" style="margin-top:8px">口徑：住宿日落在 '+esc(d.rangeStart||'')+' ~ '+esc(d.rangeEnd||'')+
+    '；近3天=進單日 '+esc(d.win3Start||'')+' 起、近7天=進單日 '+esc(d.win7Start||'')+
+    ' 起（皆含今天）。一筆訂單占用入住~退房之間每一晚，當晚計房數個房晚；已排除取消單。更新 '+esc(d.generated||'')+'。</div>';
+}
+function runPickup(){
+  var b=document.getElementById('btnPk');b.disabled=true;b.textContent='跑取中…（約 10–60 秒）';
+  setPkStatus('正在連 SiteMinder 抓近 7 天進單、攤到未來住宿日…');
+  fetch(BASE+'/run-fosen-pickup').then(function(r){return r.json();}).then(function(res){
+    if(res.ok&&res.payload){renderPk(res.payload);setPkStatus('已更新 '+(res.payload.generated||''));}
+    else{setPkStatus('抓取失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200))+'　保留上次結果',true);
+      if(res.payload)renderPk(res.payload);}
+  }).catch(function(e){setPkStatus('連線不到家裡那台',true);})
+  .finally(function(){b.disabled=false;b.textContent='更新進單速度';});
+}
+
 if(new URLSearchParams(location.search).get('run')==='1'){
   runNow();
 }else{
@@ -149,6 +211,11 @@ if(new URLSearchParams(location.search).get('run')==='1'){
     showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
   });
 }
+// 進頁順手載上次的進單速度（有就顯示）
+fetch(BASE+'/fosen-pickup.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
+  if(d&&d.daily){renderPk(d);setPkStatus('（上次結果，按按鈕重新抓）');}
+  else{setPkStatus('（尚未載入；按按鈕即時抓取）');}
+}).catch(function(){setPkStatus('（尚未載入；按按鈕即時抓取）');});
 </script>
 </body>
 </html>
