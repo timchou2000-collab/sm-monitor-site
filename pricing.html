@@ -121,6 +121,12 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
 </section>
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
+<section id="cmpBox" style="margin:26px 0 0;">
+  <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);margin-bottom:4px;">Booking 同業比價</div>
+  <div id="cmpMeta" style="color:var(--muted);font-size:12px;margin-bottom:10px;">載入中…</div>
+  <div class="tblwrap"><table class="tbl" id="cmpTbl"><tbody><tr><td class="empty">載入中…</td></tr></tbody></table></div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);"><span style="color:var(--up);font-weight:700;">▼</span> 當日最低價　·　底色＝自家（丰居中壢）　·　無痕抓取、2 大人 1 房 1 晚最低價、TWD</div>
+</section>
 <footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
 </div>
 <script>
@@ -348,6 +354,34 @@ if(new URLSearchParams(location.search).get('run')==='1'){
     document.getElementById('pkmeta').textContent='總 '+d.total+' 間 · 快照 '+(d.snapToday||'')+' · 產生 '+(d.generated||'');
     draw();
   }).catch(function(){document.getElementById('pkmeta').textContent='（讀不到 pickup 資料）';});
+})();
+</script>
+<script>
+(function(){
+  function md(d){return d?d.slice(5).replace('-','/'):d;}
+  function nf(n){return Number(n).toLocaleString('en-US');}
+  fetch('price_zhongli.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(p){
+    var meta=document.getElementById('cmpMeta'), tbl=document.getElementById('cmpTbl');
+    if(!p||!p.rows){meta.textContent='（讀不到同業比價資料）';return;}
+    var cols=p.targets, own=cols[0];
+    meta.innerHTML='城區 <b>'+p.city+'</b>　·　更新 <b>'+(p.generated||'')+'</b>';
+    var head='<tr><th>月/日</th>'+cols.map(function(c){
+      return '<th style="text-align:right;'+(c===own?'color:var(--gold);':'')+'">'+c+'</th>';}).join('')+'</tr>';
+    var body=p.rows.map(function(r){
+      var vals=cols.map(function(c){return r.prices?r.prices[c]:null;});
+      var nums=vals.filter(function(v){return typeof v==='number';});
+      var min=nums.length?Math.min.apply(null,nums):null;
+      var tds=cols.map(function(c,i){
+        var v=vals[i], isOwn=(c===own), bg=isOwn?'background:rgba(169,130,75,.12);':'';
+        if(typeof v!=='number') return '<td style="text-align:right;color:var(--muted);'+bg+'">—</td>';
+        var isMin=(v===min);
+        var col=isMin?'color:var(--up);font-weight:700;':'';
+        return '<td style="text-align:right;'+bg+col+'">'+nf(v)+(isMin?' ▼':'')+'</td>';
+      }).join('');
+      return '<tr><td style="font-weight:700;color:var(--muted)">'+md(r.date)+'</td>'+tds+'</tr>';
+    }).join('');
+    tbl.innerHTML='<thead>'+head+'</thead><tbody>'+body+'</tbody>';
+  }).catch(function(){document.getElementById('cmpMeta').textContent='（讀不到同業比價資料）';});
 })();
 </script>
 </body>
