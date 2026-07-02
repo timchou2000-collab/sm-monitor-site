@@ -90,6 +90,17 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <h1 class="title"><span class="zh">中壢</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">主力大房</span></h1>
   <div class="meta" id="meta">載入上次建議…</div>
 </header>
+<section id="cmpBox" style="margin:4px 0 20px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Booking 同業比價 · 未來 30 天</div>
+    <span id="cmpMeta" style="color:var(--muted);font-size:12px;"></span>
+  </div>
+  <div id="cmpLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
+    <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="中壢 Booking 同業比價未來 30 天折線圖，自家丰居中壢與賓利酒店、福容彠旅、旅居文旅比較">丰居中壢與同業未來 30 天最低價比較。</canvas></div>
+  </div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);">無痕抓取 · 2 大人 1 房 1 晚最低價 · TWD</div>
+</section>
 <div class="banner">⚠️ 勾選要套用的日期後按「套用勾選的調價」，<b>才會真的寫入 SiteMinder</b>。系統以伺服器端最新建議為準、只寫你勾選且建議有變動的日期，並受地板/天花板/單筆上限硬擋。未勾選不會動。</div>
 <div class="notice" id="notice"></div>
 <div class="runbar">
@@ -121,12 +132,6 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
 </section>
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
-<section id="cmpBox" style="margin:26px 0 0;">
-  <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);margin-bottom:4px;">Booking 同業比價</div>
-  <div id="cmpMeta" style="color:var(--muted);font-size:12px;margin-bottom:10px;">載入中…</div>
-  <div class="tblwrap"><table class="tbl" id="cmpTbl"><tbody><tr><td class="empty">載入中…</td></tr></tbody></table></div>
-  <div style="margin-top:8px;font-size:12px;color:var(--muted);"><span style="color:var(--up);font-weight:700;">▼</span> 當日最低價　·　底色＝自家（丰居中壢）　·　無痕抓取、2 大人 1 房 1 晚最低價、TWD</div>
-</section>
 <footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
 </div>
 <script>
@@ -358,30 +363,44 @@ if(new URLSearchParams(location.search).get('run')==='1'){
 </script>
 <script>
 (function(){
+  var OWN_COLOR='#1d3b34';
+  var COMP=['#c0392b','#d68a1e','#7a9cc6','#8a8478'];
   function md(d){return d?d.slice(5).replace('-','/'):d;}
-  function nf(n){return Number(n).toLocaleString('en-US');}
   fetch('price_zhongli.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(p){
-    var meta=document.getElementById('cmpMeta'), tbl=document.getElementById('cmpTbl');
-    if(!p||!p.rows){meta.textContent='（讀不到同業比價資料）';return;}
-    var cols=p.targets, own=cols[0];
+    var meta=document.getElementById('cmpMeta');
+    if(!p||!p.rows||!window.Chart){if(meta)meta.textContent='（讀不到同業比價資料）';return;}
     meta.innerHTML='城區 <b>'+p.city+'</b>　·　更新 <b>'+(p.generated||'')+'</b>';
-    var head='<tr><th>月/日</th>'+cols.map(function(c){
-      return '<th style="text-align:right;'+(c===own?'color:var(--gold);':'')+'">'+c+'</th>';}).join('')+'</tr>';
-    var body=p.rows.map(function(r){
-      var vals=cols.map(function(c){return r.prices?r.prices[c]:null;});
-      var nums=vals.filter(function(v){return typeof v==='number';});
-      var min=nums.length?Math.min.apply(null,nums):null;
-      var tds=cols.map(function(c,i){
-        var v=vals[i], isOwn=(c===own), bg=isOwn?'background:rgba(169,130,75,.12);':'';
-        if(typeof v!=='number') return '<td style="text-align:right;color:var(--muted);'+bg+'">—</td>';
-        var isMin=(v===min);
-        var col=isMin?'color:var(--up);font-weight:700;':'';
-        return '<td style="text-align:right;'+bg+col+'">'+nf(v)+(isMin?' ▼':'')+'</td>';
-      }).join('');
-      return '<tr><td style="font-weight:700;color:var(--muted)">'+md(r.date)+'</td>'+tds+'</tr>';
+    var cols=p.targets, own=cols[0];
+    var labels=p.rows.map(function(r){return md(r.date);});
+    var ci=0;
+    var datasets=cols.map(function(c){
+      var isOwn=(c===own);
+      var color=isOwn?OWN_COLOR:COMP[(ci++)%COMP.length];
+      return {label:c,
+        data:p.rows.map(function(r){return (r.prices&&r.prices[c]!=null)?r.prices[c]:null;}),
+        borderColor:color,backgroundColor:color,
+        borderWidth:isOwn?2.8:1.6,borderDash:isOwn?[]:[5,4],
+        pointRadius:isOwn?2.4:0,pointHoverRadius:5,tension:.25,spanGaps:true,order:isOwn?1:2};
+    });
+    var leg=document.getElementById('cmpLegend'); ci=0;
+    leg.innerHTML=cols.map(function(c){
+      var isOwn=(c===own); var color=isOwn?OWN_COLOR:COMP[(ci++)%COMP.length];
+      var bar=isOwn?('<span style="width:16px;height:3px;background:'+color+';border-radius:2px;"></span>')
+                   :('<span style="width:16px;height:0;border-top:2px dashed '+color+';"></span>');
+      return '<span style="display:flex;align-items:center;gap:5px;'+(isOwn?'color:var(--brand);font-weight:700;':'')+'">'+bar+c+(isOwn?'（自家）':'')+'</span>';
     }).join('');
-    tbl.innerHTML='<thead>'+head+'</thead><tbody>'+body+'</tbody>';
-  }).catch(function(){document.getElementById('cmpMeta').textContent='（讀不到同業比價資料）';});
+    new Chart(document.getElementById('cmpChart'),{
+      type:'line',
+      data:{labels:labels,datasets:datasets},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{callbacks:{
+          label:function(c){return c.dataset.label+'：'+(c.parsed.y==null?'—':'\u0024'+c.parsed.y.toLocaleString('en-US'));}
+        }}},
+        scales:{
+          y:{grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',callback:function(v){return '\u0024'+v.toLocaleString('en-US');}}},
+          x:{grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:15,maxRotation:60,minRotation:60,font:{size:11}}}}}
+    });
+  }).catch(function(){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';});
 })();
 </script>
 </body>
