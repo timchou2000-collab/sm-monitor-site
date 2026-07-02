@@ -101,6 +101,25 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="applybox" id="applybox"></div>
 <div class="applylog" id="applylog"></div>
 <div class="stats" id="grand"></div>
+<section id="pickupBox" style="margin:6px 0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">豪華雙人房 · 進單速度 pickup</div>
+    <div style="display:flex;gap:6px;">
+      <button class="run ghost" id="pk30" style="padding:6px 14px;font-size:13px;" onclick="setPickRange(30)">30 天</button>
+      <button class="run ghost" id="pk60" style="padding:6px 14px;font-size:13px;" onclick="setPickRange(60)">60 天</button>
+    </div>
+    <span id="pkmeta" style="color:var(--muted);font-size:12px;"></span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);">
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:#1d3b34;"></span>最近 3 天訂走</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:#8fb3a8;"></span>第 4–7 天訂走</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:16px;height:3px;border-radius:2px;background:#a9824b;"></span>剩餘可售</span>
+    <span style="color:var(--muted);">整柱＝過去 7 天訂走</span>
+  </div>
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
+    <div style="position:relative;width:100%;height:320px;"><canvas id="pkChart" role="img" aria-label="中壢豪華雙人房 pickup 每日堆疊長條加剩餘可售折線">豪華雙人房未來每日 pickup 與剩餘可售。</canvas></div>
+  </div>
+</section>
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
 <footer id="foot">模型：實際入住進度 vs 理想進度（積極）＋ 進單速度疊加，夾在地板/天花板內。資料為當日 09:00 快照。</footer>
 </div>
@@ -283,6 +302,53 @@ if(new URLSearchParams(location.search).get('run')==='1'){
     showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
   });
 }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function(){
+  var PK=null, RANGE=30, chart=null;
+  function paintBtn(){
+    var a=document.getElementById('pk30'), b=document.getElementById('pk60');
+    a.style.background=RANGE===30?'var(--brand)':'#fff'; a.style.color=RANGE===30?'#fffdf9':'var(--brand)';
+    b.style.background=RANGE===60?'var(--brand)':'#fff'; b.style.color=RANGE===60?'#fffdf9':'var(--brand)';
+  }
+  function draw(){
+    if(!PK||!PK.rows||!window.Chart) return;
+    var rows=PK.rows.slice(0,RANGE);
+    var labels=rows.map(function(x){return x.md;});
+    var wd=rows.map(function(x){return x.wd;});
+    var seg3=rows.map(function(x){return x.p3;});
+    var seg47=rows.map(function(x){return (x.p3==null||x.p7==null)?null:(x.p7-x.p3);});
+    var avail=rows.map(function(x){return x.avail;});
+    if(chart) chart.destroy();
+    chart=new Chart(document.getElementById('pkChart'),{
+      data:{labels:labels,datasets:[
+        {type:'bar',label:'最近 3 天',data:seg3,backgroundColor:'#1d3b34',stack:'s',order:3},
+        {type:'bar',label:'第 4–7 天',data:seg47,backgroundColor:'#8fb3a8',stack:'s',order:3},
+        {type:'line',label:'剩餘可售',data:avail,borderColor:'#a9824b',backgroundColor:'#a9824b',borderWidth:2,pointRadius:RANGE>30?1.4:1.9,pointHoverRadius:4,tension:.25,order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{callbacks:{
+          title:function(items){var i=items[0].dataIndex;return labels[i]+'（'+wd[i]+'）';},
+          label:function(c){var r=rows[c.dataIndex];
+            if(c.dataset.label==='剩餘可售') return '剩餘可售：'+r.avail+' 間';
+            if(c.dataset.label==='最近 3 天') return '過去3天訂走：'+(r.p3==null?'無資料':r.p3+' 間');
+            return '過去7天訂走：'+(r.p7==null?'無資料':r.p7+' 間');
+          }}}},
+        scales:{
+          x:{stacked:true,grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:RANGE>30?16:23,maxRotation:60,minRotation:60,font:{size:11}}},
+          y:{stacked:true,beginAtZero:true,grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',precision:0},title:{display:true,text:'間數',color:'#8a8478'}}}}
+    });
+    paintBtn();
+  }
+  window.setPickRange=function(n){RANGE=n;draw();};
+  fetch('zhongli_pickup.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(!d||!d.rows){document.getElementById('pkmeta').textContent='（pickup 資料尚未產生）';return;}
+    PK=d;
+    document.getElementById('pkmeta').textContent='總 '+d.total+' 間 · 快照 '+(d.snapToday||'')+' · 產生 '+(d.generated||'');
+    draw();
+  }).catch(function(){document.getElementById('pkmeta').textContent='（讀不到 pickup 資料）';});
+})();
 </script>
 </body>
 </html>
