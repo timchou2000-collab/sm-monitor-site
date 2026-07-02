@@ -90,17 +90,6 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <h1 class="title"><span class="zh">中壢</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">主力大房</span></h1>
   <div class="meta" id="meta">載入上次建議…</div>
 </header>
-<section id="cmpBox" style="margin:4px 0 20px;">
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
-    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Booking 同業比價 · 未來 30 天</div>
-    <span id="cmpMeta" style="color:var(--muted);font-size:12px;"></span>
-  </div>
-  <div id="cmpLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
-  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
-    <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="中壢 Booking 同業比價未來 30 天折線圖，自家丰居中壢與賓利酒店、福容彠旅、旅居文旅比較">丰居中壢與同業未來 30 天最低價比較。</canvas></div>
-  </div>
-  <div style="margin-top:8px;font-size:12px;color:var(--muted);">無痕抓取 · 2 大人 1 房 1 晚最低價 · TWD</div>
-</section>
 <div class="banner">⚠️ 勾選要套用的日期後按「套用勾選的調價」，<b>才會真的寫入 SiteMinder</b>。系統以伺服器端最新建議為準、只寫你勾選且建議有變動的日期，並受地板/天花板/單筆上限硬擋。未勾選不會動。</div>
 <div class="notice" id="notice"></div>
 <div class="runbar">
@@ -112,6 +101,17 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="applybox" id="applybox"></div>
 <div class="applylog" id="applylog"></div>
 <div class="stats" id="grand"></div>
+<section id="cmpBox" style="margin:6px 0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Booking 同業比價 · 未來 30 天</div>
+    <span id="cmpMeta" style="color:var(--muted);font-size:12px;"></span>
+  </div>
+  <div id="cmpLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
+    <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="中壢 Booking 同業比價未來 30 天折線圖，自家丰居中壢與賓利酒店、福容徠旅、旅居文旅比較">丰居中壢與同業未來 30 天最低價比較。</canvas></div>
+  </div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);">無痕抓取 · 2 大人 1 房 1 晚最低價 · TWD</div>
+</section>
 <section id="pickupBox" style="margin:6px 0 24px;">
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
     <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">豪華雙人房 · 進單速度 pickup</div>
