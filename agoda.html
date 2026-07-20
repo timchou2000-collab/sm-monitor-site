@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>新竹市 Agoda 下訂追蹤 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--hot:#c2761f;
+--radius:16px;--shadow:0 1px 2px rgba(40,35,25,.05),0 10px 30px rgba(40,35,25,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px 80px}
+header.top{padding:44px 0 22px;border-bottom:1px solid var(--line);margin-bottom:28px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.back{display:inline-block;text-decoration:none;color:var(--gold);font-weight:700;font-size:12.5px;margin-bottom:14px}
+.back:hover{text-decoration:underline}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(28px,5vw,44px);
+letter-spacing:-.01em;color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.lead{margin-top:12px;color:var(--muted);font-size:14px;max-width:60ch}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:24px 0}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 18px;box-shadow:var(--shadow)}
+.kpi .l{color:var(--muted);font-size:12px}
+.kpi .v{font-size:20px;font-weight:700;color:var(--brand);margin-top:5px;font-family:"Noto Serif TC",serif}
+.kpi .v small{font-size:12.5px;font-weight:500;color:var(--muted);font-family:"Noto Sans TC"}
+.kpi .v b{font-family:"Fraunces",serif;color:var(--hot);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin:18px 0}
+.card h2{font-family:"Noto Serif TC",serif;font-size:18px;font-weight:700;color:var(--brand);margin-bottom:14px}
+.card h2 small{font-weight:400;font-size:13px;color:var(--muted);font-family:"Noto Sans TC"}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:700;font-size:12px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"Fraunces",serif}
+.rank{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:7px;
+background:var(--bg);border:1px solid var(--line);font-weight:700;font-size:12px;color:var(--muted);font-family:"Fraunces",serif}
+.rank.top{background:var(--brand);color:#fffdf9;border-color:var(--brand)}
+.bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--hot))}
+.chart-box{width:100%}
+#trend{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:14px}
+.legend button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);
+color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.legend button[aria-pressed="false"]{opacity:.38}
+.legend .dot{width:10px;height:10px;border-radius:50%}
+.series.hidden{display:none}
+.gridline{stroke:var(--line)}
+.axistext{fill:var(--muted);font-size:11px;font-family:"Fraunces",serif}
+.muted{color:var(--muted);font-size:12.5px}
+details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700}
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+@media(max-width:640px){.wrap{padding:0 16px 60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="back" href="index.html">← 回控房中心</a>
+  <div class="kicker">SM Control · 新竹市 Agoda</div>
+  <h1 class="title"><span class="zh">新竹市 Agoda 下訂追蹤</span></h1>
+  <div class="lead">每日 11:00 抓取 Agoda 新竹市搜尋結果中，各旅館「今天有 X 人下訂」的紅字數字，累積比較熱門度。入住日固定往後推 30 天的平日。</div>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="card">
+  <h2>最新排名 <small id="rankSub"></small></h2>
+  <table id="rankTable">
+    <thead><tr><th style="width:44px">#</th><th>旅館</th><th class="num" style="width:96px">今日下訂</th><th style="width:32%">相對熱度</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>歷史趨勢 <small>每間旅館每日下訂人數</small></h2>
+  <div class="chart-box"><svg id="trend" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet"></svg></div>
+  <div class="legend" id="legend"></div>
+  <div class="muted" style="margin-top:8px">單日資料顯示為圓點，隨天數累積會連成折線。點圖例可切換顯示／隱藏。</div>
+</div>
+
+<details class="card">
+  <summary>展開每日完整紀錄（共 <span id="rowCount">0</span> 列）</summary>
+  <div style="max-height:420px;overflow:auto;margin-top:12px">
+    <table id="rawTable">
+      <thead><tr><th>抓取日</th><th>入住日</th><th>旅館</th><th class="num">下訂</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</details>
+
+<footer>資料來源：Agoda 搜尋頁「今天有 X 人下訂」即時行銷提示，數字會隨訂房狀況跳動，僅供熱門度參考。<br>
+資料檔 <code>agoda.json</code> 由本機每日 11:00 抓取後自動推送更新。</footer>
+</div>
+
+<script>
+fetch('agoda.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(render)
+  .catch(function(){
+    document.getElementById('kpis').innerHTML =
+      '<div class="kpi"><div class="l">狀態</div><div class="v"><small>尚無資料，等每日 11:00 抓取後即會出現。</small></div></div>';
+  });
+
+function render(DB){
+  var RECORDS = DB.records || [];
+  if(!RECORDS.length){ return; }
+  function byDate(a,b){ return a<b?-1:a>b?1:0; }
+  var runDates = Array.from(new Set(RECORDS.map(function(r){return r.run_date;}))).sort(byDate);
+  var latest = DB.latest_run || runDates[runDates.length-1];
+  var map = {};
+  RECORDS.forEach(function(r){ (map[r.hotel]=map[r.hotel]||{})[r.run_date]=r.bookings; });
+  var latestRows = RECORDS.filter(function(r){return r.run_date===latest;}).sort(function(a,b){return b.bookings-a.bookings;});
+  var maxBook = latestRows.length ? latestRows[0].bookings : 1;
+
+  var kpis = [
+    ['最新榜首', latestRows.length ? latestRows[0].hotel : '-', latestRows.length ? '<b>'+latestRows[0].bookings+'</b> 人下訂' : ''],
+    ['當日有標記旅館', '<b>'+latestRows.length+'</b>', '間'],
+    ['入住日', DB.check_in || '-', ''],
+    ['資料更新於', DB.generated || '-', '']
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(function(k){
+    return '<div class="kpi"><div class="l">'+k[0]+'</div><div class="v">'+k[1]+' <small>'+(k[2]||'')+'</small></div></div>';
+  }).join('');
+  document.getElementById('rankSub').textContent = '（' + latest + ' 抓取，入住日 ' + (DB.check_in||'') + '，追蹤 ' + runDates.length + ' 天）';
+  document.getElementById('rowCount').textContent = RECORDS.length;
+
+  document.querySelector('#rankTable tbody').innerHTML = latestRows.map(function(r,i){
+    var w = Math.max(4, Math.round(r.bookings/maxBook*100));
+    return '<tr><td><span class="rank '+(i===0?'top':'')+'">'+(i+1)+'</span></td>'+
+      '<td>'+r.hotel+'</td><td class="num"><b>'+r.bookings+'</b></td>'+
+      '<td><div class="bar" style="width:'+w+'%"></div></td></tr>';
+  }).join('');
+
+  document.querySelector('#rawTable tbody').innerHTML =
+    RECORDS.slice().sort(function(a,b){ return byDate(b.run_date,a.run_date) || (b.bookings-a.bookings); })
+    .map(function(r){ return '<tr><td>'+r.run_date+'</td><td>'+r.check_in+'</td><td>'+r.hotel+'</td><td class="num">'+r.bookings+'</td></tr>'; }).join('');
+
+  // 趨勢圖（內建 SVG 自繪）
+  var palette = ['#1d3b34','#a9824b','#c2761f','#6b8f7f','#b0673a','#4c6b62','#c9a25e','#8a5a3c','#3f5c53','#94764a','#7a4b2e','#5f7d70'];
+  var focusHotels = latestRows.slice(0,12).map(function(r){return r.hotel;});
+  var SVGNS="http://www.w3.org/2000/svg";
+  var W=1000,H=380,ML=44,MR=16,MT=14;
+  var plotW=W-ML-MR, plotH=H-MT-42;
+  var maxY=Math.max.apply(null,[5].concat(RECORDS.map(function(r){return r.bookings;})));
+  var yTop=Math.ceil(maxY/5)*5, n=runDates.length;
+  function xPos(i){ return n<=1 ? ML+plotW/2 : ML+(i/(n-1))*plotW; }
+  function yPos(v){ return MT+plotH-(v/yTop)*plotH; }
+  function el(tag,attrs,text){ var e=document.createElementNS(SVGNS,tag);
+    for(var k in attrs) e.setAttribute(k,attrs[k]); if(text!=null) e.textContent=text; return e; }
+  var svg=document.getElementById('trend');
+  for(var s=0;s<=5;s++){ var val=Math.round(yTop*s/5), y=yPos(val);
+    svg.appendChild(el('line',{x1:ML,y1:y,x2:W-MR,y2:y,class:'gridline','stroke-width':1}));
+    svg.appendChild(el('text',{x:ML-8,y:y+4,class:'axistext','text-anchor':'end'},val)); }
+  runDates.forEach(function(d,i){ svg.appendChild(el('text',{x:xPos(i),y:H-14,class:'axistext','text-anchor':'middle'}, d.slice(5))); });
+  focusHotels.forEach(function(h,idx){
+    var color=palette[idx%palette.length];
+    var g=el('g',{class:'series','data-idx':idx});
+    var pts=[];
+    runDates.forEach(function(d,i){ if(map[h] && d in map[h]){ pts.push([xPos(i),yPos(map[h][d]),map[h][d],d]); } });
+    if(pts.length>1){ g.appendChild(el('polyline',{points:pts.map(function(p){return p[0]+','+p[1];}).join(' '),
+      fill:'none',stroke:color,'stroke-width':2,'stroke-linejoin':'round'})); }
+    pts.forEach(function(p){ var c=el('circle',{cx:p[0],cy:p[1],r:3.5,fill:color});
+      c.appendChild(el('title',{}, h+'　'+p[3]+'：'+p[2]+' 人')); g.appendChild(c); });
+    svg.appendChild(g);
+  });
+  var legend=document.getElementById('legend');
+  focusHotels.forEach(function(h,idx){
+    var color=palette[idx%palette.length];
+    var b=document.createElement('button'); b.setAttribute('aria-pressed','true');
+    b.innerHTML='<span class="dot" style="background:'+color+'"></span>'+h;
+    b.onclick=function(){ var g=svg.querySelector('g.series[data-idx="'+idx+'"]');
+      var on=b.getAttribute('aria-pressed')==='true'; b.setAttribute('aria-pressed',on?'false':'true');
+      if(g) g.classList.toggle('hidden',on); };
+    legend.appendChild(b);
+  });
+}
+</script>
+</body>
+</html>

@@ -122,6 +122,15 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     <div class="live" id="mon-live"><span class="t">中壢 · 微風 · Sky Gate</span></div>
     <div class="go">進入 →</div>
   </a>
+
+  <a class="card" href="agoda.html">
+    <span class="freq">每日 11:00</span>
+    <div class="ic">🏨</div>
+    <h2>新竹市 Agoda 下訂 <span class="en">Agoda Demand</span></h2>
+    <div class="desc">每日抓 Agoda 新竹市各旅館「今天有 X 人下訂」紅字，累積比較熱門度與趨勢。入住日固定往後推 30 天的平日。</div>
+    <div class="live" id="ag-live">載入 Agoda 排名…</div>
+    <div class="go">進入 →</div>
+  </a>
 </div>
 
 <footer>SM_control · SiteMinder 庫存 / 進單監測｜本頁為各看板入口，資料於各子頁即時呈現。</footer>
@@ -157,6 +166,17 @@ fetch('zhongli_pricing.json?t=' + Date.now())
   })
   .catch(function(){ document.getElementById('pr-live').innerHTML =
     '<span class="t">按「看建議」計算中壢主力房調價</span>'; });
+
+fetch('agoda.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    var t = (d.top && d.top[0]) ? d.top[0] : null;
+    document.getElementById('ag-live').innerHTML = t
+      ? '榜首 <b>' + t.bookings + '</b> 人下訂 · ' + t.hotel + ' <span class="t">（' + (d.latest_run||'') + '）</span>'
+      : '<span class="t">尚無資料</span>';
+  })
+  .catch(function(){ document.getElementById('ag-live').innerHTML =
+    '<span class="t">每日 11:00 抓取後顯示新竹市各旅館下訂排名</span>'; });
 </script>
 </body>
 </html>
