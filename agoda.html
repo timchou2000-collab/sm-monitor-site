@@ -43,16 +43,6 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"Fr
 background:var(--bg);border:1px solid var(--line);font-weight:700;font-size:12px;color:var(--muted);font-family:"Fraunces",serif}
 .rank.top{background:var(--brand);color:#fffdf9;border-color:var(--brand)}
 .bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--hot))}
-.chart-box{width:100%}
-#trend{width:100%;height:auto;display:block}
-.legend{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:14px}
-.legend button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);
-color:var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;cursor:pointer;font-family:inherit}
-.legend button[aria-pressed="false"]{opacity:.38}
-.legend .dot{width:10px;height:10px;border-radius:50%}
-.series.hidden{display:none}
-.gridline{stroke:var(--line)}
-.axistext{fill:var(--muted);font-size:11px;font-family:"Fraunces",serif}
 .muted{color:var(--muted);font-size:12.5px}
 details summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:700}
 footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
@@ -71,18 +61,11 @@ footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="kpis" id="kpis"></div>
 
 <div class="card">
-  <h2>最新排名 <small id="rankSub"></small></h2>
+  <h2>今日排名 前 10 名 <small id="rankSub"></small></h2>
   <table id="rankTable">
     <thead><tr><th style="width:44px">#</th><th>旅館</th><th class="num" style="width:96px">今日下訂</th><th style="width:32%">相對熱度</th></tr></thead>
     <tbody></tbody>
   </table>
-</div>
-
-<div class="card">
-  <h2>歷史趨勢 <small>每間旅館每日下訂人數</small></h2>
-  <div class="chart-box"><svg id="trend" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet"></svg></div>
-  <div class="legend" id="legend"></div>
-  <div class="muted" style="margin-top:8px">單日資料顯示為圓點，隨天數累積會連成折線。點圖例可切換顯示／隱藏。</div>
 </div>
 
 <details class="card">
@@ -114,8 +97,6 @@ function render(DB){
   function byDate(a,b){ return a<b?-1:a>b?1:0; }
   var runDates = Array.from(new Set(RECORDS.map(function(r){return r.run_date;}))).sort(byDate);
   var latest = DB.latest_run || runDates[runDates.length-1];
-  var map = {};
-  RECORDS.forEach(function(r){ (map[r.hotel]=map[r.hotel]||{})[r.run_date]=r.bookings; });
   var latestRows = RECORDS.filter(function(r){return r.run_date===latest;}).sort(function(a,b){return b.bookings-a.bookings;});
   var maxBook = latestRows.length ? latestRows[0].bookings : 1;
 
@@ -131,7 +112,7 @@ function render(DB){
   document.getElementById('rankSub').textContent = '（' + latest + ' 抓取，入住日 ' + (DB.check_in||'') + '，追蹤 ' + runDates.length + ' 天）';
   document.getElementById('rowCount').textContent = RECORDS.length;
 
-  document.querySelector('#rankTable tbody').innerHTML = latestRows.map(function(r,i){
+  document.querySelector('#rankTable tbody').innerHTML = latestRows.slice(0,10).map(function(r,i){
     var w = Math.max(4, Math.round(r.bookings/maxBook*100));
     return '<tr><td><span class="rank '+(i===0?'top':'')+'">'+(i+1)+'</span></td>'+
       '<td>'+r.hotel+'</td><td class="num"><b>'+r.bookings+'</b></td>'+
@@ -141,45 +122,6 @@ function render(DB){
   document.querySelector('#rawTable tbody').innerHTML =
     RECORDS.slice().sort(function(a,b){ return byDate(b.run_date,a.run_date) || (b.bookings-a.bookings); })
     .map(function(r){ return '<tr><td>'+r.run_date+'</td><td>'+r.check_in+'</td><td>'+r.hotel+'</td><td class="num">'+r.bookings+'</td></tr>'; }).join('');
-
-  // 趨勢圖（內建 SVG 自繪）
-  var palette = ['#1d3b34','#a9824b','#c2761f','#6b8f7f','#b0673a','#4c6b62','#c9a25e','#8a5a3c','#3f5c53','#94764a','#7a4b2e','#5f7d70'];
-  var focusHotels = latestRows.slice(0,12).map(function(r){return r.hotel;});
-  var SVGNS="http://www.w3.org/2000/svg";
-  var W=1000,H=380,ML=44,MR=16,MT=14;
-  var plotW=W-ML-MR, plotH=H-MT-42;
-  var maxY=Math.max.apply(null,[5].concat(RECORDS.map(function(r){return r.bookings;})));
-  var yTop=Math.ceil(maxY/5)*5, n=runDates.length;
-  function xPos(i){ return n<=1 ? ML+plotW/2 : ML+(i/(n-1))*plotW; }
-  function yPos(v){ return MT+plotH-(v/yTop)*plotH; }
-  function el(tag,attrs,text){ var e=document.createElementNS(SVGNS,tag);
-    for(var k in attrs) e.setAttribute(k,attrs[k]); if(text!=null) e.textContent=text; return e; }
-  var svg=document.getElementById('trend');
-  for(var s=0;s<=5;s++){ var val=Math.round(yTop*s/5), y=yPos(val);
-    svg.appendChild(el('line',{x1:ML,y1:y,x2:W-MR,y2:y,class:'gridline','stroke-width':1}));
-    svg.appendChild(el('text',{x:ML-8,y:y+4,class:'axistext','text-anchor':'end'},val)); }
-  runDates.forEach(function(d,i){ svg.appendChild(el('text',{x:xPos(i),y:H-14,class:'axistext','text-anchor':'middle'}, d.slice(5))); });
-  focusHotels.forEach(function(h,idx){
-    var color=palette[idx%palette.length];
-    var g=el('g',{class:'series','data-idx':idx});
-    var pts=[];
-    runDates.forEach(function(d,i){ if(map[h] && d in map[h]){ pts.push([xPos(i),yPos(map[h][d]),map[h][d],d]); } });
-    if(pts.length>1){ g.appendChild(el('polyline',{points:pts.map(function(p){return p[0]+','+p[1];}).join(' '),
-      fill:'none',stroke:color,'stroke-width':2,'stroke-linejoin':'round'})); }
-    pts.forEach(function(p){ var c=el('circle',{cx:p[0],cy:p[1],r:3.5,fill:color});
-      c.appendChild(el('title',{}, h+'　'+p[3]+'：'+p[2]+' 人')); g.appendChild(c); });
-    svg.appendChild(g);
-  });
-  var legend=document.getElementById('legend');
-  focusHotels.forEach(function(h,idx){
-    var color=palette[idx%palette.length];
-    var b=document.createElement('button'); b.setAttribute('aria-pressed','true');
-    b.innerHTML='<span class="dot" style="background:'+color+'"></span>'+h;
-    b.onclick=function(){ var g=svg.querySelector('g.series[data-idx="'+idx+'"]');
-      var on=b.getAttribute('aria-pressed')==='true'; b.setAttribute('aria-pressed',on?'false':'true');
-      if(g) g.classList.toggle('hidden',on); };
-    legend.appendChild(b);
-  });
 }
 </script>
 </body>
