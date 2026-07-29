@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>北車調價建議 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--up:#1d7a3e;--down:#c0392b;--radius:14px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px 80px}
+header.top{padding:30px 0 20px;border-bottom:1px solid var(--line);margin-bottom:18px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:16px}
+.home:hover{color:var(--brand)}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(25px,5vw,38px);color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:12px;color:var(--muted);font-size:13px}
+.meta b{color:var(--ink);font-weight:700}
+.banner{background:#eef3f0;border:1px solid #c9ddd4;color:#2c5a4c;border-radius:var(--radius);padding:11px 16px;font-size:13px;font-weight:600;margin:16px 0 18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:22px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;line-height:1;color:var(--brand)}
+.stat .l{margin-top:6px;font-size:12px;color:var(--muted)}
+.stat.up .n{color:var(--up)} .stat.down .n{color:var(--down)}
+.tblwrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:640px}
+.tbl th,.tbl td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child,.tbl th:last-child,.tbl td:last-child{text-align:left}
+.tbl th{color:var(--muted);font-weight:600;font-size:11px;position:sticky;top:0;background:var(--panel)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td.cur{color:var(--muted)} .tbl td.pro{font-weight:700}
+.tbl tr.r td.pro{color:var(--up)} .tbl tr.d td.pro{color:var(--down)}
+.tbl td.dl.up{color:var(--up);font-weight:700} .tbl td.dl.dn{color:var(--down);font-weight:700}
+.tbl .sat td:first-child{color:var(--gold);font-weight:700}
+.tbl .fri td:first-child{color:#7a6a3a;font-weight:700}
+.tbl td.rsn{color:var(--muted);font-size:11.5px;white-space:normal;min-width:200px}
+.empty{color:var(--muted);font-size:13px;padding:16px}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./">← 回首頁</a>
+  <div class="kicker">Dynamic Pricing · Advisory</div>
+  <h1 class="title"><span class="zh">北車</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">標準雙人房</span></h1>
+  <div class="meta" id="meta">載入建議…</div>
+</header>
+<div class="banner">🎯 建議模式：本頁只顯示每日 09:40 自動算出的建議價與競品比價，<b>不會寫入 SiteMinder</b>。實際調價請自行到 SiteMinder 操作。</div>
+<div class="stats" id="grand"></div>
+
+<section id="cmpBox" style="margin:6px 0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Booking 同業比價 · 未來 30 天</div>
+    <span id="cmpMeta" style="color:var(--muted);font-size:12px;"></span>
+  </div>
+  <div id="cmpLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
+    <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="北車標準雙人房建議價與旅樂序五館、路徒Plus、日野苑、路徒中華未來 30 天最低價比較折線圖">北車建議價與同業未來 30 天最低價比較。</canvas></div>
+  </div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);">同業為無痕抓取 2 大人 1 房 1 晚最低價（TWD）；「北車建議價」為本模型當日建議價（標準雙人房）。</div>
+</section>
+
+<div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
+<footer id="foot">模型：中壢 v2 賣完推估引擎（前瞻推估最終住房率＋進單速度＋競品托底）。資料為當日 09:00 快照。</footer>
+</div>
+<script>
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
+var OURDATE={};   // date -> proposed（給競品圖疊自家線）
+function render(d){
+  if(!d||!d.rows){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';return;}
+  document.getElementById('meta').innerHTML=
+    '<b>'+esc(d.hotel||'')+'</b> · '+esc(d.room||'')+'　快照 <b>'+(d.snapshotDate||'—')+'</b>　計算於 <b>'+(d.generated||'—')+'</b>';
+  document.getElementById('foot').innerHTML=
+    '模型：中壢 v2 賣完推估引擎（前瞻推估最終住房率＋進單速度＋競品托底）。地板 週六 '+num(d.floorSat)+' / 週五 '+num(d.floorFri)+' / 平日 '+num(d.floorOther)+
+    '｜天花板 '+num(d.ceiling)+'｜每級 '+num(d.level)+'、單次最多 ±'+d.maxLevels+' 級'+
+    (d.cooldownDays?'｜穩定：'+d.cooldownDays+'天冷卻、'+d.reversalDays+'天不反向（強訊號破例）':'')+
+    (d.clearanceLead!=null?'｜清餘房：末 '+(d.clearanceLead+1)+' 天不拉高（餘房 ≤'+d.clearanceLowStock+' 例外）':'')+
+    '｜競品托底：'+((d.competitors||[]).join('、'))+'｜資料為當日 09:00 快照。';
+  var s=d.summary||{};
+  var g=document.getElementById('grand');g.innerHTML='';
+  g.appendChild(el('div','stat up','<div class="n">↑ '+(s.raise||0)+'</div><div class="l">建議調高</div>'));
+  g.appendChild(el('div','stat down','<div class="n">↓ '+(s.lower||0)+'</div><div class="l">建議調低</div>'));
+  g.appendChild(el('div','stat','<div class="n">＝ '+(s.hold||0)+'</div><div class="l">維持</div>'));
+  g.appendChild(el('div','stat','<div class="n">'+(s.total||0)+'</div><div class="l">涵蓋天數</div>'));
+  OURDATE={};
+  var rows=d.rows.map(function(r){
+    OURDATE[r.date]=r.proposed;
+    var cls=(r.weekday==='六'?'sat':(r.weekday==='五'?'fri':''));
+    var dl=r.proposed-r.current;
+    var dlcls=dl>0?'dl up':(dl<0?'dl dn':'dl');
+    var dltxt=dl>0?('+'+dl):(dl<0?(''+dl):'0');
+    var rowcls=dl>0?'r':(dl<0?'d':'');
+    if(cls)rowcls=(rowcls+' '+cls).trim();
+    return '<tr class="'+rowcls+'">'+
+      '<td>'+r.date.slice(5)+' '+r.weekday+'</td>'+
+      '<td>'+r.lead+'</td>'+
+      '<td>'+r.avail+'</td>'+
+      '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
+      '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
+      '<td>'+(r.compFloor==null?'—':num(r.compFloor+ (d.compUndercut||0)))+'</td>'+
+      '<td class="cur">'+num(r.current)+'</td>'+
+      '<td class="pro">'+num(r.proposed)+'</td>'+
+      '<td class="'+dlcls+'">'+dltxt+'</td>'+
+      '<td class="rsn">'+esc(r.reason||'')+'</td></tr>';
+  }).join('');
+  document.getElementById('tbl').innerHTML=
+    '<thead><tr><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>最低競</th><th>現價</th><th>建議價</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
+  drawComp();
+}
+var CMP=null;
+function drawComp(){
+  if(!CMP||!CMP.rows||!window.Chart) return;
+  var OWN_COLOR='#1d3b34';
+  var COMP=['#c0392b','#d68a1e','#7a9cc6','#8a8478'];
+  function md(x){return x?x.slice(5).replace('-','/'):x;}
+  var meta=document.getElementById('cmpMeta');
+  meta.innerHTML='城區 <b>'+(CMP.city||'台北車站')+'</b>　·　更新 <b>'+(CMP.generated||'')+'</b>';
+  var cols=CMP.targets||[];
+  var labels=CMP.rows.map(function(r){return md(r.date);});
+  var datasets=[{
+    label:'北車建議價',
+    data:CMP.rows.map(function(r){return (OURDATE[r.date]!=null)?OURDATE[r.date]:null;}),
+    borderColor:OWN_COLOR,backgroundColor:OWN_COLOR,borderWidth:2.8,borderDash:[],
+    pointRadius:2.4,pointHoverRadius:5,tension:.25,spanGaps:true,order:1
+  }];
+  cols.forEach(function(c,i){
+    var color=COMP[i%COMP.length];
+    datasets.push({label:c,
+      data:CMP.rows.map(function(r){return (r.prices&&r.prices[c]!=null)?r.prices[c]:null;}),
+      borderColor:color,backgroundColor:color,borderWidth:1.6,borderDash:[5,4],
+      pointRadius:0,pointHoverRadius:5,tension:.25,spanGaps:true,order:2});
+  });
+  var leg=document.getElementById('cmpLegend');
+  var items=['<span style="display:flex;align-items:center;gap:5px;color:var(--brand);font-weight:700;"><span style="width:16px;height:3px;background:'+OWN_COLOR+';border-radius:2px;"></span>北車建議價（自家）</span>'];
+  cols.forEach(function(c,i){var color=COMP[i%COMP.length];
+    items.push('<span style="display:flex;align-items:center;gap:5px;"><span style="width:16px;height:0;border-top:2px dashed '+color+';"></span>'+c+'</span>');});
+  leg.innerHTML=items.join('');
+  new Chart(document.getElementById('cmpChart'),{
+    type:'line',
+    data:{labels:labels,datasets:datasets},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{callbacks:{
+        label:function(c){return c.dataset.label+'：'+(c.parsed.y==null?'—':'$'+c.parsed.y.toLocaleString('en-US'));}
+      }}},
+      scales:{
+        y:{grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',callback:function(v){return '$'+v.toLocaleString('en-US');}}},
+        x:{grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:15,maxRotation:60,minRotation:60,font:{size:11}}}}}
+  });
+}
+fetch('taipei_pricing.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){
+  if(d&&d.rows){render(d);}else{document.getElementById('meta').textContent='（尚未載入建議）';}
+}).catch(function(){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+fetch('price_taipei.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(p){
+  if(!p||!p.rows){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';return;}
+  CMP=p; drawComp();
+}).catch(function(){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';});
+</script>
+</body>
+</html>
