@@ -65,12 +65,13 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <header class="top">
   <a class="home" href="./">← 回首頁</a>
   <div class="kicker">Inventory Sync · Fosen → Fengju</div>
-  <h1 class="title"><span class="zh">丰森 → 丰居一中</span> · 房量同步 <span style="font-size:.5em;color:var(--muted)">豪華雙床房</span></h1>
+  <h1 class="title"><span class="zh">丰森 → 丰居一中</span> · 房量同步 <span style="font-size:.5em;color:var(--muted)">豪華雙床房 + 標準雙床房</span></h1>
   <div class="meta" id="meta">載入中…</div>
 </header>
 
 <div class="rules">
-  規則（範圍 <b>今日 ～ 11/30</b>）：目標<b>價格一律照抄丰森</b>；目標<b>房量＝丰森房量</b>，但符合下列任一者<b>強制歸 0</b>：
+  房型：<b>A4B 豪華雙床房</b>、<b>A4C 標準雙床房</b>（各自套同一套規則）。範圍 <b>今日 ～ 11/30</b>：
+  目標<b>價格一律照抄丰森</b>；目標<b>房量＝丰森房量</b>，但符合下列任一者<b>強制歸 0</b>：
   ① 近 4 天 <b>D~D+3（含今天）</b>　② <b>丰森當日房量 ≤ 12</b>。
   只寫「與丰居現況不同」的日期；價格受 300~60000 合理範圍硬擋。
 </div>
@@ -121,6 +122,7 @@ function renderPlan(plan,mismatch){
     var nrMark = mm[p.date+'|rate']?' ✗':'';
     var naCls = availChg?'na':'same';
     return '<tr class="'+cls+'">'+
+      '<td>'+esc(p.room||'')+'</td>'+
       '<td>'+p.date.slice(5)+' '+w+'</td>'+
       '<td>'+num(p.src_avail)+'</td>'+
       '<td>'+num(p.src_rate)+'</td>'+
@@ -130,7 +132,7 @@ function renderPlan(plan,mismatch){
       '<td class="rsn">'+esc(p.reason||'')+'</td></tr>';
   }).join('');
   document.getElementById('tbl').innerHTML=
-    '<thead><tr><th>日期</th><th>丰森房量</th><th>丰森價</th><th>丰居現況(量/價)</th><th>目標房量</th><th>目標價</th><th>歸0原因</th></tr></thead><tbody>'+rows+'</tbody>';
+    '<thead><tr><th>房型</th><th>日期</th><th>丰森房量</th><th>丰森價</th><th>丰居現況(量/價)</th><th>目標房量</th><th>目標價</th><th>歸0原因</th></tr></thead><tbody>'+rows+'</tbody>';
 }
 
 function preview(){
@@ -166,7 +168,7 @@ function apply(){
     var h='<h3>'+(res.ok?'✅ 同步完成（已讀回線上逐筆確認落地）':'⚠️ 同步未全部落地')+'</h3>';
     h+='房量寫入 <b>'+(s.avail_changes||0)+'</b> 筆、價格寫入 <b>'+(s.rate_changes||0)+'</b> 筆';
     if(mm.length){h+='<div style="margin-top:6px;color:var(--down)">未落地 '+mm.length+' 筆：'+
-      mm.slice(0,12).map(function(m){return m.date.slice(5)+'('+m.field+' 想要'+num(m.want)+'，線上仍'+num(m.got)+')';}).join('、')+
+      mm.slice(0,12).map(function(m){return (m.room?m.room+' ':'')+m.date.slice(5)+'('+m.field+' 想要'+num(m.want)+'，線上仍'+num(m.got)+')';}).join('、')+
       (mm.length>12?' …':'')+'</div>';}
     if(res.error)h+='<div style="margin-top:6px;color:var(--down)">'+esc(res.error)+'</div>';
     box.innerHTML=h;
