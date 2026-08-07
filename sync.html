@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>丰森 → 丰居一中 房量同步 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--up:#1d7a3e;--down:#c0392b;--hot:#c2761f;--radius:14px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px 80px}
+header.top{padding:30px 0 20px;border-bottom:1px solid var(--line);margin-bottom:18px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:16px}
+.home:hover{color:var(--brand)}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1.title{font-family:"Fraunces","Noto Serif TC",serif;font-weight:600;font-size:clamp(25px,5vw,38px);color:var(--brand);line-height:1.05}
+h1.title .zh{font-family:"Noto Serif TC",serif;font-weight:700}
+.meta{margin-top:12px;color:var(--muted);font-size:13px}
+.rules{background:#fbeedd;border:1px solid #e6c79a;color:#8a5a1f;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin:16px 0 18px;line-height:1.7}
+.rules b{color:#6d4718}
+.notice{background:#fdecea;border:1px solid #f3c0ba;color:#a33027;border-radius:var(--radius);padding:12px 16px;font-size:13px;margin-bottom:18px;display:none}
+.runbar{margin:14px 0 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+button.run{appearance:none;border:none;cursor:pointer;background:var(--brand);color:#fffdf9;
+font-family:"Noto Sans TC";font-weight:700;font-size:15px;padding:12px 24px;border-radius:99px;box-shadow:var(--shadow);transition:transform .08s,opacity .2s}
+button.run:hover{transform:translateY(-1px)} button.run:disabled{opacity:.5;cursor:wait}
+button.run.apply{background:var(--down)}
+button.run.ghost{background:#fff;color:var(--brand);border:1px solid var(--line);box-shadow:none}
+button.run.ghost:hover{background:#f0ede6}
+.status{font-size:13px;color:var(--muted)} .status.err{color:var(--down);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;line-height:1;color:var(--brand)}
+.stat .l{margin-top:6px;font-size:12px;color:var(--muted)}
+.stat.zero .n{color:var(--down)} .stat.rate .n{color:var(--hot)}
+.resultbox{background:#f0f5f1;border:1px solid #bcd4c4;border-radius:var(--radius);padding:12px 16px;margin:6px 0 18px;font-size:13.5px;display:none}
+.resultbox.show{display:block} .resultbox.bad{background:#fdecea;border-color:#f3c0ba}
+.resultbox h3{font-size:14px;color:var(--brand);margin-bottom:6px}
+.tblwrap{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;min-width:640px}
+.tbl th,.tbl td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child,.tbl th:last-child,.tbl td:last-child{text-align:left}
+.tbl th{color:var(--muted);font-weight:600;font-size:11px;position:sticky;top:0;background:var(--panel)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td.cur{color:var(--muted)}
+.tbl tr.zero td.na{color:var(--down);font-weight:700}
+.tbl tr.chg td.na{color:var(--up);font-weight:700}
+.tbl .sat td:first-child{color:var(--gold);font-weight:700}
+.tbl td.rsn{color:var(--down);font-size:11.5px;white-space:normal;min-width:150px}
+.tbl td.same{color:var(--muted)}
+.empty{color:var(--muted);font-size:13px;padding:16px}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./">← 回首頁</a>
+  <div class="kicker">Inventory Sync · Fosen → Fengju</div>
+  <h1 class="title"><span class="zh">丰森 → 丰居一中</span> · 房量同步 <span style="font-size:.5em;color:var(--muted)">豪華雙床房</span></h1>
+  <div class="meta" id="meta">載入中…</div>
+</header>
+
+<div class="rules">
+  規則（範圍 <b>今日 ～ 11/30</b>）：目標<b>價格一律照抄丰森</b>；目標<b>房量＝丰森房量</b>，但符合下列任一者<b>強制歸 0</b>：
+  ① 近 4 天 <b>D~D+3（含今天）</b>　② <b>丰森當日房量 ≤ 12</b>。
+  只寫「與丰居現況不同」的日期；價格受 300~60000 合理範圍硬擋。
+</div>
+
+<div class="notice" id="notice"></div>
+
+<div class="runbar">
+  <button class="run" id="prevbtn" onclick="preview()">🔍 重新預覽</button>
+  <button class="run apply" id="applybtn" onclick="apply()" disabled>⚠️ 正式執行 → 寫入 SiteMinder</button>
+  <span class="status" id="status"></span>
+</div>
+
+<div class="resultbox" id="resultbox"></div>
+<div class="stats" id="stats"></div>
+<div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未預覽</td></tr></tbody></table></div>
+<footer id="foot">來源：丰森「A4B 豪華雙床房」／目標：丰居一中「豪華雙床房(A4B)」。房量走 room-type 層級、價格走 room-rate 層級，寫入後讀回線上逐筆驗證。即時連線需在 Tailscale 內、且家裡那台開著。</footer>
+</div>
+
+<script>
+var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+var LAST=null;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
+function wd(ds){var d=new Date(ds+'T00:00:00');return '日一二三四五六'[d.getDay()];}
+function setStatus(t,err){var s=document.getElementById('status');s.textContent=t||'';s.className='status'+(err?' err':'');}
+function showNotice(m){var n=document.getElementById('notice');n.innerHTML=m;n.style.display=m?'block':'none';}
+
+function renderStats(s,dry){
+  var g=document.getElementById('stats');g.innerHTML='';
+  var r=s.range||{};
+  function add(cls,n,l){var e=document.createElement('div');e.className='stat'+(cls?' '+cls:'');e.innerHTML='<div class="n">'+n+'</div><div class="l">'+l+'</div>';g.appendChild(e);}
+  add('', r.days||0, '涵蓋天數');
+  add('zero', s.avail_changes||0, '房量要變動');
+  add('rate', s.rate_changes||0, '價格要變動');
+  add('', (r.from||'')+' ~ '+(r.to||''), dry?'預覽範圍':'已寫入範圍');
+}
+
+function renderPlan(plan,mismatch){
+  var mm={}; (mismatch||[]).forEach(function(m){mm[m.date+'|'+m.field]=m;});
+  if(!plan||!plan.length){document.getElementById('tbl').innerHTML='<tbody><tr><td class="empty">沒有資料</td></tr></tbody>';return;}
+  var rows=plan.map(function(p){
+    var w=wd(p.date);
+    var zeroed=(p.new_avail===0);
+    var availChg=(p.new_avail!=null && p.new_avail!==p.old_avail);
+    var rateChg=(p.new_rate!=null && p.new_rate!==p.old_rate);
+    var cls=(w==='六'?'sat ':'')+(zeroed?'zero':(availChg?'chg':''));
+    var naMark = mm[p.date+'|avail']?' ✗':'';
+    var nrMark = mm[p.date+'|rate']?' ✗':'';
+    var naCls = availChg?'na':'same';
+    return '<tr class="'+cls+'">'+
+      '<td>'+p.date.slice(5)+' '+w+'</td>'+
+      '<td>'+num(p.src_avail)+'</td>'+
+      '<td>'+num(p.src_rate)+'</td>'+
+      '<td class="cur">'+num(p.old_avail)+' / '+num(p.old_rate)+'</td>'+
+      '<td class="'+naCls+'">'+num(p.new_avail)+naMark+'</td>'+
+      '<td class="'+(rateChg?'na':'same')+'">'+num(p.new_rate)+nrMark+'</td>'+
+      '<td class="rsn">'+esc(p.reason||'')+'</td></tr>';
+  }).join('');
+  document.getElementById('tbl').innerHTML=
+    '<thead><tr><th>日期</th><th>丰森房量</th><th>丰森價</th><th>丰居現況(量/價)</th><th>目標房量</th><th>目標價</th><th>歸0原因</th></tr></thead><tbody>'+rows+'</tbody>';
+}
+
+function preview(){
+  var b=document.getElementById('prevbtn');b.disabled=true;b.textContent='預覽中…';
+  document.getElementById('applybtn').disabled=true;
+  setStatus('讀取丰森 / 丰居現況、計算計畫中…（約 10–30 秒）');showNotice('');
+  fetch(BASE+'/sync-fengju-preview').then(function(r){return r.json();}).then(function(res){
+    if(!res.ok){setStatus('預覽失敗：'+esc(res.error||''),true);return;}
+    LAST=res;renderStats(res.summary,true);renderPlan(res.plan,null);
+    var s=res.summary||{};
+    var n=(s.avail_changes||0)+(s.rate_changes||0);
+    document.getElementById('applybtn').disabled=(n===0);
+    setStatus(n?('預覽完成：共 '+n+' 筆待寫入，確認無誤後按「正式執行」'):'預覽完成：目前丰居已與計畫一致，無需寫入');
+    document.getElementById('meta').innerHTML='預覽於 <b>'+new Date().toLocaleString('zh-TW')+'</b>';
+  }).catch(function(){
+    setStatus('連線不到家裡那台',true);
+    showNotice('連不到端點。請確認①這台裝置在你的 Tailscale 內　②家裡那台開著、receiver 在跑。');
+  }).finally(function(){b.disabled=false;b.textContent='🔍 重新預覽';});
+}
+
+function apply(){
+  var s=(LAST&&LAST.summary)||{};
+  var na=s.avail_changes||0, nr=s.rate_changes||0;
+  if(!confirm('確定要把丰森 豪華雙床房 的房量與價格同步寫入「丰居一中」線上嗎？\n\n'+
+    '房量變動 '+na+' 筆、價格變動 '+nr+' 筆\n範圍 '+((s.range||{}).from||'')+' ~ '+((s.range||{}).to||'')+
+    '\n（D~D+3 與 丰森房量≤12 的日期房量將設為 0）\n\n此動作會直接改變丰居一中的線上房量與售價。')) return;
+  var b=document.getElementById('applybtn');b.disabled=true;b.textContent='寫入中…（請勿關閉，約 30–90 秒）';
+  document.getElementById('prevbtn').disabled=true;
+  setStatus('正在寫入 SiteMinder 並讀回驗證…');showNotice('');
+  fetch(BASE+'/apply-fengju-sync',{method:'POST'}).then(function(r){return r.json();}).then(function(res){
+    var box=document.getElementById('resultbox');box.className='resultbox show'+(res.ok?'':' bad');
+    var s=res.summary||{};var mm=res.mismatch||[];
+    var h='<h3>'+(res.ok?'✅ 同步完成（已讀回線上逐筆確認落地）':'⚠️ 同步未全部落地')+'</h3>';
+    h+='房量寫入 <b>'+(s.avail_changes||0)+'</b> 筆、價格寫入 <b>'+(s.rate_changes||0)+'</b> 筆';
+    if(mm.length){h+='<div style="margin-top:6px;color:var(--down)">未落地 '+mm.length+' 筆：'+
+      mm.slice(0,12).map(function(m){return m.date.slice(5)+'('+m.field+' 想要'+num(m.want)+'，線上仍'+num(m.got)+')';}).join('、')+
+      (mm.length>12?' …':'')+'</div>';}
+    if(res.error)h+='<div style="margin-top:6px;color:var(--down)">'+esc(res.error)+'</div>';
+    box.innerHTML=h;
+    renderStats(res.summary,false);renderPlan(res.plan,res.mismatch);
+    setStatus(res.ok?'寫入完成 '+(res.generated||''):'寫入未全部成功（見上方明細）',!res.ok);
+    LAST=null;document.getElementById('applybtn').disabled=true;
+  }).catch(function(){
+    setStatus('連線不到家裡那台，寫入可能未完成',true);
+    showNotice('連不到端點或連線中斷。請上 SiteMinder 或重新預覽確認實際狀態，再決定是否重跑。');
+  }).finally(function(){b.disabled=false;b.textContent='⚠️ 正式執行 → 寫入 SiteMinder';document.getElementById('prevbtn').disabled=false;});
+}
+
+// 進頁自動預覽
+preview();
+</script>
+</body>
+</html>
