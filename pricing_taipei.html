@@ -149,6 +149,8 @@ function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
 var OURDATE={};   // date -> proposed（給競品圖疊自家線）
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
 var TARGET={}, CUR={}, FLOORS={}, CEIL=18000;
+var MS={}, CURMS={};   // MS：本頁目標 min.stay；CURMS：線上現值
+var MS_PRE=BASE+'/taipei-minstay-preview', MS_APP=BASE+'/apply-taipei-minstay';
 function render(d){
   if(!d||!d.rows){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';return;}
   document.getElementById('meta').innerHTML=
@@ -302,38 +304,60 @@ function doRollback(ts,n){
     showNotice('連不到端點，沒有送出任何回滾。');
   });
 }
+function msCell(date){
+  var cur=(CURMS[date]==null?1:CURMS[date]);
+  var t=(MS[date]==null?cur:MS[date]);
+  var inner;
+  if(t===cur){ inner=(t===2?'<b style="color:var(--down)">2</b>':'1'); }
+  else if(t>cur){ inner=cur+'<span style="color:var(--up);font-weight:700">→'+t+'</span>'; }
+  else { inner=cur+'<span style="color:var(--down);font-weight:700">→'+t+'</span>'; }
+  return '<span style="cursor:pointer;user-select:none;padding:1px 7px;border-radius:5px;border:1px dashed var(--line);display:inline-block" '+
+    'onclick="toggleMs(\''+date+'\')" title="點一下切換 1 / 2（僅寫與線上不同者）">'+inner+'</span>';
+}
+function paintMs(date){ var e=document.getElementById('ms_'+date); if(e) e.innerHTML=msCell(date); }
+function toggleMs(date){
+  var cur=(CURMS[date]==null?1:CURMS[date]);
+  var t=(MS[date]==null?cur:MS[date]);
+  MS[date]=(t===2?1:2); paintMs(date); updateMsBtn();
+}
+function updateMsBtn(){
+  var n=0; for(var d in MS){ var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) n++; }
+  var b=document.getElementById('msbtn'); if(b) b.textContent = n?('套用 min.stay（'+n+' 天有變）→'):'套用 min.stay 規則';
+}
 function loadMinstay(){
-  fetch(BASE+'/taipei-minstay-preview').then(function(r){return r.json();}).then(function(res){
+  MS={}; CURMS={};
+  fetch(MS_PRE).then(function(r){return r.json();}).then(function(res){
     if(!res||!res.ok||!res.plan) return;
     res.plan.forEach(function(p){
-      var el=document.getElementById('ms_'+p.date); if(!el) return;
-      var cur=(p.cur==null?1:p.cur), want=p.want;
-      if(want!=null && want!==cur){ el.innerHTML=cur+'<span style="color:var(--down);font-weight:700">→'+want+'</span>'; }
-      else { el.innerHTML=(cur===2?'<b style="color:var(--down)">2</b>':String(cur)); }
+      var cur=(p.cur==null?1:p.cur);
+      CURMS[p.date]=cur;
+      // 疊加預填：規則建議2 或 線上本來就是2 → 預設2；其餘1（絕不把既有2預設降為1）
+      MS[p.date]=(p.rule2||cur===2)?2:1;
+      paintMs(p.date);
     });
+    updateMsBtn();
   }).catch(function(){});
 }
 function applyMinstay(){
-  var PRE=BASE+'/taipei-minstay-preview', APP=BASE+'/apply-taipei-minstay';
-  var b=document.getElementById('msbtn'); b.disabled=true; b.textContent='min.stay 計算中…';
-  setStatus('讀取房量、計算 min.stay 規則…');
-  fetch(PRE).then(function(r){return r.json();}).then(function(res){
-    if(!res.ok){setStatus('min.stay 預覽失敗：'+(res.error||''),true);return;}
-    var s=res.summary||{};
-    var two=(res.plan||[]).filter(function(p){return p.want===2;}).map(function(p){return p.date.slice(5)+'(餘'+p.avail+')';});
-    var msg='min.stay 規則預覽（'+(s.range?s.range.from+'~'+s.range.to:'')+'）：\n'+
-      '設 min2：'+(s.days_min2||0)+' 天'+(two.length?'（'+two.join('、')+'）':'')+'\n'+
-      '其餘清為 min1：'+(s.days_min1||0)+' 天\n'+
-      '需寫入 '+(s.cells_to_write||0)+' 格（套用到所有通路）。\n\n確定寫入 SiteMinder？';
-    if(!confirm(msg)){setStatus('已取消 min.stay 寫入');b.disabled=false;b.textContent='套用 min.stay 規則';return;}
-    b.textContent='min.stay 寫入中…'; setStatus('正在寫入 min.stay…（可能需 30–90 秒）');
-    fetch(APP,{method:'POST'}).then(function(r){return r.json();}).then(function(rr){
+  var b=document.getElementById('msbtn');
+  var items=[];
+  for(var d in MS){ var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) items.push({date:d,minStay:MS[d]}); }
+  if(!items.length){ setStatus('沒有與線上不同的 min.stay，未送出'); return; }
+  var set2=items.filter(function(i){return i.minStay===2;}).map(function(i){return i.date.slice(5);});
+  var set1=items.filter(function(i){return i.minStay===1;}).map(function(i){return i.date.slice(5);});
+  var msg='只寫「與線上不同」的日期（疊加，不動到未變更的既有 2）：\n'+
+    '設 2：'+set2.length+' 天'+(set2.length?'（'+set2.join('、')+'）':'')+'\n'+
+    '設 1：'+set1.length+' 天'+(set1.length?'（'+set1.join('、')+'）':'')+'\n'+
+    '共 '+items.length+' 天，寫入該房型所有通路。\n\n確定寫入 SiteMinder？';
+  if(!confirm(msg)){ setStatus('已取消 min.stay 寫入'); return; }
+  b.disabled=true; b.textContent='min.stay 寫入中…'; setStatus('正在寫入 min.stay…（可能需 30–90 秒）');
+  fetch(MS_APP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})})
+    .then(function(r){return r.json();}).then(function(rr){
       var ss=rr.summary||{};
-      setStatus(rr.ok?('min.stay 完成：min2 '+(ss.days_min2||0)+' 天、min1 '+(ss.days_min1||0)+' 天，寫 '+(ss.cells_to_write||0)+' 格'):
-        ('min.stay 未全部落地：'+(rr.error||'')), !rr.ok);
+      if(rr.ok){ setStatus('min.stay 完成：寫 '+(ss.cells_to_write||0)+' 格'); loadMinstay(); }
+      else { setStatus('min.stay 未全部落地：'+(rr.error||''),true); }
     }).catch(function(){setStatus('連線不到家裡那台，min.stay 未寫入',true);})
-    .finally(function(){b.disabled=false;b.textContent='套用 min.stay 規則';});
-  }).catch(function(){setStatus('連線不到家裡那台',true);b.disabled=false;b.textContent='套用 min.stay 規則';});
+    .finally(function(){b.disabled=false;updateMsBtn();});
 }
 function runNow(){
   var b=document.getElementById('btn');b.disabled=true;b.textContent='計算中…';setStatus('讀取最新快照、重新計算建議…');
