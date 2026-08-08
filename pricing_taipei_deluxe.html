@@ -162,7 +162,7 @@ function render(d){
       '<td class="pk"><input type="checkbox" class="pick" id="c_'+ds+'" value="'+ds+'" onchange="updateApplyBtn()"></td>'+
       '<td>'+ds.slice(5)+' '+r.weekday+'</td>'+
       '<td>'+r.lead+'</td>'+
-      '<td>'+r.avail+'</td>'+
+      '<td>'+r.avail+'</td>'+'<td>'+(r.minStay===2?'<b style="color:var(--down)">2</b>':'1')+'</td>'+
       '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
       '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
       '<td>'+(r.compFloor==null?'—':num(r.compFloor+ (d.compUndercut||0)))+'</td>'+
@@ -174,7 +174,7 @@ function render(d){
       '<td class="rsn">'+esc(r.reason||'')+'</td></tr>';
   }).join('');
   document.getElementById('tbl').innerHTML=
-    '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>最低競</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
+    '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>min宿</th><th>occ</th><th>近7售</th><th>最低競</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
   d.rows.forEach(function(r){ if(r.action!=='hold'&&r.delta!==0){var c=document.getElementById('c_'+r.date); if(c)c.checked=true;} });
   updateApplyBtn();
   drawComp();
