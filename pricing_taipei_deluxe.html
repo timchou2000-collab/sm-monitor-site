@@ -164,7 +164,7 @@ function render(d){
       '<td class="pk"><input type="checkbox" class="pick" id="c_'+ds+'" value="'+ds+'" onchange="updateApplyBtn()"></td>'+
       '<td>'+ds.slice(5)+' '+r.weekday+'</td>'+
       '<td>'+r.lead+'</td>'+
-      '<td>'+r.avail+'</td>'+'<td id="ms_'+ds+'">·</td>'+
+      '<td>'+r.avail+'</td>'+'<td id="ms_'+ds+'"><span style="color:var(--muted)" title="讀取線上 min.stay 中…">…</span></td>'+
       '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
       '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
       '<td>'+(r.compFloor==null?'—':num(r.compFloor+ (d.compUndercut||0)))+'</td>'+
@@ -312,7 +312,7 @@ function updateMsBtn(){
 function loadMinstay(){
   MS={}; CURMS={}; AVAIL0={};
   fetch(MS_PRE).then(function(r){return r.json();}).then(function(res){
-    if(!res||!res.ok||!res.plan) return;
+    if(!res||!res.ok||!res.plan){ setStatus('min宿 欄線上狀態讀取失敗'+(res&&res.error?'：'+res.error:'')+'（欄位維持「…」，線上資料未受影響）',true); return; }
     res.plan.forEach(function(p){
       var cur=(p.cur==null?1:p.cur);
       CURMS[p.date]=cur;
@@ -322,7 +322,7 @@ function loadMinstay(){
       paintMs(p.date);
     });
     updateMsBtn();
-  }).catch(function(){});
+  }).catch(function(){ setStatus('min宿 欄線上狀態讀取失敗（連線問題）；「…」代表載入中，不是資料遺失',true); });
 }
 function applyMinstay(){
   var b=document.getElementById('msbtn');
