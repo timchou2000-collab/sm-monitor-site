@@ -328,6 +328,7 @@ function applyMinstay(){
   var b=document.getElementById('msbtn');
   var items=[];
   for(var d in MS){ if(AVAIL0[d]) continue; var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) items.push({date:d,minStay:MS[d]}); }
+  if(!Object.keys(CURMS).length){ setStatus('min宿 欄尚未載入完成，請等欄位出現數字再套用',true); return; }
   if(!items.length){ setStatus('沒有與線上不同的 min.stay，未送出'); return; }
   function cnt(v){ return items.filter(function(i){return i.minStay===v;}).map(function(i){return i.date.slice(5);}); }
   var s3=cnt(3), s2=cnt(2), s1=cnt(1);
