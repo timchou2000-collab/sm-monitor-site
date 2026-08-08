@@ -96,6 +96,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <button class="run" id="btn" onclick="runNow()">重新計算建議</button>
   <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
   <button class="run ghost" id="logbtn" onclick="toggleApplyLog()">套用紀錄／回滾</button>
+  <button class="run ghost" id="msbtn" onclick="applyMinstay()">套用 min.stay 規則</button>
   <span class="status" id="status"></span>
 </div>
 <div class="applybox" id="applybox"></div>
@@ -137,6 +138,8 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <script>
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
 var TARGET={}, CUR={}, FLOORS={}, CEIL=4180;
+var MS={}, CURMS={}, AVAIL0={};   // min.stay：目標 / 線上現值 / 房量是否為0
+var MS_PRE=BASE+'/zhongli-minstay-preview', MS_APP=BASE+'/apply-zhongli-minstay';
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
 function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
@@ -170,6 +173,7 @@ function render(d){
       '<td>'+ds.slice(5)+' '+r.weekday+'</td>'+
       '<td>'+r.lead+'</td>'+
       '<td>'+r.avail+'</td>'+
+      '<td id="ms_'+ds+'"><span style="color:var(--muted)" title="讀取線上 min.stay 中…">…</span></td>'+
       '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
       '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
       '<td class="cur">'+num(r.current)+'</td>'+
@@ -180,9 +184,69 @@ function render(d){
       '<td class="rsn">'+esc(r.reason||'')+'</td></tr>';
   }).join('');
   document.getElementById('tbl').innerHTML=
-    '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
+    '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>min宿</th><th>occ</th><th>近7售</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
   d.rows.forEach(function(r){ if(r.action!=='hold'&&r.delta!==0){var c=document.getElementById('c_'+r.date); if(c)c.checked=true;} });
   updateApplyBtn();
+  loadMinstay();
+}
+function msVal(v){ v=Number(v); return (v>=2)?('<b style="color:var(--down)">'+v+'</b>'):'1'; }
+function msCell(date){
+  var cur=(CURMS[date]==null?1:CURMS[date]);
+  var t=(MS[date]==null?cur:MS[date]);
+  if(AVAIL0[date]){ return '<span style="color:var(--muted)" title="房量 0，min.stay 不動作">'+msVal(cur)+'</span>'; }
+  var inner = (t===cur) ? msVal(t)
+    : (cur+'<span style="color:'+(t>cur?'var(--up)':'var(--down)')+';font-weight:700">→'+t+'</span>');
+  return '<span style="cursor:pointer;user-select:none;padding:1px 7px;border-radius:5px;border:1px dashed var(--line);display:inline-block" '+
+    'onclick="toggleMs(\''+date+'\')" title="點一下循環 3→2→1（僅寫與線上不同者）">'+inner+'</span>';
+}
+function paintMs(date){ var e=document.getElementById('ms_'+date); if(e) e.innerHTML=msCell(date); }
+function toggleMs(date){
+  if(AVAIL0[date]) return;
+  var cur=(CURMS[date]==null?1:CURMS[date]);
+  var t=(MS[date]==null?cur:MS[date]);
+  MS[date]=(t===3?2:(t===2?1:3));   // 3→2→1→3
+  paintMs(date); updateMsBtn();
+}
+function updateMsBtn(){
+  var n=0; for(var d in MS){ if(AVAIL0[d]) continue; var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) n++; }
+  var b=document.getElementById('msbtn'); if(b) b.textContent = n?('套用 min.stay（'+n+' 天有變）→'):'套用 min.stay 規則';
+}
+function loadMinstay(){
+  MS={}; CURMS={}; AVAIL0={};
+  fetch(MS_PRE).then(function(r){return r.json();}).then(function(res){
+    if(!res||!res.ok||!res.plan){ setStatus('min宿 欄線上狀態讀取失敗'+(res&&res.error?'：'+res.error:'')+'（欄位維持「…」，線上資料未受影響）',true); return; }
+    res.plan.forEach(function(p){
+      var cur=(p.cur==null?1:p.cur);
+      CURMS[p.date]=cur;
+      AVAIL0[p.date]=(p.avail===0);
+      if(p.avail===0){ MS[p.date]=cur; }
+      else { MS[p.date]=Math.max(cur, (p.rule2?2:1)); }   // 疊加：不降既有、規則補2
+      paintMs(p.date);
+    });
+    updateMsBtn();
+  }).catch(function(){ setStatus('min宿 欄線上狀態讀取失敗（連線問題）；「…」代表載入中，不是資料遺失',true); });
+}
+function applyMinstay(){
+  var b=document.getElementById('msbtn');
+  var items=[];
+  for(var d in MS){ if(AVAIL0[d]) continue; var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) items.push({date:d,minStay:MS[d]}); }
+  if(!items.length){ setStatus('沒有與線上不同的 min.stay，未送出'); return; }
+  function cnt(v){ return items.filter(function(i){return i.minStay===v;}).map(function(i){return i.date.slice(5);}); }
+  var s3=cnt(3), s2=cnt(2), s1=cnt(1);
+  var msg='只寫「與線上不同」的日期（疊加，不動未變更的既有值；房量0 略過）：\n'+
+    '設 3：'+s3.length+' 天'+(s3.length?'（'+s3.join('、')+'）':'')+'\n'+
+    '設 2：'+s2.length+' 天'+(s2.length?'（'+s2.join('、')+'）':'')+'\n'+
+    '設 1：'+s1.length+' 天'+(s1.length?'（'+s1.join('、')+'）':'')+'\n'+
+    '共 '+items.length+' 天，寫入主力大房允許 min.stay 的通路。\n\n確定寫入 SiteMinder？';
+  if(!confirm(msg)){ setStatus('已取消 min.stay 寫入'); return; }
+  b.disabled=true; b.textContent='min.stay 寫入中…'; setStatus('正在寫入 min.stay…（可能需 30–90 秒）');
+  fetch(MS_APP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:items})})
+    .then(function(r){return r.json();}).then(function(rr){
+      var ss=rr.summary||{};
+      if(rr.ok){ setStatus('min.stay 完成：寫 '+(ss.cells_to_write||0)+' 格'); loadMinstay(); }
+      else { setStatus('min.stay 未全部落地：'+(rr.error||''),true); }
+    }).catch(function(){setStatus('連線不到家裡那台，min.stay 未寫入',true);})
+    .finally(function(){b.disabled=false;updateMsBtn();});
 }
 function bump(date,step){
   var v=(TARGET[date]!=null?TARGET[date]:(CUR[date]||0))+step;
