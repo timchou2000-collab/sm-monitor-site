@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>北車調價建議 · SM 控房</title>
+<title>北車豪華房調價 · SM 控房</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
@@ -87,11 +87,11 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <header class="top">
   <a class="home" href="./">← 回首頁</a>
   <div class="kicker">Dynamic Pricing · Advisory</div>
-  <h1 class="title"><span class="zh">北車</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">標準雙人房</span></h1>
+  <h1 class="title"><span class="zh">北車</span> · 調價建議 <span style="font-size:.5em;color:var(--muted)">豪華雙人房</span></h1>
   <div class="meta" id="meta">載入建議…</div>
   <div class="roomtabs">
-    <a class="rtab active" href="pricing_taipei.html">標準雙人房</a>
-    <a class="rtab" href="pricing_taipei_deluxe.html">豪華雙人房</a>
+    <a class="rtab" href="pricing_taipei.html">標準雙人房</a>
+    <a class="rtab active" href="pricing_taipei_deluxe.html">豪華雙人房</a>
   </div>
 </header>
 <div class="banner">⚠️ 勾選要套用的日期後按「套用勾選的調價」，<b>才會真的寫入 SiteMinder</b>。只寫你勾選且有變動的日期，並受地板/天花板/單筆 ±400 上限硬擋。建議價可用 ± 微調。未勾選不會動。</div>
@@ -106,37 +106,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="applylog" id="applylog"></div>
 <div class="stats" id="grand"></div>
 
-<section id="cmpBox" style="margin:6px 0 24px;">
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
-    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Booking 同業比價 · 未來 30 天</div>
-    <span id="cmpMeta" style="color:var(--muted);font-size:12px;"></span>
-  </div>
-  <div id="cmpLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
-  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
-    <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="北車標準雙人房建議價與旅樂序五館、路徒Plus、日野苑、路徒中華未來 30 天最低價比較折線圖">北車建議價與同業未來 30 天最低價比較。</canvas></div>
-  </div>
-  <div style="margin-top:8px;font-size:12px;color:var(--muted);">同業為無痕抓取 2 大人 1 房 1 晚最低價（TWD）；「北車建議價」為本模型當日建議價（標準雙人房）。</div>
-</section>
 
-<section id="pickupBox" style="margin:6px 0 24px;">
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
-    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">標準雙人房 · 進單速度 pickup</div>
-    <div style="display:flex;gap:6px;">
-      <button class="pkbtn" id="pk30" onclick="setPickRange(30)">30 天</button>
-      <button class="pkbtn" id="pk60" onclick="setPickRange(60)">60 天</button>
-    </div>
-    <span id="pkmeta" style="color:var(--muted);font-size:12px;"></span>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--muted);">
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:#1d3b34;"></span>最近 3 天訂走</span>
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:2px;background:#8fb3a8;"></span>第 4–7 天訂走</span>
-    <span style="display:flex;align-items:center;gap:5px;"><span style="width:16px;height:3px;border-radius:2px;background:#a9824b;"></span>剩餘可售</span>
-    <span style="color:var(--muted);">整柱＝過去 7 天訂走</span>
-  </div>
-  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
-    <div style="position:relative;width:100%;height:320px;"><canvas id="pkChart" role="img" aria-label="北車標準雙人房 pickup 每日堆疊長條加剩餘可售折線">標準雙人房未來每日 pickup 與剩餘可售。</canvas></div>
-  </div>
-</section>
 
 <div class="tblwrap"><table class="tbl" id="tbl"><tbody><tr><td class="empty">尚未載入</td></tr></tbody></table></div>
 <footer id="foot">模型：中壢 v2 賣完推估引擎（前瞻推估最終住房率＋進單速度＋競品托底）。資料為當日 09:00 快照。</footer>
@@ -149,7 +119,7 @@ var OURDATE={};   // date -> proposed（給競品圖疊自家線）
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
 var TARGET={}, CUR={}, FLOORS={}, CEIL=18000;
 function render(d){
-  if(!d||!d.rows){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';return;}
+  if(!d||!d.rows){document.getElementById('meta').textContent='（讀不到 taipei_deluxe_pricing.json）';return;}
   document.getElementById('meta').innerHTML=
     '<b>'+esc(d.hotel||'')+'</b> · '+esc(d.room||'')+'　快照 <b>'+(d.snapshotDate||'—')+'</b>　計算於 <b>'+(d.generated||'—')+'</b>';
   document.getElementById('foot').innerHTML=
@@ -195,7 +165,6 @@ function render(d){
     '<thead><tr><th class="pk"><input type="checkbox" id="selall" onchange="toggleAll(this)" title="全選有變動的"></th><th>日期</th><th>lead</th><th>存量</th><th>occ</th><th>近7售</th><th>最低競</th><th>現價</th><th>建議價（可 ±100）</th><th>Δ</th><th>原因</th></tr></thead><tbody>'+rows+'</tbody>';
   d.rows.forEach(function(r){ if(r.action!=='hold'&&r.delta!==0){var c=document.getElementById('c_'+r.date); if(c)c.checked=true;} });
   updateApplyBtn();
-  drawComp();
 }
 function bump(date,step){
   var v=(TARGET[date]!=null?TARGET[date]:(CUR[date]||0))+step;
@@ -254,7 +223,7 @@ function applySelected(){
     return;
   var b=document.getElementById('pushbtn'); b.disabled=true; b.textContent='寫入中…';
   setStatus('正在寫入 SiteMinder…');
-  fetch(BASE+'/apply-taipei-pricing',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE+'/apply-taipei-deluxe-pricing',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({items:items})}).then(function(r){return r.json();}).then(function(res){
     showApply(res);
     setStatus(res.ok?'寫入完成':'寫入未全部成功（見上方明細）',!res.ok);
@@ -268,7 +237,7 @@ function toggleApplyLog(){
   var box=document.getElementById('applylog');
   if(box.classList.contains('show')){box.classList.remove('show');return;}
   box.classList.add('show'); box.innerHTML='<h3>最近套用紀錄</h3><div style="color:var(--muted)">載入中…</div>';
-  fetch(BASE+'/taipei-pricing-applies').then(function(r){return r.json();}).then(renderApplies)
+  fetch(BASE+'/taipei-deluxe-pricing-applies').then(function(r){return r.json();}).then(renderApplies)
     .catch(function(){box.innerHTML='<h3>最近套用紀錄</h3><div class="logentry"><div class="info" style="color:var(--down)">連不到端點，無法載入紀錄。</div></div>';});
 }
 function renderApplies(list){
@@ -289,7 +258,7 @@ function renderApplies(list){
 function doRollback(ts,n){
   if(!confirm('確定把 '+ts.replace('T',' ').slice(0,16)+' 這次套用的 '+n+' 天，全部寫回「舊價」嗎？\n（一樣受地板/天花板/±400 上限保護）')) return;
   setStatus('正在回滾…');
-  fetch(BASE+'/rollback-taipei',{method:'POST',headers:{'Content-Type':'application/json'},
+  fetch(BASE+'/rollback-taipei-deluxe',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({ts:ts})}).then(function(r){return r.json();}).then(function(res){
     showApply(res);
     setStatus(res.ok?'回滾完成':'回滾未全部成功（見上方明細）',!res.ok);
@@ -303,7 +272,7 @@ function doRollback(ts,n){
 function runNow(){
   var b=document.getElementById('btn');b.disabled=true;b.textContent='計算中…';setStatus('讀取最新快照、重新計算建議…');
   document.getElementById('notice').style.display='none';
-  fetch(BASE+'/run-taipei-pricing').then(function(r){return r.json();}).then(function(res){
+  fetch(BASE+'/run-taipei-deluxe-pricing').then(function(r){return r.json();}).then(function(res){
     if(res.ok&&res.payload){render(res.payload);setStatus('已更新 '+(res.payload.generated||''));}
     else{setStatus('計算失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200)),true);
       if(res.payload)render(res.payload);}
@@ -312,107 +281,14 @@ function runNow(){
     showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
   }).finally(function(){b.disabled=false;b.textContent='重新計算建議';});
 }
-var CMP=null;
-function drawComp(){
-  if(!CMP||!CMP.rows||!window.Chart) return;
-  var OWN_COLOR='#1d3b34';
-  var COMP=['#c0392b','#d68a1e','#7a9cc6','#8a8478'];
-  function md(x){return x?x.slice(5).replace('-','/'):x;}
-  var meta=document.getElementById('cmpMeta');
-  meta.innerHTML='城區 <b>'+(CMP.city||'台北車站')+'</b>　·　更新 <b>'+(CMP.generated||'')+'</b>';
-  var cols=CMP.targets||[];
-  var labels=CMP.rows.map(function(r){return md(r.date);});
-  var datasets=[{
-    label:'北車建議價',
-    data:CMP.rows.map(function(r){return (OURDATE[r.date]!=null)?OURDATE[r.date]:null;}),
-    borderColor:OWN_COLOR,backgroundColor:OWN_COLOR,borderWidth:2.8,borderDash:[],
-    pointRadius:2.4,pointHoverRadius:5,tension:.25,spanGaps:true,order:1
-  }];
-  cols.forEach(function(c,i){
-    var color=COMP[i%COMP.length];
-    datasets.push({label:c,
-      data:CMP.rows.map(function(r){return (r.prices&&r.prices[c]!=null)?r.prices[c]:null;}),
-      borderColor:color,backgroundColor:color,borderWidth:1.6,borderDash:[5,4],
-      pointRadius:0,pointHoverRadius:5,tension:.25,spanGaps:true,order:2});
-  });
-  var leg=document.getElementById('cmpLegend');
-  var items=['<span style="display:flex;align-items:center;gap:5px;color:var(--brand);font-weight:700;"><span style="width:16px;height:3px;background:'+OWN_COLOR+';border-radius:2px;"></span>北車建議價（自家）</span>'];
-  cols.forEach(function(c,i){var color=COMP[i%COMP.length];
-    items.push('<span style="display:flex;align-items:center;gap:5px;"><span style="width:16px;height:0;border-top:2px dashed '+color+';"></span>'+c+'</span>');});
-  leg.innerHTML=items.join('');
-  new Chart(document.getElementById('cmpChart'),{
-    type:'line',
-    data:{labels:labels,datasets:datasets},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:{callbacks:{
-        label:function(c){return c.dataset.label+'：'+(c.parsed.y==null?'—':'$'+c.parsed.y.toLocaleString('en-US'));}
-      }}},
-      scales:{
-        y:{grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',callback:function(v){return '$'+v.toLocaleString('en-US');}}},
-        x:{grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:15,maxRotation:60,minRotation:60,font:{size:11}}}}}
-  });
-}
 if(new URLSearchParams(location.search).get('run')==='1'){
   runNow();
 }else{
-  fetch('taipei_pricing.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){
+  fetch('taipei_deluxe_pricing.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){
     if(d&&d.rows){render(d);setStatus('（静態快照；按「重新計算建議」拿家裡那台最新值）');}
     else{document.getElementById('meta').textContent='（尚未載入建議）';}
-  }).catch(function(){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';});
+  }).catch(function(){document.getElementById('meta').textContent='（讀不到 taipei_deluxe_pricing.json）';});
 }
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script>
-fetch('price_taipei.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(p){
-  if(!p||!p.rows){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';return;}
-  CMP=p; drawComp();
-}).catch(function(){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';});
-</script>
-<script>
-(function(){
-  var PK=null, RANGE=30, chart=null;
-  function paintBtn(){
-    var a=document.getElementById('pk30'), b=document.getElementById('pk60');
-    a.style.background=RANGE===30?'var(--brand)':'#fff'; a.style.color=RANGE===30?'#fffdf9':'var(--brand)';
-    b.style.background=RANGE===60?'var(--brand)':'#fff'; b.style.color=RANGE===60?'#fffdf9':'var(--brand)';
-  }
-  function draw(){
-    if(!PK||!PK.rows||!window.Chart) return;
-    var rows=PK.rows.slice(0,RANGE);
-    var labels=rows.map(function(x){return x.md;});
-    var wd=rows.map(function(x){return x.wd;});
-    var seg3=rows.map(function(x){return x.p3;});
-    var seg47=rows.map(function(x){return (x.p3==null||x.p7==null)?null:(x.p7-x.p3);});
-    var avail=rows.map(function(x){return x.avail;});
-    if(chart) chart.destroy();
-    chart=new Chart(document.getElementById('pkChart'),{
-      data:{labels:labels,datasets:[
-        {type:'bar',label:'最近 3 天',data:seg3,backgroundColor:'#1d3b34',stack:'s',order:3},
-        {type:'bar',label:'第 4–7 天',data:seg47,backgroundColor:'#8fb3a8',stack:'s',order:3},
-        {type:'line',label:'剩餘可售',data:avail,borderColor:'#a9824b',backgroundColor:'#a9824b',borderWidth:2,pointRadius:RANGE>30?1.4:1.9,pointHoverRadius:4,tension:.25,order:1}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{display:false},tooltip:{callbacks:{
-          title:function(items){var i=items[0].dataIndex;return labels[i]+'（'+wd[i]+'）';},
-          label:function(c){var r=rows[c.dataIndex];
-            if(c.dataset.label==='剩餘可售') return '剩餘可售：'+r.avail+' 間';
-            if(c.dataset.label==='最近 3 天') return '過去3天訂走：'+(r.p3==null?'無資料':r.p3+' 間');
-            return '過去7天訂走：'+(r.p7==null?'無資料':r.p7+' 間');
-          }}}},
-        scales:{
-          x:{stacked:true,grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:RANGE>30?16:23,maxRotation:60,minRotation:60,font:{size:11}}},
-          y:{stacked:true,beginAtZero:true,grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',precision:0},title:{display:true,text:'間數',color:'#8a8478'}}}}
-    });
-    paintBtn();
-  }
-  window.setPickRange=function(n){RANGE=n;draw();};
-  fetch('taipei_pickup.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(d){
-    if(!d||!d.rows){document.getElementById('pkmeta').textContent='（pickup 資料尚未產生）';return;}
-    PK=d;
-    document.getElementById('pkmeta').textContent='總 '+d.total+' 間 · 快照 '+(d.snapToday||'')+' · 產生 '+(d.generated||'');
-    draw();
-  }).catch(function(){document.getElementById('pkmeta').textContent='（讀不到 pickup 資料）';});
-})();
 </script>
 </body>
 </html>
