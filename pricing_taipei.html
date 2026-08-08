@@ -183,7 +183,7 @@ function render(d){
       '<td class="pk"><input type="checkbox" class="pick" id="c_'+ds+'" value="'+ds+'" onchange="updateApplyBtn()"></td>'+
       '<td>'+ds.slice(5)+' '+r.weekday+'</td>'+
       '<td>'+r.lead+'</td>'+
-      '<td>'+r.avail+'</td>'+'<td id="ms_'+ds+'">'+(r.minStay===2?'<b style="color:var(--down)">2</b>':'1')+'</td>'+
+      '<td>'+r.avail+'</td>'+'<td id="ms_'+ds+'">·</td>'+
       '<td>'+Math.round((r.occ||0)*100)+'%</td>'+
       '<td>'+(r.pickup7==null?'—':r.pickup7)+'</td>'+
       '<td>'+(r.compFloor==null?'—':num(r.compFloor+ (d.compUndercut||0)))+'</td>'+
@@ -304,7 +304,7 @@ function doRollback(ts,n){
     showNotice('連不到端點，沒有送出任何回滾。');
   });
 }
-function msVal(v){ v=Number(v); return (v===2||v===3)?('<b style="color:var(--down)">'+v+'</b>'):'1'; }
+function msVal(v){ v=Number(v); return (v>=2)?('<b style="color:var(--down)">'+v+'</b>'):'1'; }
 function msCell(date){
   var cur=(CURMS[date]==null?1:CURMS[date]);
   var t=(MS[date]==null?cur:MS[date]);
