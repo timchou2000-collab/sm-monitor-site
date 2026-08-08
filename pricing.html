@@ -194,19 +194,13 @@ function msCell(date){
   var cur=(CURMS[date]==null?1:CURMS[date]);
   var t=(MS[date]==null?cur:MS[date]);
   if(AVAIL0[date]){ return '<span style="color:var(--muted)" title="房量 0，min.stay 不動作">'+msVal(cur)+'</span>'; }
-  var inner = (t===cur) ? msVal(t)
-    : (cur+'<span style="color:'+(t>cur?'var(--up)':'var(--down)')+';font-weight:700">→'+t+'</span>');
-  return '<span style="cursor:pointer;user-select:none;padding:1px 7px;border-radius:5px;border:1px dashed var(--line);display:inline-block" '+
-    'onclick="toggleMs(\''+date+'\')" title="點一下循環 3→2→1（僅寫與線上不同者）">'+inner+'</span>';
+  var pending=(t!==cur), col=pending?(t>cur?'var(--up)':'var(--down)'):'var(--ink)', bd=pending?col:'var(--line)';
+  var opts=[1,2,3].map(function(v){return '<option value="'+v+'"'+(v===t?' selected':'')+'>'+v+'</option>';}).join('');
+  return '<select onchange="setMs(\''+date+'\',this.value)" title="'+(pending?('線上 '+cur+' → 改為 '+t):('線上 '+cur))+'" '+
+    'style="padding:1px 4px;border-radius:5px;font-weight:700;color:'+col+';border:1px solid '+bd+';background:var(--panel);cursor:pointer">'+opts+'</select>';
 }
 function paintMs(date){ var e=document.getElementById('ms_'+date); if(e) e.innerHTML=msCell(date); }
-function toggleMs(date){
-  if(AVAIL0[date]) return;
-  var cur=(CURMS[date]==null?1:CURMS[date]);
-  var t=(MS[date]==null?cur:MS[date]);
-  MS[date]=(t===3?2:(t===2?1:3));   // 3→2→1→3
-  paintMs(date); updateMsBtn();
-}
+function setMs(date,v){ if(AVAIL0[date]) return; MS[date]=Number(v); paintMs(date); updateMsBtn(); }
 function updateMsBtn(){
   var n=0; for(var d in MS){ if(AVAIL0[d]) continue; var cur=(CURMS[d]==null?1:CURMS[d]); if(MS[d]!==cur) n++; }
   var b=document.getElementById('msbtn'); if(b) b.textContent = n?('套用 min.stay（'+n+' 天有變）→'):'套用 min.stay 規則';
