@@ -107,10 +107,11 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     <span class="freq">建議模式</span>
     <div class="ic">🎯</div>
     <h2>微風 · 調價建議 <span class="en">Pricing</span></h2>
-    <div class="desc">微風館行政家庭房未來 60 天動態調價建議（同中壢模型：存量＋日期遠近＋進單速度，積極版）。地板分平日／週五／週六三段。</div>
+    <div class="desc">微風館標準／豪華雙人房未來 60 天動態調價（賣完推估模型；逐日競品上下限：地板錨樂頤、天花板錨 Two Tails，另比雀客藏居三重）。可勾選套用到 SiteMinder＋min.stay。每日 09:45＋盤中每 4 小時更新。</div>
     <div class="live" id="brpr-live">載入調價摘要…</div>
     <div class="actions">
-      <a class="btn-primary" href="breeze_pricing.html?run=1">🎯 看建議 →</a>
+      <a class="btn-primary" href="breeze_pricing_std.html">🎯 標準雙人房 →</a>
+      <a class="btn-secondary" href="breeze_pricing_deluxe.html">豪華雙人房</a>
     </div>
   </div>
 
@@ -191,6 +192,17 @@ fetch('taipei_pricing.json?t=' + Date.now())
   })
   .catch(function(){ document.getElementById('tppr-live').innerHTML =
     '<span class="t">每日 09:40 更新北車標準雙人房調價建議</span>'; });
+
+fetch('breeze_std_pricing.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    var s = d.summary || {};
+    document.getElementById('brpr-live').innerHTML =
+      '標準房建議 <b>↑' + (s.raise||0) + '</b> · <b>↓' + (s.lower||0) + '</b> · ＝' + (s.hold||0) +
+      ' <span class="t">（' + (d.generated||'') + '）</span>';
+  })
+  .catch(function(){ document.getElementById('brpr-live').innerHTML =
+    '<span class="t">每日 09:45＋盤中每 4 小時更新微風雙人房調價</span>'; });
 </script>
 </body>
 </html>
