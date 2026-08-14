@@ -97,9 +97,11 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <button class="run apply" id="pushbtn" onclick="applySelected()" disabled>套用勾選的調價 →</button>
   <button class="run ghost" id="logbtn" onclick="toggleApplyLog()">套用紀錄／回滾</button>
   <button class="run ghost" id="msbtn" onclick="applyMinstay()">套用 min.stay 規則</button>
+  <button class="run ghost" id="invbtn" onclick="syncInvPreview()">同步存量到 SiteMinder</button>
   <span class="status" id="status"></span>
 </div>
 <div class="applybox" id="applybox"></div>
+<div class="applybox" id="invbox"></div>
 <div class="applylog" id="applylog"></div>
 <div class="stats" id="grand"></div>
 <section id="cmpBox" style="margin:6px 0 24px;">
@@ -371,6 +373,61 @@ if(new URLSearchParams(location.search).get('run')==='1'){
     setStatus('（尚未載入；按按鈕計算）');
     showNotice('連不到端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
   });
+}
+</script>
+<script>
+// ── 同步存量到 SiteMinder（via booking-wise → SiteMinder 中壢，先預覽後寫）──
+var INV_DAYS=60;
+function syncInvPreview(){
+  var b=document.getElementById('invbtn'); b.disabled=true; b.textContent='讀取存量中…';
+  setStatus('正在查 booking-wise 存量並比對 SiteMinder…');
+  var box=document.getElementById('invbox'); box.className='applybox show';
+  box.innerHTML='<h3>同步存量 · 預覽中…</h3><div style="color:var(--muted)">查 via 存量、讀 SiteMinder 現況比對中（約 5–15 秒）…</div>';
+  fetch(BASE+'/zhongli-inv-preview?days='+INV_DAYS).then(function(r){return r.json();}).then(function(res){
+    renderInvPreview(res);
+  }).catch(function(){
+    box.innerHTML='<h3>同步存量</h3><div class="rowline ng">連不到家裡那台，無法預覽。</div>';
+    setStatus('連線不到家裡那台',true);
+  }).finally(function(){b.disabled=false;b.textContent='同步存量到 SiteMinder';});
+}
+function renderInvPreview(res){
+  var box=document.getElementById('invbox'); box.className='applybox show';
+  if(!res||!res.ok){ box.innerHTML='<h3>同步存量 · 預覽失敗</h3><div class="rowline ng">'+esc((res&&res.error)||'未知錯誤')+'</div>'; setStatus('預覽失敗',true); return; }
+  var s=res.summary||{}, rng=s.range||{}, pr=s.per_room||{};
+  var chg=(res.plan||[]).filter(function(p){return p.new_avail!=null && p.new_avail!==p.old_avail;});
+  var perTxt=Object.keys(pr).map(function(k){return k+' '+pr[k]+' 天';}).join('　');
+  var h='<h3>同步存量 · 預覽（尚未寫入）</h3>';
+  h+='<div class="rowline" style="color:var(--muted)">範圍 '+(rng.from||'')+' ~ '+(rng.to||'')+'（'+(rng.days||0)+' 天）｜共 '+(s.avail_changes||0)+' 筆有變動　'+perTxt+'</div>';
+  if(!chg.length){ h+='<div class="rowline">SiteMinder 房量已與 via 相同，無需寫入。</div>'; box.innerHTML=h; setStatus('預覽完成：無變動'); return; }
+  h+='<div style="max-height:260px;overflow:auto;margin:8px 0;border:1px solid var(--line);border-radius:8px;padding:6px 10px;">';
+  chg.forEach(function(p){
+    h+='<div class="rowline">'+esc(p.room)+'　'+p.date.slice(5)+'　via '+p.src_remain+' → <b>'+p.new_avail+'</b>（現 '+(p.old_avail==null?'—':p.old_avail)+'）</div>';
+  });
+  h+='</div>';
+  h+='<div style="display:flex;gap:10px;margin-top:6px;"><button class="run apply" id="invapply" onclick="syncInvApply()">確定寫入 '+chg.length+' 筆 →</button>'+
+     '<button class="run ghost" onclick="document.getElementById(\'invbox\').className=\'applybox\'">取消</button></div>';
+  box.innerHTML=h;
+  setStatus('預覽完成：'+chg.length+' 筆待寫入，確認後才會寫 SiteMinder');
+}
+function syncInvApply(){
+  if(!confirm('確定把 booking-wise 最新存量寫入 SiteMinder 中壢（未來 '+INV_DAYS+' 天、3 房型）嗎？\n只寫有變動的日期、受 0–999 房量範圍保護、寫完會讀回線上確認。')) return;
+  var b=document.getElementById('invapply'); if(b){b.disabled=true;b.textContent='寫入中…';}
+  setStatus('正在寫入 SiteMinder 存量…（可能需 30–90 秒）');
+  fetch(BASE+'/apply-zhongli-inv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({days:INV_DAYS})})
+    .then(function(r){return r.json();}).then(function(res){ renderInvResult(res); })
+    .catch(function(){ setStatus('連線不到家裡那台，存量未寫入',true); });
+}
+function renderInvResult(res){
+  var box=document.getElementById('invbox'); box.className='applybox show';
+  if(!res){ box.innerHTML='<h3>同步存量</h3><div class="rowline ng">無回應</div>'; return; }
+  if(res.note){ box.innerHTML='<h3>同步存量</h3><div class="rowline">'+esc(res.note)+'</div>'; setStatus('無變動'); return; }
+  var s=res.summary||{}, mm=res.mismatch||[];
+  var h='<h3>'+(res.ok?'✅ 存量已同步（已讀回線上確認）':'⚠️ 存量同步結果（部分未落地）')+'</h3>';
+  h+='<div class="rowline" style="color:var(--muted)">寫入 '+(s.avail_changes||0)+' 筆　派發 '+(res.dispatched?'成功':'失敗')+(mm.length?('、未落地 '+mm.length+' 筆'):'')+'</div>';
+  mm.forEach(function(m){ h+='<div class="rowline ng">'+esc(m.room)+' '+m.date.slice(5)+'：想寫 '+m.want+'，線上仍為 '+(m.got==null?'?':m.got)+'</div>'; });
+  if(res.error) h+='<div class="rowline ng">'+esc(res.error)+'</div>';
+  box.innerHTML=h;
+  setStatus(res.ok?'存量同步完成':'存量同步未全部落地',!res.ok);
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
