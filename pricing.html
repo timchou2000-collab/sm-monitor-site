@@ -139,6 +139,37 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </div>
 <script>
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+/* sm-endpoint-autoprobe */
+(function(){
+  if(window.__smProbeInstalled)return; window.__smProbeInstalled=true;
+  var CAND=['http://127.0.0.1:8765', BASE];
+  var picked=null, pending=null;
+  var of=window.fetch.bind(window);
+  function tryOne(i){
+    if(i>=CAND.length){picked=BASE;return Promise.resolve(BASE);}
+    var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var tm=setTimeout(function(){if(ctl)ctl.abort();},2500);
+    var opt={cache:'no-store'}; if(ctl)opt.signal=ctl.signal;
+    return of(CAND[i]+'/health',opt).then(function(r){
+      clearTimeout(tm); if(!r.ok)throw new Error('bad');
+      picked=CAND[i]; return picked;
+    }).catch(function(){ clearTimeout(tm); return tryOne(i+1); });
+  }
+  function resolveBase(){
+    if(picked)return Promise.resolve(picked);
+    if(!pending)pending=tryOne(0);
+    return pending;
+  }
+  window.fetch=function(u,o){
+    if(typeof u==='string' && u.indexOf(BASE)===0){
+      return resolveBase().then(function(b){ return of(b+u.slice(BASE.length),o); });
+    }
+    return of(u,o);
+  };
+  window.__smEndpoint=function(){return picked||'(probing)';};
+  resolveBase();
+})();
+
 var TARGET={}, CUR={}, FLOORS={}, CEIL=4180;
 var MS={}, CURMS={}, AVAIL0={};   // min.stay：目標 / 線上現值 / 房量是否為0
 var MS_PRE=BASE+'/zhongli-minstay-preview', MS_APP=BASE+'/apply-zhongli-minstay';

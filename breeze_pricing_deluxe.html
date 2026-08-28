@@ -147,6 +147,37 @@ var CFG = {
   msApp:'/apply-breeze-deluxe-minstay'
 };
 var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+/* sm-endpoint-autoprobe */
+(function(){
+  if(window.__smProbeInstalled)return; window.__smProbeInstalled=true;
+  var CAND=['http://127.0.0.1:8765', BASE];
+  var picked=null, pending=null;
+  var of=window.fetch.bind(window);
+  function tryOne(i){
+    if(i>=CAND.length){picked=BASE;return Promise.resolve(BASE);}
+    var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var tm=setTimeout(function(){if(ctl)ctl.abort();},2500);
+    var opt={cache:'no-store'}; if(ctl)opt.signal=ctl.signal;
+    return of(CAND[i]+'/health',opt).then(function(r){
+      clearTimeout(tm); if(!r.ok)throw new Error('bad');
+      picked=CAND[i]; return picked;
+    }).catch(function(){ clearTimeout(tm); return tryOne(i+1); });
+  }
+  function resolveBase(){
+    if(picked)return Promise.resolve(picked);
+    if(!pending)pending=tryOne(0);
+    return pending;
+  }
+  window.fetch=function(u,o){
+    if(typeof u==='string' && u.indexOf(BASE)===0){
+      return resolveBase().then(function(b){ return of(b+u.slice(BASE.length),o); });
+    }
+    return of(u,o);
+  };
+  window.__smEndpoint=function(){return picked||'(probing)';};
+  resolveBase();
+})();
+
 var APPLY_URL=BASE+'/apply-breeze-pricing', APPLIES_URL=BASE+'/breeze-pricing-applies', ROLLBACK_URL=BASE+'/rollback-breeze';
 var MS_PRE=BASE+CFG.msPre, MS_APP=BASE+CFG.msApp, RUN_URL=BASE+CFG.runUrl;
 var ROOM_UUID='', OURDATE={}, TARGET={}, CUR={}, FLOORS={}, CEILS={};
