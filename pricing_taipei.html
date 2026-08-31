@@ -180,7 +180,7 @@ var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
 })();
 
 var TARGET={}, CUR={}, FLOORS={}, CEIL=18000;
-var MS={}, CURMS={}, AVAIL0={};   // MS：目標 min.stay；CURMS：線上現值；AVAIL0：房量是否為0
+var MS={}, CURMS={}, AVAIL0={}, FORCE1={};   // MS：目標 min.stay；CURMS：線上現值；AVAIL0：房量是否為0
 var MS_PRE=BASE+'/taipei-minstay-preview', MS_APP=BASE+'/apply-taipei-minstay';
 function render(d){
   if(!d||!d.rows){document.getElementById('meta').textContent='（讀不到 taipei_pricing.json）';return;}
@@ -344,7 +344,8 @@ function msCell(date){
   }
   var pending=(t!==cur), col=pending?(t>cur?'var(--up)':'var(--down)'):'var(--ink)', bd=pending?col:'var(--line)';
   var opts=[1,2,3].map(function(v){return '<option value="'+v+'"'+(v===t?' selected':'')+'>'+v+'</option>';}).join('');
-  return '<select onchange="setMs(\''+date+'\',this.value)" title="'+(pending?('線上 '+cur+' → 改為 '+t):('線上 '+cur))+'" '+
+  var why=FORCE1[date]?'（近期 lead≤6，強制放行為 1）':'';
+  return '<select onchange="setMs(\''+date+'\',this.value)" title="'+(pending?('線上 '+cur+' → 改為 '+t):('線上 '+cur))+why+'" '+
     'style="padding:1px 4px;border-radius:5px;font-weight:700;color:'+col+';border:1px solid '+bd+';background:var(--panel);cursor:pointer">'+opts+'</select>';
 }
 function paintMs(date){ var e=document.getElementById('ms_'+date); if(e) e.innerHTML=msCell(date); }
@@ -354,14 +355,16 @@ function updateMsBtn(){
   var b=document.getElementById('msbtn'); if(b) b.textContent = n?('套用 min.stay（'+n+' 天有變）→'):'套用 min.stay 規則';
 }
 function loadMinstay(){
-  MS={}; CURMS={}; AVAIL0={};
+  MS={}; CURMS={}; AVAIL0={}; FORCE1={};
   fetch(MS_PRE).then(function(r){return r.json();}).then(function(res){
     if(!res||!res.ok||!res.plan){ setStatus('min宿 欄線上狀態讀取失敗'+(res&&res.error?'：'+res.error:'')+'（欄位維持「…」，線上資料未受影響）',true); return; }
     res.plan.forEach(function(p){
       var cur=(p.cur==null?1:p.cur);
       CURMS[p.date]=cur;
       AVAIL0[p.date]=(p.avail===0);
+      FORCE1[p.date]=!!p.force1;
       if(p.avail===0){ MS[p.date]=cur; }          // 房量0：維持現值、不動作
+      else if(p.force1){ MS[p.date]=1; }                  // 近期強制放行：lead≤6 一律歸1
       else { MS[p.date]=Math.max(cur, (p.rule2?2:1)); } // 疊加：不降既有(2/3)，規則補2
       paintMs(p.date);
     });
