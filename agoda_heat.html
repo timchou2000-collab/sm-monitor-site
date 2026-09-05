@@ -66,22 +66,17 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:v
 
 <div class="panel">
   <h2>競品組</h2>
-  <table><thead><tr><th>旅館</th><th class="n">今天下訂人數</th><th class="n">搜尋排名</th></tr></thead>
-  <tbody id="rows"><tr><td colspan="3" class="dash">尚未載入</td></tr></tbody></table>
-</div>
-
-<div class="panel">
-  <h2>全台中熱度前 10</h2>
-  <table><thead><tr><th>旅館</th><th class="n">人數</th><th class="n">搜尋排名</th></tr></thead>
-  <tbody id="tops"><tr><td colspan="3" class="dash">尚未載入</td></tr></tbody></table>
+  <table><thead><tr><th>旅館</th><th class="n">今天下訂人數</th></tr></thead>
+  <tbody id="rows"><tr><td colspan="2" class="dash">尚未載入</td></tr></tbody></table>
 </div>
 
 <div class="panel">
   <div class="note">
     <b>怎麼讀這個數字</b><br>
     · 這個標籤只出現在搜尋結果卡片，飯店專頁沒有；而且只有「今晚」這種近期日期會掛，所以固定用今天當入住日。<br>
-    · Agoda 對連續查詢會限流，清單會被降級成每頁 8–10 家、熱度標籤整批消失。抓到 0 個標籤時系統會保留上一份快照不覆蓋，並標示為舊資料。<br>
-    · 掃描家數低於 100 家時，排名與覆蓋率參考性下降。
+    · 抓法是掃台中搜尋結果、七家都找到就立刻停（最多翻 3 頁），不做全城深掃 —— Agoda 的網址不支援用飯店名稱搜尋，所以無法逐家單獨查。<br>
+    · Agoda 對連續查詢會限流，清單會被降級成每頁 8–10 家、熱度標籤整批消失。七家全數落空時系統會保留上一份快照不覆蓋，並標示為舊資料。<br>
+    · 「這次沒抓到」代表該飯店不在這輪掃到的清單裡（Agoda 每次回傳的排序不同），不代表它沒有熱度。隔一段時間再按一次通常就有。
   </div>
 </div>
 
@@ -124,23 +119,18 @@ function render(d){
   if(!d||!d.rows){return;}
   document.getElementById('meta').innerHTML =
     '入住日 <b>'+esc(d.checkIn||'—')+'</b>（今晚）　擷取 <b>'+esc(d.generated||'—')+'</b>　'+
-    '掃描 <b>'+(d.scanned||0)+'</b> 家，其中 <b>'+(d.withBadge||0)+'</b> 家有熱度標籤';
+    '命中 <b>'+(d.hit!=null?d.hit:'—')+'/'+(d.total||d.rows.length)+'</b> 家'+
+    '<span class="t">（掃描 '+(d.scanned||0)+' 家、其中 '+(d.withBadge||0)+' 家有標籤）</span>';
   var mx=0;
   d.rows.forEach(function(r){ if(r.n&&r.n>mx)mx=r.n; });
   document.getElementById('rows').innerHTML = d.rows.map(function(r){
-    var w = (r.n&&mx)?Math.round(r.n/mx*90):0;
+    var w = (r.n&&mx)?Math.round(r.n/mx*120):0;
     var val = r.n ? '<span class="gbar" style="width:'+w+'px"></span><b>'+r.n+'</b>'
-                  : '<span class="dash">'+(r.found?'無標籤':'未在結果中')+'</span>';
+                  : '<span class="dash">'+(r.found?'無標籤':'這次沒抓到')+'</span>';
     return '<tr class="'+(r.self?'self':'')+'"><td>'+esc(r.label)+
       (r.self?'<span class="pill">自家</span>':'')+'</td>'+
-      '<td class="n">'+val+'</td>'+
-      '<td class="n">'+(r.pos?('#'+r.pos):'<span class="dash">—</span>')+'</td></tr>';
+      '<td class="n">'+val+'</td></tr>';
   }).join('');
-  var tops=d.top||[];
-  document.getElementById('tops').innerHTML = tops.length ? tops.map(function(h){
-    return '<tr><td>'+esc(h.name)+'</td><td class="n"><b>'+h.n+'</b></td>'+
-      '<td class="n">#'+h.pos+'</td></tr>';
-  }).join('') : '<tr><td colspan="3" class="dash">這次沒抓到任何熱度標籤</td></tr>';
 }
 
 function runNow(){

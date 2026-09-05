@@ -209,10 +209,11 @@ fetch('agoda_heat.json?t=' + Date.now())
   .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
   .then(function(d){
     var me = (d.rows||[]).filter(function(r){ return r.self; })[0];
-    var top = (d.top||[])[0];
+    var comp = (d.rows||[]).filter(function(r){ return !r.self && r.n; });
+    var mx = comp.length ? Math.max.apply(null, comp.map(function(r){return r.n;})) : null;
     document.getElementById('ah-live').innerHTML =
-      '丰森 <b>' + (me && me.n ? me.n : '—') + '</b> 人 · 全區最高 <b>' +
-      (top ? top.n : '—') + '</b> 人 <span class="t">（' + (d.generated||'') + '）</span>';
+      '丰森 <b>' + (me && me.n ? me.n : '—') + '</b> 人 · 競品最高 <b>' +
+      (mx || '—') + '</b> 人 <span class="t">（' + (d.generated||'') + '）</span>';
   })
   .catch(function(){ document.getElementById('ah-live').innerHTML =
     '<span class="t">按「立即抓取」取得 Agoda 台中競品熱度</span>'; });
