@@ -71,6 +71,19 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:v
 </div>
 
 <div class="panel">
+  <h2>近一週市場熱度</h2>
+  <div class="meta" style="margin:-4px 0 12px">
+    每天各家「今天下訂人數」的加總。<b>要看的是折線的高低起伏，不是絕對值</b> ——
+    今天比過去幾天高就是旺，可以撐價；明顯低於一週平均就要考慮讓價。
+    <span class="t">家數會變動，所以同時附「均值」（合計 ÷ 當天有抓到的家數），家數不同時以均值為準。</span>
+  </div>
+  <table>
+    <thead><tr><th>日期</th><th class="n">市場合計</th><th class="n">均值</th><th class="n">丰森</th><th class="n">vs 一週均</th></tr></thead>
+    <tbody id="hrows"><tr><td colspan="5" class="dash">尚無歷史，第一次抓取後開始累積</td></tr></tbody>
+  </table>
+</div>
+
+<div class="panel">
   <h2>競品參考價 · 會員價</h2>
   <div class="meta" style="margin:-4px 0 12px">
     Agoda 會員價（已登入帳號讀取）　2 大人 / 1 房 / 1 晚 / TWD、未含稅費　擷取 <b>2026-09-05 10:50</b>
@@ -160,12 +173,38 @@ function render(d){
   }).join('');
 }
 
+var WD=['日','一','二','三','四','五','六'];
+function renderHist(h){
+  if(!h||!h.days||!h.days.length)return;
+  var days=h.days.slice(-7);
+  // 基準線用「均值」的一週平均，避免家數變動把絕對合計拉歪
+  var av=days.filter(function(d){return d.avg;}).map(function(d){return d.avg;});
+  var base=av.length?av.reduce(function(a,b){return a+b;},0)/av.length:0;
+  var mx=Math.max.apply(null,days.map(function(d){return d.market||0;}).concat([1]));
+  document.getElementById('hrows').innerHTML=days.slice().reverse().map(function(d){
+    var dt=new Date(d.date+'T00:00:00');
+    var lab=(dt.getMonth()+1)+'/'+dt.getDate()+' '+WD[dt.getDay()];
+    var w=Math.round((d.market||0)/mx*90);
+    var fs=(d.values&&d.values['丰森酒店'])||null;
+    var dv=(base&&d.avg)?Math.round((d.avg/base-1)*100):null;
+    var col=dv==null?'':(dv>=8?'color:#b3391f;font-weight:700':(dv<=-8?'color:#1668c2;font-weight:700':''));
+    // 熱度是「當天累積到現在」的數字，抓取時刻不同就不能直接比，所以把時刻掛在日期上
+    var hh=(d.generated||'').slice(11,16);
+    return '<tr><td title="擷取 '+esc(d.generated||'')+'">'+lab+
+      (hh?'<span class="t" style="font-size:11px;color:#8a8478"> '+hh+'</span>':'')+'</td>'+
+      '<td class="n"><span class="gbar" style="width:'+w+'px"></span><b>'+(d.market||'—')+'</b></td>'+
+      '<td class="n">'+(d.avg!=null?d.avg:'—')+'<span class="t"> /'+(d.counted||0)+'家</span></td>'+
+      '<td class="n">'+(fs?fs:'<span class="dash">—</span>')+'</td>'+
+      '<td class="n" style="'+col+'">'+(dv==null?'—':(dv>0?'+':'')+dv+'%')+'</td></tr>';
+  }).join('');
+}
+
 function runNow(){
   var b=document.getElementById('btn');
   b.disabled=true; b.textContent='抓取中…（約 60–90 秒）';
   setStatus('正在深掃 Agoda 台中搜尋結果…');
   fetch(BASE+'/run-agoda-heat').then(function(r){return r.json();}).then(function(res){
-    if(res.payload) render(res.payload);
+    if(res.payload){ render(res.payload); renderHist(res.payload.history); }
     if(res.stale){ setStatus('Agoda 這次限流（0 個標籤），顯示的是上一份快照，稍後再試',true); }
     else if(res.ok){ setStatus('已更新 '+((res.payload&&res.payload.generated)||'')); }
     else { setStatus('抓取失敗（exit '+res.returncode+'）：'+String(res.error||'').slice(-200),true); }
@@ -176,8 +215,18 @@ function runNow(){
 
 fetch('agoda_heat.json?t='+Date.now())
   .then(function(r){ return r.ok?r.json():Promise.reject(); })
-  .then(function(d){ render(d); setStatus('上次快照 '+(d.generated||'')); })
+  .then(function(d){ render(d); renderHist(d.history); setStatus('上次快照 '+(d.generated||'')); })
   .catch(function(){ setStatus('尚無快照，按「立即抓取」取得'); });
+
+/* 歷史：優先讀家裡那台的即時檔，讀不到就退回 Pages 上的靜態檔 */
+fetch(BASE+'/agoda-heat-history.json')
+  .then(function(r){ return r.ok?r.json():Promise.reject(); })
+  .then(renderHist)
+  .catch(function(){
+    fetch('agoda_heat_history.json?t='+Date.now())
+      .then(function(r){ return r.ok?r.json():Promise.reject(); })
+      .then(renderHist).catch(function(){});
+  });
 
 if(location.search.indexOf('run=1')>=0){ setTimeout(runNow,400); }
 </script>
