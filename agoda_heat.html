@@ -73,14 +73,16 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:v
 <div class="panel">
   <h2>近一週市場熱度</h2>
   <div class="meta" style="margin:-4px 0 12px">
-    每天各家「今天下訂人數」的加總。<b>要看的是折線的高低起伏，不是絕對值</b> ——
-    今天比過去幾天高就是旺，可以撐價；明顯低於一週平均就要考慮讓價。
-    <span class="t">家數會變動，所以同時附「均值」（合計 ÷ 當天有抓到的家數），家數不同時以均值為準。</span>
+    七家逐日的「今天下訂人數」。<b>看的是各自跟自己一週均值的落差，不是絕對值</b> ——
+    紅字 = 高於自己均值 15% 以上（旺，可撐價），藍字 = 低於 15% 以上（淡，考慮讓價）。
+    <span class="t">每天中午 12:00 自動抓一次；熱度是當天累積數，所以固定同一時刻才可比。「—」= 那天沒掃到或沒掛標籤。</span>
   </div>
-  <table>
-    <thead><tr><th>日期</th><th class="n">市場合計</th><th class="n">均值</th><th class="n">丰森</th><th class="n">vs 一週均</th></tr></thead>
-    <tbody id="hrows"><tr><td colspan="5" class="dash">尚無歷史，第一次抓取後開始累積</td></tr></tbody>
-  </table>
+  <div style="overflow-x:auto">
+    <table id="htable">
+      <thead><tr id="hhead"><th>旅館</th></tr></thead>
+      <tbody id="hrows"><tr><td class="dash">尚無歷史，第一次抓取後開始累積</td></tr></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="panel">
@@ -174,29 +176,54 @@ function render(d){
 }
 
 var WD=['日','一','二','三','四','五','六'];
+var SELF='丰森酒店';
+
+/* 七家 × 最近七天的矩陣。列＝旅館、欄＝日期（舊→新），最後一欄是該家的七日均。
+   著色是「跟自己的均值比」，不是跟別家比 —— 各家量級差很多（長榮 56 / 暮雲 25），
+   拿絕對值互比沒有意義，看自己相對自己才看得出當天旺不旺。 */
 function renderHist(h){
   if(!h||!h.days||!h.days.length)return;
   var days=h.days.slice(-7);
-  // 基準線用「均值」的一週平均，避免家數變動把絕對合計拉歪
-  var av=days.filter(function(d){return d.avg;}).map(function(d){return d.avg;});
-  var base=av.length?av.reduce(function(a,b){return a+b;},0)/av.length:0;
-  var mx=Math.max.apply(null,days.map(function(d){return d.market||0;}).concat([1]));
-  document.getElementById('hrows').innerHTML=days.slice().reverse().map(function(d){
+  var names=(h.targets&&h.targets.length)?h.targets.slice():
+            Object.keys(days[days.length-1].values||{});
+
+  var head='<th>旅館</th>'+days.map(function(d){
     var dt=new Date(d.date+'T00:00:00');
-    var lab=(dt.getMonth()+1)+'/'+dt.getDate()+' '+WD[dt.getDay()];
-    var w=Math.round((d.market||0)/mx*90);
-    var fs=(d.values&&d.values['丰森酒店'])||null;
-    var dv=(base&&d.avg)?Math.round((d.avg/base-1)*100):null;
-    var col=dv==null?'':(dv>=8?'color:#b3391f;font-weight:700':(dv<=-8?'color:#1668c2;font-weight:700':''));
-    // 熱度是「當天累積到現在」的數字，抓取時刻不同就不能直接比，所以把時刻掛在日期上
     var hh=(d.generated||'').slice(11,16);
-    return '<tr><td title="擷取 '+esc(d.generated||'')+'">'+lab+
-      (hh?'<span class="t" style="font-size:11px;color:#8a8478"> '+hh+'</span>':'')+'</td>'+
-      '<td class="n"><span class="gbar" style="width:'+w+'px"></span><b>'+(d.market||'—')+'</b></td>'+
-      '<td class="n">'+(d.avg!=null?d.avg:'—')+'<span class="t"> /'+(d.counted||0)+'家</span></td>'+
-      '<td class="n">'+(fs?fs:'<span class="dash">—</span>')+'</td>'+
-      '<td class="n" style="'+col+'">'+(dv==null?'—':(dv>0?'+':'')+dv+'%')+'</td></tr>';
+    return '<th class="n" title="擷取 '+esc(d.generated||'')+'">'+
+      (dt.getMonth()+1)+'/'+dt.getDate()+
+      '<br><span style="font-weight:400">'+WD[dt.getDay()]+(hh?' '+hh:'')+'</span></th>';
+  }).join('')+'<th class="n">七日均</th>';
+  document.getElementById('hhead').innerHTML=head;
+
+  function cell(v,avg,strong){
+    if(v==null) return '<td class="n"><span class="dash">—</span></td>';
+    var dv=avg?(v/avg-1):0;
+    var st=dv>=0.15?'color:#b3391f;font-weight:700':(dv<=-0.15?'color:#1668c2;font-weight:700':'');
+    if(strong&&!st) st='font-weight:700';
+    return '<td class="n" style="'+st+'" title="'+(avg?('七日均 '+avg.toFixed(1)+'　'+(dv>=0?'+':'')+Math.round(dv*100)+'%'):'')+'">'+v+'</td>';
+  }
+
+  var body=names.map(function(nm){
+    var vals=days.map(function(d){ var v=(d.values||{})[nm]; return (v===0||v)?v:null; });
+    var got=vals.filter(function(v){return v!=null;});
+    var avg=got.length?got.reduce(function(a,b){return a+b;},0)/got.length:null;
+    var self=(nm===SELF);
+    return '<tr class="'+(self?'self':'')+'"><td>'+esc(nm)+
+      (self?'<span class="pill">自家</span>':'')+'</td>'+
+      vals.map(function(v,i){ return cell(v,avg,i===vals.length-1); }).join('')+
+      '<td class="n">'+(avg!=null?avg.toFixed(1):'<span class="dash">—</span>')+'</td></tr>';
   }).join('');
+
+  // 市場合計那列：家數會變動，所以同時標當天抓到幾家，避免「今天少一家」被誤讀成變淡
+  var mrow='<tr style="border-top:2px solid var(--line)"><td style="font-weight:700">市場合計'+
+    '<span class="t" style="font-weight:400;color:#8a8478"> / 家數</span></td>'+
+    days.map(function(d){
+      return '<td class="n"><b>'+(d.market||'—')+'</b>'+
+        '<span class="t" style="color:#8a8478;font-size:11px"> /'+(d.counted||0)+'</span></td>';
+    }).join('')+'<td class="n"></td></tr>';
+
+  document.getElementById('hrows').innerHTML=body+mrow;
 }
 
 function runNow(){
