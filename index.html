@@ -137,6 +137,18 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     </div>
   </div>
 
+  <div class="card">
+    <span class="freq">點擊即時抓取</span>
+    <div class="ic">🔥</div>
+    <h2>Agoda 熱度 <span class="en">Demand Signal</span></h2>
+    <div class="desc">Agoda 搜尋卡片上的「今天有 XX 人下訂」，台中競品六家＋丰森。<b>不是實際進單量</b>，是 Agoda 的行銷熱度標籤，只當同一時點的相對比較。按鈕會當場深掃 Agoda（需在 Tailscale 內，約 60–90 秒）。</div>
+    <div class="live" id="ah-live">載入熱度快照…</div>
+    <div class="actions">
+      <a class="btn-primary" href="agoda_heat.html?run=1">🔥 立即抓取 →</a>
+      <a class="btn-secondary" href="agoda_heat.html">看上次快照</a>
+    </div>
+  </div>
+
   <a class="card" href="monitor.html">
     <span class="freq">每日更新</span>
     <div class="ic">📊</div>
@@ -192,6 +204,18 @@ fetch('taipei_pricing.json?t=' + Date.now())
   })
   .catch(function(){ document.getElementById('tppr-live').innerHTML =
     '<span class="t">每日 09:40 更新北車標準雙人房調價建議</span>'; });
+
+fetch('agoda_heat.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    var me = (d.rows||[]).filter(function(r){ return r.self; })[0];
+    var top = (d.top||[])[0];
+    document.getElementById('ah-live').innerHTML =
+      '丰森 <b>' + (me && me.n ? me.n : '—') + '</b> 人 · 全區最高 <b>' +
+      (top ? top.n : '—') + '</b> 人 <span class="t">（' + (d.generated||'') + '）</span>';
+  })
+  .catch(function(){ document.getElementById('ah-live').innerHTML =
+    '<span class="t">按「立即抓取」取得 Agoda 台中競品熱度</span>'; });
 
 fetch('breeze_std_pricing.json?t=' + Date.now())
   .then(function(r){ return r.ok ? r.json() : Promise.reject(); })

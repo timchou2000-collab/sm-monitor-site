@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agoda 熱度 · 台中競品</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--hot:#c2761f;--radius:16px;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 10px 30px rgba(40,35,25,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:840px;margin:0 auto;padding:0 24px 70px}
+header.top{padding:44px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.kicker{font:600 12px/1 "Noto Sans TC";letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1{font-family:"Noto Serif TC",serif;font-size:clamp(26px,5vw,38px);color:var(--brand);line-height:1.1}
+.lead{margin-top:12px;color:var(--muted);font-size:14px;max-width:60ch}
+.back{display:inline-block;margin-top:14px;color:var(--gold);font-weight:700;font-size:13px;text-decoration:none}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:20px 0 8px}
+button{background:var(--brand);color:#fffdf9;border:0;font-family:inherit;font-weight:700;font-size:14px;
+padding:12px 22px;border-radius:999px;cursor:pointer;transition:transform .12s,opacity .12s}
+button:hover:not(:disabled){transform:translateY(-1px)}
+button:disabled{opacity:.55;cursor:default}
+#status{font-size:13px;color:var(--muted)}
+#status.err{color:#b3391f;font-weight:700}
+.meta{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.meta b{color:var(--ink)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+box-shadow:var(--shadow);padding:20px 22px;margin-bottom:18px}
+h2{font-family:"Noto Serif TC",serif;font-size:17px;color:var(--brand);margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px;border-bottom:1px solid #f2eee4;vertical-align:middle}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.self td{background:#fbf7ee}
+tr.self td:first-child{font-weight:700;color:var(--brand)}
+.pill{display:inline-block;font-size:11px;color:var(--gold);border:1px solid var(--line);
+border-radius:999px;padding:1px 8px;margin-left:6px}
+.n b{font-family:"Fraunces",serif;font-size:20px;font-weight:600;color:var(--hot)}
+.gbar{display:inline-block;height:9px;border-radius:0 4px 4px 0;background:var(--brand);
+vertical-align:middle;margin-right:8px;min-width:2px}
+.dash{color:var(--muted)}
+.note{font-size:12px;color:var(--muted);line-height:1.7;border-left:3px solid var(--line);padding-left:12px}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:640px){.wrap{padding:0 16px 50px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="kicker">Agoda Demand Signal</div>
+  <h1>Agoda 熱度 · 台中競品</h1>
+  <div class="lead">Agoda 搜尋結果卡片上的「今天有 XX 人下訂」。<b>不是實際進單量</b>，是 Agoda 的行銷熱度標籤，定義未公開、可能含促銷加權；當「同一時點的相對熱度」參考。</div>
+  <a class="back" href="index.html">← 回控房中心</a>
+</header>
+
+<div class="bar">
+  <button id="btn" onclick="runNow()">🔥 立即抓取</button>
+  <span id="status">載入上次快照…</span>
+</div>
+<div class="meta" id="meta"></div>
+
+<div class="panel">
+  <h2>競品組</h2>
+  <table><thead><tr><th>旅館</th><th class="n">今天下訂人數</th><th class="n">搜尋排名</th></tr></thead>
+  <tbody id="rows"><tr><td colspan="3" class="dash">尚未載入</td></tr></tbody></table>
+</div>
+
+<div class="panel">
+  <h2>全台中熱度前 10</h2>
+  <table><thead><tr><th>旅館</th><th class="n">人數</th><th class="n">搜尋排名</th></tr></thead>
+  <tbody id="tops"><tr><td colspan="3" class="dash">尚未載入</td></tr></tbody></table>
+</div>
+
+<div class="panel">
+  <div class="note">
+    <b>怎麼讀這個數字</b><br>
+    · 這個標籤只出現在搜尋結果卡片，飯店專頁沒有；而且只有「今晚」這種近期日期會掛，所以固定用今天當入住日。<br>
+    · Agoda 對連續查詢會限流，清單會被降級成每頁 8–10 家、熱度標籤整批消失。抓到 0 個標籤時系統會保留上一份快照不覆蓋，並標示為舊資料。<br>
+    · 掃描家數低於 100 家時，排名與覆蓋率參考性下降。
+  </div>
+</div>
+
+<footer>SM_control · Agoda 熱度訊號｜資料來源：Agoda 台中搜尋結果（zh-TW，2 大人 1 房 1 晚）</footer>
+</div>
+<script>
+var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
+/* sm-endpoint-autoprobe */
+(function(){
+  if(window.__smProbeInstalled)return; window.__smProbeInstalled=true;
+  var CAND=['http://127.0.0.1:8765', BASE];
+  var picked=null, pending=null;
+  var of=window.fetch.bind(window);
+  function tryOne(i){
+    if(i>=CAND.length){picked=BASE;return Promise.resolve(BASE);}
+    var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var tm=setTimeout(function(){if(ctl)ctl.abort();},2500);
+    var opt={cache:'no-store'}; if(ctl)opt.signal=ctl.signal;
+    return of(CAND[i]+'/health',opt).then(function(r){
+      clearTimeout(tm); if(!r.ok)throw new Error('bad');
+      picked=CAND[i]; return picked;
+    }).catch(function(){ clearTimeout(tm); return tryOne(i+1); });
+  }
+  function resolveBase(){ if(picked)return Promise.resolve(picked);
+    if(!pending)pending=tryOne(0); return pending; }
+  window.fetch=function(u,o){
+    if(typeof u==='string' && u.indexOf(BASE)===0){
+      return resolveBase().then(function(b){ return of(b+u.slice(BASE.length),o); });
+    }
+    return of(u,o);
+  };
+  resolveBase();
+})();
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function setStatus(t,err){var s=document.getElementById('status');s.textContent=t;s.className=err?'err':'';}
+
+function render(d){
+  if(!d||!d.rows){return;}
+  document.getElementById('meta').innerHTML =
+    '入住日 <b>'+esc(d.checkIn||'—')+'</b>（今晚）　擷取 <b>'+esc(d.generated||'—')+'</b>　'+
+    '掃描 <b>'+(d.scanned||0)+'</b> 家，其中 <b>'+(d.withBadge||0)+'</b> 家有熱度標籤';
+  var mx=0;
+  d.rows.forEach(function(r){ if(r.n&&r.n>mx)mx=r.n; });
+  document.getElementById('rows').innerHTML = d.rows.map(function(r){
+    var w = (r.n&&mx)?Math.round(r.n/mx*90):0;
+    var val = r.n ? '<span class="gbar" style="width:'+w+'px"></span><b>'+r.n+'</b>'
+                  : '<span class="dash">'+(r.found?'無標籤':'未在結果中')+'</span>';
+    return '<tr class="'+(r.self?'self':'')+'"><td>'+esc(r.label)+
+      (r.self?'<span class="pill">自家</span>':'')+'</td>'+
+      '<td class="n">'+val+'</td>'+
+      '<td class="n">'+(r.pos?('#'+r.pos):'<span class="dash">—</span>')+'</td></tr>';
+  }).join('');
+  var tops=d.top||[];
+  document.getElementById('tops').innerHTML = tops.length ? tops.map(function(h){
+    return '<tr><td>'+esc(h.name)+'</td><td class="n"><b>'+h.n+'</b></td>'+
+      '<td class="n">#'+h.pos+'</td></tr>';
+  }).join('') : '<tr><td colspan="3" class="dash">這次沒抓到任何熱度標籤</td></tr>';
+}
+
+function runNow(){
+  var b=document.getElementById('btn');
+  b.disabled=true; b.textContent='抓取中…（約 60–90 秒）';
+  setStatus('正在深掃 Agoda 台中搜尋結果…');
+  fetch(BASE+'/run-agoda-heat').then(function(r){return r.json();}).then(function(res){
+    if(res.payload) render(res.payload);
+    if(res.stale){ setStatus('Agoda 這次限流（0 個標籤），顯示的是上一份快照，稍後再試',true); }
+    else if(res.ok){ setStatus('已更新 '+((res.payload&&res.payload.generated)||'')); }
+    else { setStatus('抓取失敗（exit '+res.returncode+'）：'+String(res.error||'').slice(-200),true); }
+  }).catch(function(){
+    setStatus('連線不到家裡那台。請確認這台裝置在 Tailscale 內、且家裡那台開著。',true);
+  }).finally(function(){ b.disabled=false; b.textContent='🔥 立即抓取'; });
+}
+
+fetch('agoda_heat.json?t='+Date.now())
+  .then(function(r){ return r.ok?r.json():Promise.reject(); })
+  .then(function(d){ render(d); setStatus('上次快照 '+(d.generated||'')); })
+  .catch(function(){ setStatus('尚無快照，按「立即抓取」取得'); });
+
+if(location.search.indexOf('run=1')>=0){ setTimeout(runNow,400); }
+</script>
+</body>
+</html>

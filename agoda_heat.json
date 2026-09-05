@@ -1,0 +1,134 @@
+{
+ "generated": "2026-09-05 08:44",
+ "checkIn": "2026-09-05",
+ "scanned": 225,
+ "withBadge": 42,
+ "rows": [
+  {
+   "label": "丰森酒店",
+   "slug": "fosen-hotel",
+   "self": true,
+   "agodaName": null,
+   "n": null,
+   "pos": null,
+   "found": false
+  },
+  {
+   "label": "長榮桂冠酒店-台中",
+   "slug": "evergreen-laurel-hotel-taichung",
+   "self": false,
+   "agodaName": null,
+   "n": null,
+   "pos": null,
+   "found": false
+  },
+  {
+   "label": "台中鳳凰酒店",
+   "slug": "phoenix-hotel-taichung",
+   "self": false,
+   "agodaName": null,
+   "n": null,
+   "pos": null,
+   "found": false
+  },
+  {
+   "label": "新通豪大飯店",
+   "slug": "t-hotel",
+   "self": false,
+   "agodaName": "新通豪大飯店",
+   "n": 38,
+   "pos": 1,
+   "found": true
+  },
+  {
+   "label": "烏日璞旅",
+   "slug": "boutech-wuri",
+   "self": false,
+   "agodaName": null,
+   "n": null,
+   "pos": null,
+   "found": false
+  },
+  {
+   "label": "暮雲商旅",
+   "slug": "autumn-willow-hotel",
+   "self": false,
+   "agodaName": "暮雲商旅",
+   "n": 25,
+   "pos": 5,
+   "found": true
+  },
+  {
+   "label": "探索私旅",
+   "slug": "explore-hotel",
+   "self": false,
+   "agodaName": null,
+   "n": null,
+   "pos": null,
+   "found": false
+  }
+ ],
+ "top": [
+  {
+   "name": "永豐棧酒店",
+   "slug": "tempus-hotel-taichung_3",
+   "n": 81,
+   "pos": 4
+  },
+  {
+   "name": "巧合大飯店",
+   "slug": "chance-hotel",
+   "n": 51,
+   "pos": 100
+  },
+  {
+   "name": "采寓",
+   "slug": "halo-hotel",
+   "n": 46,
+   "pos": 28
+  },
+  {
+   "name": "麻雀巢行旅",
+   "slug": "talmud-business-hotel-zhong-shan",
+   "n": 42,
+   "pos": 7
+  },
+  {
+   "name": "新通豪大飯店",
+   "slug": "t-hotel",
+   "n": 38,
+   "pos": 1
+  },
+  {
+   "name": "林酒店",
+   "slug": "the-lin-hotel",
+   "n": 35,
+   "pos": 9
+  },
+  {
+   "name": "雀客藏居台中大墩",
+   "slug": "tempus-hotel-da-dun",
+   "n": 31,
+   "pos": 14
+  },
+  {
+   "name": "台中旭日文旅",
+   "slug": "raise-hotel-taichung",
+   "n": 30,
+   "pos": 2
+  },
+  {
+   "name": "麗寶樂園- T11/T12賽車主題旅店",
+   "slug": "t11-t12-hotel",
+   "n": 26,
+   "pos": 32
+  },
+  {
+   "name": "薆悅酒店台中館",
+   "slug": "inhouse-hotel-taichung",
+   "n": 26,
+   "pos": 33
+  }
+ ],
+ "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。"
+}
