@@ -239,8 +239,8 @@ function renderHist(h){
 
 function runNow(){
   var b=document.getElementById('btn');
-  b.disabled=true; b.textContent='抓取中…（約 60–90 秒）';
-  setStatus('正在深掃 Agoda 台中搜尋結果…');
+  b.disabled=true; b.textContent='抓取中…（約 3–5 分鐘）';
+  setStatus('正在深掃 Agoda 台中搜尋結果（最多 8 頁）…這次的數字只顯示，不會寫進下面的歷史');
   fetch(BASE+'/run-agoda-heat').then(function(r){return r.json();}).then(function(res){
     if(res.payload){ render(res.payload); renderHist(res.payload.history); }
     if(res.stale){ setStatus('Agoda 這次限流（0 個標籤），顯示的是上一份快照，稍後再試',true); }
@@ -268,7 +268,9 @@ loadJSON('/agoda-heat.json','agoda_heat.json')
 loadJSON('/agoda-heat-history.json','agoda_heat_history.json')
   .then(renderHist).catch(function(){});
 
-if(location.search.indexOf('run=1')>=0){ setTimeout(runNow,400); }
+/* 進頁面不再自動抓 —— 預設只顯示每天中午 12:00 那份快照，要新的自己按按鈕。
+   （舊的 ?run=1 網址還是能用，但只有明確帶 force 才會觸發，避免書籤誤觸。） */
+if(location.search.indexOf('run=force')>=0){ setTimeout(runNow,400); }
 </script>
 </body>
 </html>
