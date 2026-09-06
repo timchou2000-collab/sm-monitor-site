@@ -77,6 +77,7 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:v
     紅字 = 高於自己均值 15% 以上（旺，可撐價），藍字 = 低於 15% 以上（淡，考慮讓價）。
     <span class="t">歷史只收<b>每天中午 12:00 那支排程</b>的數字 —— 熱度是當天累積數，晚上抓一定比中午高，
     混在一起基準線就沒意義。上面按「立即抓取」隨時可以看即時數字，但不會寫進這張表。
+    日期標 <span style="color:#a9824b">*</span> 的欄不是中午抓的，跟其他欄不完全可比。
     「—」滑過去會說明是沒掃到還是沒掛標籤。</span>
   </div>
   <div style="overflow-x:auto">
@@ -192,9 +193,13 @@ function renderHist(h){
   var head='<th>旅館</th>'+days.map(function(d){
     var dt=new Date(d.date+'T00:00:00');
     var hh=(d.generated||'').slice(11,16);
-    return '<th class="n" title="擷取 '+esc(d.generated||'')+'">'+
-      (dt.getMonth()+1)+'/'+dt.getDate()+
-      '<br><span style="font-weight:400">'+WD[dt.getDay()]+(hh?' '+hh:'')+'</span></th>';
+    // 非中午抓的那幾欄標 *，因為熱度是當天累積數，時刻不同不能直接比
+    var off=d.offBaseline;
+    return '<th class="n" title="擷取 '+esc(d.generated||'')+
+      (off?'　※ 不是中午 12:00 抓的，跟其他欄不完全可比':'')+'">'+
+      (dt.getMonth()+1)+'/'+dt.getDate()+(off?'<span style="color:#a9824b">*</span>':'')+
+      '<br><span style="font-weight:400'+(off?';color:#a9824b':'')+'">'+
+      WD[dt.getDay()]+(hh?' '+hh:'')+'</span></th>';
   }).join('')+'<th class="n">七日均</th>';
   document.getElementById('hhead').innerHTML=head;
 
