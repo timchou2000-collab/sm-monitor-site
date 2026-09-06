@@ -196,8 +196,8 @@ function renderHist(h){
   }).join('')+'<th class="n">七日均</th>';
   document.getElementById('hhead').innerHTML=head;
 
-  function cell(v,avg,strong){
-    if(v==null) return '<td class="n"><span class="dash">—</span></td>';
+  function cell(v,avg,strong,why){
+    if(v==null) return '<td class="n"><span class="dash" title="'+esc(why||'')+'">—</span></td>';
     var dv=avg?(v/avg-1):0;
     var st=dv>=0.15?'color:#b3391f;font-weight:700':(dv<=-0.15?'color:#1668c2;font-weight:700':'');
     if(strong&&!st) st='font-weight:700';
@@ -211,7 +211,11 @@ function renderHist(h){
     var self=(nm===SELF);
     return '<tr class="'+(self?'self':'')+'"><td>'+esc(nm)+
       (self?'<span class="pill">自家</span>':'')+'</td>'+
-      vals.map(function(v,i){ return cell(v,avg,i===vals.length-1); }).join('')+
+      vals.map(function(v,i){
+        var f=days[i].found?days[i].found[nm]:undefined;
+        return cell(v,avg,i===vals.length-1,
+          f===undefined?'':(f?'掃到了，但那天沒掛熱度標籤':'那輪沒掃到這家（Agoda 排序把它排到掃描範圍外）'));
+      }).join('')+
       '<td class="n">'+(avg!=null?avg.toFixed(1):'<span class="dash">—</span>')+'</td></tr>';
   }).join('');
 
@@ -240,20 +244,22 @@ function runNow(){
   }).finally(function(){ b.disabled=false; b.textContent='🔥 立即抓取'; });
 }
 
-fetch('agoda_heat.json?t='+Date.now())
-  .then(function(r){ return r.ok?r.json():Promise.reject(); })
-  .then(function(d){ render(d); renderHist(d.history); setStatus('上次快照 '+(d.generated||'')); })
+/* 兩個框都要走同一份資料來源，否則上面顯示 9/5 的舊快照、下面是 9/6 的即時歷史，
+   看起來就像「上面有數字下面沒有」。優先讀家裡那台的即時檔，連不到才退回
+   Pages 上的靜態檔（那份只有 commit 當下的內容，會落後）。 */
+function loadJSON(live, stat){
+  return fetch(BASE+live).then(function(r){ return r.ok?r.json():Promise.reject(); })
+    .catch(function(){
+      return fetch(stat+'?t='+Date.now()).then(function(r){ return r.ok?r.json():Promise.reject(); });
+    });
+}
+
+loadJSON('/agoda-heat.json','agoda_heat.json')
+  .then(function(d){ render(d); setStatus('上次快照 '+(d.generated||'')); })
   .catch(function(){ setStatus('尚無快照，按「立即抓取」取得'); });
 
-/* 歷史：優先讀家裡那台的即時檔，讀不到就退回 Pages 上的靜態檔 */
-fetch(BASE+'/agoda-heat-history.json')
-  .then(function(r){ return r.ok?r.json():Promise.reject(); })
-  .then(renderHist)
-  .catch(function(){
-    fetch('agoda_heat_history.json?t='+Date.now())
-      .then(function(r){ return r.ok?r.json():Promise.reject(); })
-      .then(renderHist).catch(function(){});
-  });
+loadJSON('/agoda-heat-history.json','agoda_heat_history.json')
+  .then(renderHist).catch(function(){});
 
 if(location.search.indexOf('run=1')>=0){ setTimeout(runNow,400); }
 </script>

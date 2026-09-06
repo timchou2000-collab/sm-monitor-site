@@ -1,8 +1,8 @@
 {
- "generated": "2026-09-05 11:07",
- "checkIn": "2026-09-05",
- "scanned": 339,
- "withBadge": 95,
+ "generated": "2026-09-06 12:09",
+ "checkIn": "2026-09-06",
+ "scanned": 399,
+ "withBadge": 90,
  "hit": 5,
  "total": 7,
  "rows": [
@@ -10,55 +10,55 @@
    "label": "丰森酒店",
    "self": true,
    "agodaName": "丰森酒店",
-   "n": 29,
+   "n": null,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
    "agodaName": "長榮桂冠酒店 - 台中",
-   "n": 56,
+   "n": 55,
    "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
-   "agodaName": "台中鳳凰酒店",
+   "agodaName": null,
    "n": null,
-   "found": true
+   "found": false
   },
   {
    "label": "新通豪大飯店",
    "self": false,
    "agodaName": "新通豪大飯店",
-   "n": 38,
+   "n": 49,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "烏日璞旅",
-   "n": 33,
+   "n": 31,
    "found": true
   },
   {
    "label": "暮雲商旅",
    "self": false,
    "agodaName": "暮雲商旅",
-   "n": 25,
+   "n": 28,
    "found": true
   },
   {
    "label": "探索私旅",
    "self": false,
    "agodaName": "探索私旅",
-   "n": null,
+   "n": 35,
    "found": true
   }
  ],
  "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。",
  "history": {
-  "updated": "2026-09-05 11:07",
+  "updated": "2026-09-06 12:09",
   "targets": [
    "丰森酒店",
    "長榮桂冠酒店-台中",
@@ -71,19 +71,35 @@
   "days": [
    {
     "date": "2026-09-05",
-    "generated": "2026-09-05 11:07",
+    "generated": "2026-09-05 21:15",
     "values": {
-     "丰森酒店": 29,
-     "長榮桂冠酒店-台中": 56,
+     "丰森酒店": 20,
+     "長榮桂冠酒店-台中": 38,
      "台中鳳凰酒店": null,
-     "新通豪大飯店": 38,
-     "烏日璞旅": 33,
-     "暮雲商旅": 25,
+     "新通豪大飯店": 44,
+     "烏日璞旅": 25,
+     "暮雲商旅": 18,
      "探索私旅": null
     },
     "counted": 5,
-    "market": 181,
-    "avg": 36.2
+    "market": 145,
+    "avg": 29.0
+   },
+   {
+    "date": "2026-09-06",
+    "generated": "2026-09-06 12:09",
+    "values": {
+     "丰森酒店": null,
+     "長榮桂冠酒店-台中": 55,
+     "台中鳳凰酒店": null,
+     "新通豪大飯店": 49,
+     "烏日璞旅": 31,
+     "暮雲商旅": 28,
+     "探索私旅": 35
+    },
+    "counted": 5,
+    "market": 198,
+    "avg": 39.6
    }
   ]
  }
