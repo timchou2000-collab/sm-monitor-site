@@ -1,8 +1,8 @@
 {
- "generated": "2026-09-10 01:17",
+ "generated": "2026-09-10 02:01",
  "checkIn": "2026-09-10",
- "scanned": 254,
- "withBadge": 73,
+ "scanned": 247,
+ "withBadge": 68,
  "hit": 7,
  "total": 7,
  "rows": [
@@ -17,21 +17,21 @@
    "label": "長榮桂冠酒店-台中",
    "self": false,
    "agodaName": "長榮桂冠",
-   "n": 48,
+   "n": 47,
    "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
-   "agodaName": "台中鳳凰酒店",
-   "n": 37,
+   "agodaName": "鳳凰",
+   "n": 35,
    "found": true
   },
   {
    "label": "新通豪大飯店",
    "self": false,
-   "agodaName": "新通豪大飯店",
-   "n": 49,
+   "agodaName": "綠夜文旅",
+   "n": 42,
    "found": true
   },
   {
@@ -156,7 +156,7 @@
     "offBaseline": false
    },
    {
-    "date": "2026-09-10",
+    "date": "2026-09-09",
     "generated": "2026-09-10 01:17",
     "values": {
      "丰森酒店": 34,
@@ -179,7 +179,9 @@
     "counted": 7,
     "market": 312,
     "avg": 44.6,
-    "offBaseline": true
+    "offBaseline": true,
+    "actualCheckIn": "2026-09-10",
+    "note": "實際抓取 2026-09-10 01:17、入住日 09-10；09-09 12:00 排程因 Agoda 改熱度字樣全數落空，依指示把這筆歸到 09-09 當替代值。時段與入住日皆與基準不同，僅供聊備一格，不宜與其他天精確比較。"
    }
   ]
  }
