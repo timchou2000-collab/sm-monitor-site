@@ -72,7 +72,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <div class="rules">
   房型：<b>A4B 豪華雙床房</b>、<b>A4C 標準雙床房</b>（各自套同一套規則）。範圍 <b>今日 ～ 11/30</b>：
   目標<b>價格一律照抄丰森</b>；目標<b>房量＝丰森房量</b>，但符合下列任一者<b>強制歸 0</b>：
-  ① 近 4 天 <b>D~D+3（含今天）</b>　② <b>丰森當日房量 ≤ 12</b>。
+  ① 近 7 天 <b>D~D+6（含今天）</b>　② <b>丰森當日房量 ≤ 12</b>。
   只寫「與丰居現況不同」的日期；價格受 300~60000 合理範圍硬擋。
 </div>
 
@@ -189,7 +189,7 @@ function apply(){
   var na=s.avail_changes||0, nr=s.rate_changes||0;
   if(!confirm('確定要把丰森 豪華雙床房 的房量與價格同步寫入「丰居一中」線上嗎？\n\n'+
     '房量變動 '+na+' 筆、價格變動 '+nr+' 筆\n範圍 '+((s.range||{}).from||'')+' ~ '+((s.range||{}).to||'')+
-    '\n（D~D+3 與 丰森房量≤12 的日期房量將設為 0）\n\n此動作會直接改變丰居一中的線上房量與售價。')) return;
+    '\n（D~D+6 與 丰森房量≤12 的日期房量將設為 0）\n\n此動作會直接改變丰居一中的線上房量與售價。')) return;
   var b=document.getElementById('applybtn');b.disabled=true;b.textContent='寫入中…（請勿關閉，約 30–90 秒）';
   document.getElementById('prevbtn').disabled=true;
   setStatus('正在寫入 SiteMinder 並讀回驗證…');showNotice('');
