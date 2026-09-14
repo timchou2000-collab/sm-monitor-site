@@ -127,10 +127,21 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
   </div>
 
   <div class="card">
-    <span class="freq">按鍵執行</span>
+    <span class="freq">每天 07:00 / 19:00</span>
+    <div class="ic">🏨</div>
+    <h2>PMS → 丰森 <span class="en">PMS Inventory Push</span></h2>
+    <div class="desc">丰森 SiteMinder 只有 SM→PMS 單向串接，官網／電話／Walk-in／團體的進單與取消它不會知道。這支把 WiseWebHotel 的「飯店端剩餘」寫回丰森（今日起 90 天）。A1A 走隨機安排房型、SM 的 A1A 寫 0；B1C/B2C/B4C 只賣團體不上 OTA。要臨時補一次就進去按。</div>
+    <div class="live"><span class="t">預覽→確認→寫入 SiteMinder，寫後讀回驗證</span></div>
+    <div class="actions">
+      <a class="btn-primary" href="pms.html">🏨 開啟同步 →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="freq">每天 07:05</span>
     <div class="ic">🔁</div>
     <h2>丰森 → 丰居一中 <span class="en">Inventory Sync</span></h2>
-    <div class="desc">把丰森「豪華雙床房、標準雙床房」的房量與價格同步到丰居一中（今日～11/30）。D~D+3 與丰森房量≤12 的日期房量自動歸 0。先預覽再一鍵寫入（需在 Tailscale 內）。</div>
+    <div class="desc">把丰森「豪華雙床房、標準雙床房」的房量與價格同步到丰居一中（今日～11/30）。D~D+4 與丰森房量≤12 的日期房量自動歸 0。接在 PMS→丰森 之後跑，也可以先預覽再一鍵寫入（需在 Tailscale 內）。</div>
     <div class="live"><span class="t">預覽→確認→寫入 SiteMinder，寫後讀回驗證</span></div>
     <div class="actions">
       <a class="btn-primary" href="sync.html">🔁 開啟同步 →</a>
