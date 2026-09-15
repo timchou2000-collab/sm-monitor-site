@@ -132,6 +132,24 @@ var BASE='https://desktop-b6agd8d.tailf02da5.ts.net';
   resolveBase();
 })();
 
+/* 兩層取數：先打即時端點（家裡那台／Tailscale），連不到就退回 GitHub Pages 靜態檔 */
+function loadJSON(live, stat){
+  return fetch(BASE+live).then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+    .then(function(d){ d.__src='live'; return d; })
+    .catch(function(){
+      return fetch(stat+'?t='+Date.now()).then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+        .then(function(d){ d.__src='static'; return d; });
+    });
+}
+/* 失敗時分辨：真的連不到，還是連到了但跑取失敗 */
+function diagnose(cb){
+  var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+  var tm=setTimeout(function(){if(ctl)ctl.abort();},4000);
+  var opt={cache:'no-store'}; if(ctl)opt.signal=ctl.signal;
+  fetch(BASE+'/health',opt).then(function(r){clearTimeout(tm);cb(r.ok);})
+    .catch(function(){clearTimeout(tm);cb(false);});
+}
+
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
 function num(n){return (n==null)?'—':Number(n).toLocaleString('en-US');}
@@ -182,8 +200,15 @@ function runNow(){
     else{setStatus('抓取失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200))+'　保留上次結果',true);
       if(res.payload)render(res.payload);}
   }).catch(function(e){
-    setStatus('連線不到家裡那台',true);
-    showNotice('連不到即時端點。請確認：①這台裝置在你的 Tailscale 內　②家裡那台開著。');
+    diagnose(function(alive){
+      if(alive){
+        setStatus('家裡那台有回應，但這次跑取中斷了（'+(e&&e.message||'錯誤')+'）',true);
+        showNotice('端點正常（'+window.__smEndpoint()+'），是跑取過程失敗或逾時。稍後再按一次「立即更新」。');
+      }else{
+        setStatus('連線不到家裡那台',true);
+        showNotice('連不到即時端點。請確認：①這台裝置的 Tailscale 有連線（工作列圖示要是已登入狀態）　②家裡那台開著。<br>快速自測：直接開 <a href="'+BASE+'/health" target="_blank">'+BASE+'/health</a>，看得到 <code>{"ok": true}</code> 才算通。');
+      }
+    });
   }).finally(function(){b.disabled=false;b.textContent='立即更新';});
 }
 /* ===== 未來兩個月 · 進單速度(pickup) ===== */
@@ -228,25 +253,35 @@ function runPickup(){
     if(res.ok&&res.payload){renderPk(res.payload);setPkStatus('已更新 '+(res.payload.generated||''));}
     else{setPkStatus('抓取失敗（exit '+res.returncode+'）：'+((res.error||'').slice(-200))+'　保留上次結果',true);
       if(res.payload)renderPk(res.payload);}
-  }).catch(function(e){setPkStatus('連線不到家裡那台',true);})
+  }).catch(function(e){
+    diagnose(function(alive){
+      setPkStatus(alive ? '家裡那台有回應，但這次跑取中斷了（'+(e&&e.message||'錯誤')+'）'
+                        : '連線不到家裡那台（請檢查這台的 Tailscale）', true);
+    });
+  })
   .finally(function(){b.disabled=false;b.textContent='更新進單速度';});
 }
 
-if(new URLSearchParams(location.search).get('run')==='1'){
-  runNow();
-}else{
-  fetch(BASE+'/fosen-week.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
-    if(d&&d.daily){render(d);setStatus('（上次結果，按按鈕重新抓）');}
-  }).catch(function(){
-    setStatus('（尚未載入；按按鈕即時抓取）');
-    showNotice('連不到即時端點。請確認這台裝置在你的 Tailscale 內、且家裡那台開著。');
-  });
-}
-// 進頁順手載上次的進單速度（有就顯示）
-fetch(BASE+'/fosen-pickup.json').then(function(r){return r.ok?r.json():null;}).then(function(d){
-  if(d&&d.daily){renderPk(d);setPkStatus('（上次結果，按按鈕重新抓）');}
-  else{setPkStatus('（尚未載入；按按鈕即時抓取）');}
+// 先把上次結果顯示出來（連不到家裡那台就退回 GitHub Pages 上的靜態檔）
+loadJSON('/fosen-week.json','fosen_week.json').then(function(d){
+  if(d&&d.daily){
+    render(d);
+    setStatus(d.__src==='live' ? '（上次結果 '+(d.generated||'')+'，按按鈕重新抓）'
+                               : '（離線快照 '+(d.generated||'')+'；這台連不到家裡那台，按按鈕會失敗）');
+  }
+}).catch(function(){
+  setStatus('（尚未載入；按按鈕即時抓取）');
+  showNotice('連不到即時端點，也讀不到靜態快照。請確認這台裝置的 Tailscale 有連線、且家裡那台開著。');
+});
+loadJSON('/fosen-pickup.json','fosen_pickup.json').then(function(d){
+  if(d&&d.daily){
+    renderPk(d);
+    setPkStatus(d.__src==='live' ? '（上次結果 '+(d.generated||'')+'，按按鈕重新抓）'
+                                 : '（離線快照 '+(d.generated||'')+'）');
+  }else{setPkStatus('（尚未載入；按按鈕即時抓取）');}
 }).catch(function(){setPkStatus('（尚未載入；按按鈕即時抓取）');});
+
+if(new URLSearchParams(location.search).get('run')==='1'){ runNow(); }
 </script>
 </body>
 </html>
