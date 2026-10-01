@@ -1,51 +1,51 @@
 {
- "generated": "2026-10-01 12:10",
+ "generated": "2026-10-01 18:25",
  "checkIn": "2026-10-01",
- "scanned": 233,
- "withBadge": 69,
- "hit": 6,
+ "scanned": 227,
+ "withBadge": 30,
+ "hit": 4,
  "total": 7,
  "rows": [
   {
    "label": "丰森酒店",
    "self": true,
    "agodaName": "丰森酒店",
-   "n": 39,
+   "n": 26,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
-   "agodaName": "長榮桂冠酒店 - 台中",
-   "n": 55,
-   "found": true
+   "agodaName": null,
+   "n": null,
+   "found": false
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
    "agodaName": "台中鳳凰酒店",
-   "n": 31,
+   "n": 13,
    "found": true
   },
   {
    "label": "新通豪大飯店",
    "self": false,
    "agodaName": "新通豪大飯店",
-   "n": 38,
+   "n": 21,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "烏日璞旅",
-   "n": 75,
+   "n": 34,
    "found": true
   },
   {
    "label": "暮雲商旅",
    "self": false,
    "agodaName": "暮雲商旅",
-   "n": 15,
+   "n": null,
    "found": true
   },
   {
