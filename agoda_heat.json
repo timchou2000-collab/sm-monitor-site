@@ -1,64 +1,64 @@
 {
- "generated": "2026-10-01 18:25",
- "checkIn": "2026-10-01",
- "scanned": 227,
- "withBadge": 30,
- "hit": 4,
+ "generated": "2026-10-02 12:01",
+ "checkIn": "2026-10-02",
+ "scanned": 85,
+ "withBadge": 55,
+ "hit": 7,
  "total": 7,
  "rows": [
   {
    "label": "丰森酒店",
    "self": true,
    "agodaName": "丰森酒店",
-   "n": 26,
+   "n": 51,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "長榮桂冠酒店 - 台中",
+   "n": 44,
+   "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
    "agodaName": "台中鳳凰酒店",
-   "n": 13,
+   "n": 26,
    "found": true
   },
   {
    "label": "新通豪大飯店",
    "self": false,
    "agodaName": "新通豪大飯店",
-   "n": 21,
+   "n": 29,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "烏日璞旅",
-   "n": 34,
+   "n": 58,
    "found": true
   },
   {
    "label": "暮雲商旅",
    "self": false,
    "agodaName": "暮雲商旅",
-   "n": null,
+   "n": 17,
    "found": true
   },
   {
    "label": "探索私旅",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "探索私旅",
+   "n": 36,
+   "found": true
   }
  ],
  "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。",
  "history": {
-  "updated": "2026-10-01 12:10",
+  "updated": "2026-10-02 12:01",
   "targets": [
    "丰森酒店",
    "長榮桂冠酒店-台中",
@@ -69,32 +69,6 @@
    "探索私旅"
   ],
   "days": [
-   {
-    "date": "2026-09-11",
-    "generated": "2026-09-11 12:12",
-    "values": {
-     "丰森酒店": 34,
-     "長榮桂冠酒店-台中": 58,
-     "台中鳳凰酒店": 63,
-     "新通豪大飯店": 47,
-     "烏日璞旅": 18,
-     "暮雲商旅": 15,
-     "探索私旅": null
-    },
-    "found": {
-     "丰森酒店": true,
-     "長榮桂冠酒店-台中": true,
-     "台中鳳凰酒店": true,
-     "新通豪大飯店": true,
-     "烏日璞旅": true,
-     "暮雲商旅": true,
-     "探索私旅": false
-    },
-    "counted": 6,
-    "market": 235,
-    "avg": 39.2,
-    "offBaseline": false
-   },
    {
     "date": "2026-09-12",
     "generated": "2026-09-12 12:10",
@@ -613,6 +587,32 @@
     "counted": 6,
     "market": 253,
     "avg": 42.2,
+    "offBaseline": false
+   },
+   {
+    "date": "2026-10-02",
+    "generated": "2026-10-02 12:01",
+    "values": {
+     "丰森酒店": 51,
+     "長榮桂冠酒店-台中": 44,
+     "台中鳳凰酒店": 26,
+     "新通豪大飯店": 29,
+     "烏日璞旅": 58,
+     "暮雲商旅": 17,
+     "探索私旅": 36
+    },
+    "found": {
+     "丰森酒店": true,
+     "長榮桂冠酒店-台中": true,
+     "台中鳳凰酒店": true,
+     "新通豪大飯店": true,
+     "烏日璞旅": true,
+     "暮雲商旅": true,
+     "探索私旅": true
+    },
+    "counted": 7,
+    "market": 261,
+    "avg": 37.3,
     "offBaseline": false
    }
   ]
