@@ -1,61 +1,61 @@
 {
- "generated": "2026-10-05 12:09",
+ "generated": "2026-10-05 22:13",
  "checkIn": "2026-10-05",
- "scanned": 241,
- "withBadge": 68,
- "hit": 11,
+ "scanned": 195,
+ "withBadge": 57,
+ "hit": 10,
  "total": 11,
  "rows": [
   {
    "label": "丰森酒店",
    "self": true,
    "agodaName": "丰森酒店",
-   "n": 30,
+   "n": 44,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
-   "agodaName": "長榮桂冠酒店 - 台中",
-   "n": 45,
+   "agodaName": "長榮桂冠",
+   "n": 20,
    "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
    "agodaName": "台中鳳凰酒店",
-   "n": 39,
+   "n": 41,
    "found": true
   },
   {
    "label": "新通豪大飯店",
    "self": false,
    "agodaName": "新通豪大飯店",
-   "n": 36,
+   "n": 51,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "烏日璞旅",
-   "n": 86,
+   "n": 34,
    "found": true
   },
   {
    "label": "春樹＋暮雲",
    "self": false,
    "agodaName": "春樹商旅＋暮雲商旅",
-   "n": 138,
+   "n": 70,
    "found": true,
    "merged": true,
    "parts": [
     {
      "name": "春樹商旅",
-     "n": 81
+     "n": 32
     },
     {
      "name": "暮雲商旅",
-     "n": 57
+     "n": 38
     }
    ],
    "partsFound": 2
@@ -71,29 +71,29 @@
    "label": "塔木德台灣大道館",
    "self": false,
    "agodaName": "塔木德酒店 Classic 台灣大道館",
-   "n": 40,
+   "n": 22,
    "found": true
   },
   {
    "label": "雲端商務旅館",
    "self": false,
-   "agodaName": "雲端商務旅館",
-   "n": 38,
+   "agodaName": "雲端商務",
+   "n": 42,
    "found": true
   },
   {
    "label": "享得道HOTEL",
    "self": false,
    "agodaName": "享得道",
-   "n": 54,
+   "n": 35,
    "found": true
   },
   {
    "label": "悅樂旅店台中文心",
    "self": false,
-   "agodaName": "悅樂旅店台中文心",
-   "n": 30,
-   "found": true
+   "agodaName": null,
+   "n": null,
+   "found": false
   }
  ],
  "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。",
