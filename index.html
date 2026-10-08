@@ -148,11 +148,36 @@ footer{margin-top:46px;padding-top:20px;border-top:1px solid var(--line);color:v
     </div>
   </div>
 
+  <div class="card">
+    <span class="freq">每日更新</span>
+    <div class="ic">🧪</div>
+    <h2>丰森 · 漲價實驗 <span class="en">Price Test</span></h2>
+    <div class="desc">丰森平日房價三組同時併行（對照／中／高），10/11–11/07。
+      看各住宿日分在哪一組、賣掉幾間，以及三組在同樣長度的比較窗口下的差異。
+      <b>18:00 後手動調降 D+2 的部分不計入</b>。</div>
+    <div class="live" id="t3-live">載入實驗進度…</div>
+    <div class="actions">
+      <a class="btn-primary" href="fosen_test3.html">🧪 查看實驗 →</a>
+    </div>
+  </div>
+
 </div>
 
 <footer>SM_control · SiteMinder 庫存 / 進單監測｜本頁為各看板入口，資料於各子頁即時呈現。</footer>
 </div>
 <script>
+fetch('fosen_test3.json?t=' + Date.now())
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+  .then(function(d){
+    var el = document.getElementById('t3-live');
+    if(!el) return;
+    var ready = (d.window && d.window.ready) ? d.window.ready.length : 0;
+    el.innerHTML = '共 <b>' + d.days.length + '</b> 個住宿日 · 進入比較窗口 <b>'
+      + ready + '</b> 天 · 更新 ' + d.generated.slice(5,16).replace('T',' ');
+  })
+  .catch(function(){ var el=document.getElementById('t3-live');
+    if(el) el.textContent='尚無實驗資料'; });
+
 fetch('bookings.json?t=' + Date.now())
   .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
   .then(function(d){

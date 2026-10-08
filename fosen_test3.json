@@ -1,0 +1,802 @@
+{
+ "generated": "2026-10-08T21:14:18",
+ "plan": "_fosen_price_test3_20261008_2024.json",
+ "today": "2026-10-08",
+ "write_day": "2026-10-08",
+ "rooms": [
+  "A1B",
+  "A1C",
+  "A4B",
+  "A4C"
+ ],
+ "lead_cut": 2,
+ "win": [
+  10,
+  2
+ ],
+ "excluded": [
+  "2026-10-25"
+ ],
+ "days": [
+  {
+   "date": "2026-10-11",
+   "dow": "日",
+   "arm": "對照",
+   "lead": 3,
+   "rooms": {
+    "A1B": {
+     "avail": 5,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 5,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 52,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 16,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-12",
+   "dow": "一",
+   "arm": "對照",
+   "lead": 4,
+   "rooms": {
+    "A1B": {
+     "avail": 5,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 43,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-13",
+   "dow": "二",
+   "arm": "高",
+   "lead": 5,
+   "rooms": {
+    "A1B": {
+     "avail": 4,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 41,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 16,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-14",
+   "dow": "三",
+   "arm": "高",
+   "lead": 6,
+   "rooms": {
+    "A1B": {
+     "avail": 4,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 41,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 15,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-15",
+   "dow": "四",
+   "arm": "對照",
+   "lead": 7,
+   "rooms": {
+    "A1B": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 8,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 48,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 15,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-18",
+   "dow": "日",
+   "arm": "中",
+   "lead": 10,
+   "rooms": {
+    "A1B": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 5,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 37,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-19",
+   "dow": "一",
+   "arm": "高",
+   "lead": 11,
+   "rooms": {
+    "A1B": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 47,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 18,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-20",
+   "dow": "二",
+   "arm": "對照",
+   "lead": 12,
+   "rooms": {
+    "A1B": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 34,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-21",
+   "dow": "三",
+   "arm": "中",
+   "lead": 13,
+   "rooms": {
+    "A1B": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 45,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 15,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-22",
+   "dow": "四",
+   "arm": "對照",
+   "lead": 14,
+   "rooms": {
+    "A1B": {
+     "avail": 6,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 43,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 16,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-26",
+   "dow": "一",
+   "arm": "中",
+   "lead": 18,
+   "rooms": {
+    "A1B": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 8,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 30,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-27",
+   "dow": "二",
+   "arm": "中",
+   "lead": 19,
+   "rooms": {
+    "A1B": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 38,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 19,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-28",
+   "dow": "三",
+   "arm": "對照",
+   "lead": 20,
+   "rooms": {
+    "A1B": {
+     "avail": 6,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 14,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "dow": "四",
+   "arm": "高",
+   "lead": 21,
+   "rooms": {
+    "A1B": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 11,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 54,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 15,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-11-01",
+   "dow": "日",
+   "arm": "高",
+   "lead": 24,
+   "rooms": {
+    "A1B": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 13,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 43,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 10,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-11-02",
+   "dow": "一",
+   "arm": "對照",
+   "lead": 25,
+   "rooms": {
+    "A1B": {
+     "avail": 11,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 13,
+     "sold": null,
+     "win": null,
+     "sm": 1680,
+     "paid": 1361,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 52,
+     "sold": null,
+     "win": null,
+     "sm": 3080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 17,
+     "sold": null,
+     "win": null,
+     "sm": 2780,
+     "paid": 1442,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-11-03",
+   "dow": "二",
+   "arm": "中",
+   "lead": 26,
+   "rooms": {
+    "A1B": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 7,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 43,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-11-04",
+   "dow": "三",
+   "arm": "高",
+   "lead": 27,
+   "rooms": {
+    "A1B": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 2480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 5,
+     "sold": null,
+     "win": null,
+     "sm": 2080,
+     "paid": 1685,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 19,
+     "sold": null,
+     "win": null,
+     "sm": 3480,
+     "paid": 2009,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 3,
+     "sold": null,
+     "win": null,
+     "sm": 3180,
+     "paid": 1766,
+     "note": "資料不足"
+    }
+   }
+  },
+  {
+   "date": "2026-11-05",
+   "dow": "四",
+   "arm": "中",
+   "lead": 28,
+   "rooms": {
+    "A1B": {
+     "avail": 12,
+     "sold": null,
+     "win": null,
+     "sm": 2280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A1C": {
+     "avail": 9,
+     "sold": null,
+     "win": null,
+     "sm": 1880,
+     "paid": 1523,
+     "note": "資料不足"
+    },
+    "A4B": {
+     "avail": 52,
+     "sold": null,
+     "win": null,
+     "sm": 3280,
+     "paid": 1847,
+     "note": "資料不足"
+    },
+    "A4C": {
+     "avail": 18,
+     "sold": null,
+     "win": null,
+     "sm": 2980,
+     "paid": 1604,
+     "note": "資料不足"
+    }
+   }
+  }
+ ],
+ "window": {
+  "ready": [],
+  "arms": {
+   "對照": {
+    "days": 0,
+    "sold": {},
+    "revenue": 0
+   },
+   "中": {
+    "days": 0,
+    "sold": {},
+    "revenue": 0
+   },
+   "高": {
+    "days": 0,
+    "sold": {},
+    "revenue": 0
+   }
+  }
+ }
+}

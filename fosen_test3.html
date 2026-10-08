@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>丰森 · 三組漲價實驗 · SM 控房</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efe7;--panel:#fffdf9;--ink:#23211c;--muted:#8a8478;--line:#e4ddcf;
+--brand:#1d3b34;--gold:#a9824b;--low:#c0392b;--radius:14px;
+--a0:#6fbda4;--a1:#2f8d72;--a2:#14594a;
+--shadow:0 1px 2px rgba(40,35,25,.05),0 8px 24px rgba(40,35,25,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.55;
+-webkit-font-smoothing:antialiased;
+background-image:radial-gradient(circle at 12% -8%,rgba(169,130,75,.10),transparent 40%),
+radial-gradient(circle at 92% 0,rgba(29,59,52,.08),transparent 38%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px 80px}
+header.top{padding:28px 0 20px;border-bottom:1px solid var(--line);margin-bottom:22px;position:relative}
+header.top::before{content:"";position:absolute;top:0;left:-100vw;right:-100vw;height:4px;
+background:linear-gradient(90deg,var(--brand),var(--gold))}
+.home{display:inline-block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:8px}
+.home:hover{color:var(--brand)}
+h1{font-family:"Noto Serif TC",serif;font-size:26px;font-weight:700;letter-spacing:.01em}
+.sub{color:var(--muted);font-size:13.5px;margin-top:6px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+padding:20px 22px;margin-bottom:18px;box-shadow:var(--shadow)}
+h2{font-family:"Noto Serif TC",serif;font-size:17px;margin-bottom:4px}
+.note{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-weight:700;font-size:12px;color:var(--muted);letter-spacing:.04em;
+padding:6px 8px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c{text-align:center}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.dot{width:11px;height:11px;border-radius:3px;flex:none}
+.d0{background:var(--a0)}.d1{background:var(--a1)}.d2{background:var(--a2)}
+.muted{color:var(--muted)}
+.big{font-family:"Noto Serif TC",serif;font-size:30px;font-weight:700;line-height:1.1}
+.kpis{display:flex;flex-wrap:wrap;gap:14px}
+.kpi{flex:1 1 150px;background:#faf7f0;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .lbl{font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.bar{height:9px;border-radius:0 4px 4px 0;display:block;min-width:2px}
+.barwrap{display:flex;align-items:center;gap:8px}
+.past{opacity:.45}
+.warn{background:#fdf6ec;border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 8px 8px 0;
+font-size:12.5px;margin-top:12px;color:#5c4a2e}
+.err{background:#fdeeec;border-left:3px solid var(--low);padding:10px 14px;border-radius:0 8px 8px 0;
+font-size:13px;color:#7a2b22}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+@media(max-width:640px){
+  .wrap{padding:0 14px 60px}h1{font-size:21px}
+  table{font-size:12px}td,th{padding:6px 5px}
+  .hide-s{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="home" href="./index.html">← 回控房首頁</a>
+  <h1>丰森 · 三組漲價實驗</h1>
+  <div class="sub" id="sub">載入中…</div>
+</header>
+
+<section>
+  <h2>三組設定</h2>
+  <div class="note">實付價 =（SM 掛牌價 − 人數調整）× 0.81，此處為兩人入住。
+    0.81 = 佣金加成 1.25 × 活動折扣 0.72 × 會員折扣 0.90。</div>
+  <div class="legend">
+    <span class="chip"><i class="dot d0"></i>對照</span>
+    <span class="chip"><i class="dot d1"></i>中</span>
+    <span class="chip"><i class="dot d2"></i>高</span>
+  </div>
+  <div id="setup"></div>
+</section>
+
+<section>
+  <h2>主要比較窗口</h2>
+  <div class="note" id="winnote"></div>
+  <div id="window"></div>
+</section>
+
+<section>
+  <h2>逐日明細</h2>
+  <div class="note">「剩」= 該住宿日還剩幾間；「賣」= 實驗開始後到 lead 2 為止賣掉幾間。
+    灰色列代表該日已過或窗口已結束。</div>
+  <div style="overflow-x:auto"><div id="days"></div></div>
+</section>
+
+<section>
+  <h2>已知限制</h2>
+  <ul style="font-size:13px;padding-left:18px;color:#4a463e" id="limits"></ul>
+</section>
+</div>
+
+<script>
+var ARMS=['對照','中','高'], CLS={'對照':'d0','中':'d1','高':'d2'};
+var PRICES={
+ 'ROH':{'對照':1480,'中':1580,'高':1680,adj:0,name:'ROH 隨機安排房型'},
+ 'A1B':{'對照':2080,'中':2280,'高':2480,adj:0,name:'A1B 豪華雙人房'},
+ 'A1C':{'對照':1680,'中':1880,'高':2080,adj:0,name:'A1C 標準雙人房'},
+ 'A4B':{'對照':3080,'中':3280,'高':3480,adj:1000,name:'A4B 豪華雙床房'},
+ 'A4C':{'對照':2780,'中':2980,'高':3180,adj:1000,name:'A4C 標準雙床房'}};
+var ORDER=['A4B','A4C','A1B','A1C','ROH'];
+function paid(k,sm){return Math.round((sm-PRICES[k].adj)*0.81);}
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function n(v){return v==null?'—':v;}
+
+function setup(){
+  var h='<table><thead><tr><th>房型</th>';
+  ARMS.forEach(function(a){h+='<th class="r">'+a+'</th>';});
+  h+='<th class="r hide-s">中 vs 對照</th><th class="r hide-s">高 vs 對照</th></tr></thead><tbody>';
+  ORDER.forEach(function(k){
+    var p=PRICES[k], b=paid(k,p['對照']);
+    h+='<tr><td>'+esc(p.name)+'</td>';
+    ARMS.forEach(function(a){
+      h+='<td class="r">'+p[a].toLocaleString()+'<br><span class="muted">實付 '
+        +paid(k,p[a]).toLocaleString()+'</span></td>';});
+    [ '中','高' ].forEach(function(a){
+      var v=paid(k,p[a]), up=(v/b-1)*100, be=(v-b)/v*100;
+      h+='<td class="r hide-s">+'+up.toFixed(1)+'%<br><span class="muted">兩平 '
+        +be.toFixed(1)+'%</span></td>';});
+    h+='</tr>';
+  });
+  document.getElementById('setup').innerHTML=h+'</tbody></table>'
+    +'<div class="warn">「兩平」= 單量掉超過這個百分比，該組營收就低於對照組。'
+    +'判準是 RevPAR，不是單量。</div>';
+}
+
+function render(d){
+  document.getElementById('sub').textContent=
+    '資料更新 '+d.generated.replace('T',' ')+'　｜　只採用 18:00 前的快照，一律算到 lead '
+    +d.lead_cut+'（18:00 後手動調降 D+'+d.lead_cut+' 不計入）';
+  setup();
+
+  // ---- 主要窗口 ----
+  var w=d.window, rooms=ORDER.filter(function(r){return d.rooms.indexOf(r)>=0;});
+  var ready=w.ready||[];
+  var wn=document.getElementById('winnote');
+  wn.textContent='lead '+d.win[0]+' → lead '+d.win[1]+'（'+(d.win[0]-d.win[1])
+    +' 天），每個住宿日用同樣長度的窗口，不受遠近影響。';
+  var el=document.getElementById('window');
+  if(!ready.length){
+    var pend=d.days.filter(function(x){return x.lead>d.win[1];}).length;
+    el.innerHTML='<div class="err">還沒有任何住宿日的窗口跑完。'
+      +'第一筆會在住宿日 10/18 的窗口結束時出現（約 10/15）。</div>';
+  }else{
+    var max=0;
+    rooms.forEach(function(r){ARMS.forEach(function(a){
+      var o=w.arms[a]; if(!o||!o.days)return;
+      var v=(o.sold[r]||0)/o.days; if(v>max)max=v;});});
+    var h='<div class="kpis">';
+    ARMS.forEach(function(a){
+      var o=w.arms[a]||{days:0,revenue:0};
+      h+='<div class="kpi"><div class="lbl"><span class="chip"><i class="dot '
+        +CLS[a]+'"></i>'+a+'</span></div><div class="big">'+o.days+'</div>'
+        +'<div class="muted" style="font-size:12px">天　理論營收 '
+        +Math.round(o.revenue||0).toLocaleString()+' 元</div></div>';});
+    h+='</div><table style="margin-top:16px"><thead><tr><th>房型</th><th>組別</th>'
+      +'<th class="r">賣出</th><th>平均每日賣出</th></tr></thead><tbody>';
+    rooms.forEach(function(r){
+      ARMS.forEach(function(a,i){
+        var o=w.arms[a]; if(!o||!o.days)return;
+        var tot=o.sold[r]||0, avg=tot/o.days, pct=max?avg/max*100:0;
+        h+='<tr><td>'+(i===0?esc(PRICES[r].name):'')+'</td>'
+          +'<td><span class="chip"><i class="dot '+CLS[a]+'"></i>'+a+'</span></td>'
+          +'<td class="r">'+tot+' 間</td>'
+          +'<td><div class="barwrap"><span class="bar" style="width:'
+          +Math.max(pct,1)+'%;background:var(--a'+i+')" title="'+a+' '+avg.toFixed(2)
+          +' 間/天"></span><span class="muted">'+avg.toFixed(2)+'</span></div></td></tr>';
+      });
+    });
+    el.innerHTML=h+'</tbody></table>';
+    if(ready.length<9) el.innerHTML+='<div class="warn">目前只有 '+ready.length
+      +' 天進入窗口，差異還在雜訊範圍內，只能看方向。</div>';
+  }
+
+  // ---- 逐日 ----
+  var rooms2=rooms, h2='<table><thead><tr><th>住宿日</th><th class="c">星</th>'
+    +'<th>組別</th><th class="r">lead</th>';
+  rooms2.forEach(function(r){h2+='<th class="r">'+r+'</th>';});
+  h2+='</tr></thead><tbody>';
+  d.days.forEach(function(x){
+    var past=x.lead<=d.win[1];
+    h2+='<tr class="'+(past?'past':'')+'"><td>'+x.date.slice(5)+'</td>'
+      +'<td class="c">'+x.dow+'</td>'
+      +'<td><span class="chip"><i class="dot '+CLS[x.arm]+'"></i>'+x.arm+'</span></td>'
+      +'<td class="r">'+(x.lead>=0?'D+'+x.lead:'已過')+'</td>';
+    rooms2.forEach(function(r){
+      var o=x.rooms[r]||{};
+      h2+='<td class="r">剩 '+n(o.avail)+'<br><span class="muted">賣 '+n(o.sold)
+        +'</span></td>';});
+    h2+='</tr>';
+  });
+  document.getElementById('days').innerHTML=h2+'</tbody></table>';
+
+  var lim=['10/11–10/15 這 5 天永遠進不了主要窗口（實驗開始時已在 lead 10 以內），乾淨樣本是 10/18 之後的 13 天。',
+    '三組的 lead 分布不完全平均（對照組偏近、中組偏遠），不要把三組總量直接相加比較。',
+    '10/25 是關房日，兩組都排除。',
+    '理論營收用掛牌實付價估算；真正成交 ADR 要等實驗結束補拉逐筆訂單。'];
+  if(d.rooms.indexOf('ROH')<0) lim.push('ROH 尚未進入每日採集，之後才會有數字。');
+  document.getElementById('limits').innerHTML=lim.map(function(s){
+    return '<li>'+esc(s)+'</li>';}).join('');
+}
+
+fetch('fosen_test3.json?t='+Date.now(),{cache:'no-store'})
+ .then(function(r){if(!r.ok)throw new Error('load fail');return r.json();})
+ .then(render)
+ .catch(function(e){
+   document.getElementById('sub').textContent='讀不到資料';
+   document.getElementById('window').innerHTML=
+     '<div class="err">載入 fosen_test3.json 失敗：'+esc(e.message)+'</div>';});
+</script>
+</body>
+</html>
