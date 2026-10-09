@@ -1,57 +1,57 @@
 {
- "generated": "2026-10-08 12:09",
- "checkIn": "2026-10-08",
- "scanned": 231,
- "withBadge": 68,
- "hit": 10,
+ "generated": "2026-10-09 12:10",
+ "checkIn": "2026-10-09",
+ "scanned": 129,
+ "withBadge": 42,
+ "hit": 5,
  "total": 11,
  "rows": [
   {
    "label": "丰森酒店",
    "self": true,
    "agodaName": "丰森酒店",
-   "n": 33,
+   "n": null,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
    "agodaName": "長榮桂冠酒店 - 台中",
-   "n": 47,
+   "n": null,
    "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
-   "agodaName": "鳳凰",
-   "n": 13,
-   "found": true
+   "agodaName": null,
+   "n": null,
+   "found": false
   },
   {
    "label": "新通豪大飯店",
    "self": false,
-   "agodaName": "新通豪大飯店",
-   "n": 52,
+   "agodaName": "小西城旅店",
+   "n": 12,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "烏日璞旅",
-   "n": 42,
+   "n": 33,
    "found": true
   },
   {
    "label": "春樹＋暮雲",
    "self": false,
    "agodaName": "春樹商旅＋暮雲商旅",
-   "n": 73,
+   "n": 26,
    "found": true,
    "merged": true,
    "parts": [
     {
      "name": "春樹商旅",
-     "n": 47
+     "n": null
     },
     {
      "name": "暮雲商旅",
@@ -63,42 +63,42 @@
   {
    "label": "探索私旅",
    "self": false,
-   "agodaName": null,
+   "agodaName": "探索私旅",
    "n": null,
-   "found": false
+   "found": true
   },
   {
    "label": "塔木德台灣大道館",
    "self": false,
-   "agodaName": "塔木德酒店 Classic 台灣大道館",
-   "n": 35,
+   "agodaName": "台灣大道",
+   "n": 36,
    "found": true
   },
   {
    "label": "雲端商務旅館",
    "self": false,
    "agodaName": "雲端商務旅館",
-   "n": 30,
+   "n": null,
    "found": true
   },
   {
    "label": "享得道HOTEL",
    "self": false,
-   "agodaName": "享得道HOTEL",
-   "n": 37,
-   "found": true
+   "agodaName": null,
+   "n": null,
+   "found": false
   },
   {
    "label": "悅樂旅店台中文心",
    "self": false,
    "agodaName": "悅樂旅店台中文心",
-   "n": 15,
+   "n": 12,
    "found": true
   }
  ],
  "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。",
  "history": {
-  "updated": "2026-10-08 12:09",
+  "updated": "2026-10-09 12:10",
   "targets": [
    "丰森酒店",
    "長榮桂冠酒店-台中",
@@ -113,32 +113,6 @@
    "悅樂旅店台中文心"
   ],
   "days": [
-   {
-    "date": "2026-09-18",
-    "generated": "2026-09-18 12:11",
-    "values": {
-     "丰森酒店": 39,
-     "長榮桂冠酒店-台中": 41,
-     "台中鳳凰酒店": 52,
-     "新通豪大飯店": 59,
-     "烏日璞旅": 80,
-     "暮雲商旅": 24,
-     "探索私旅": null
-    },
-    "found": {
-     "丰森酒店": true,
-     "長榮桂冠酒店-台中": true,
-     "台中鳳凰酒店": true,
-     "新通豪大飯店": true,
-     "烏日璞旅": true,
-     "暮雲商旅": true,
-     "探索私旅": true
-    },
-    "counted": 6,
-    "market": 295,
-    "avg": 49.2,
-    "offBaseline": false
-   },
    {
     "date": "2026-09-19",
     "generated": "2026-09-19 12:11",
@@ -697,6 +671,40 @@
     "counted": 10,
     "market": 377,
     "avg": 37.7,
+    "offBaseline": false
+   },
+   {
+    "date": "2026-10-09",
+    "generated": "2026-10-09 12:10",
+    "values": {
+     "丰森酒店": null,
+     "長榮桂冠酒店-台中": null,
+     "台中鳳凰酒店": null,
+     "新通豪大飯店": 12,
+     "烏日璞旅": 33,
+     "春樹＋暮雲": 26,
+     "探索私旅": null,
+     "塔木德台灣大道館": 36,
+     "雲端商務旅館": null,
+     "享得道HOTEL": null,
+     "悅樂旅店台中文心": 12
+    },
+    "found": {
+     "丰森酒店": true,
+     "長榮桂冠酒店-台中": true,
+     "台中鳳凰酒店": false,
+     "新通豪大飯店": true,
+     "烏日璞旅": true,
+     "春樹＋暮雲": true,
+     "探索私旅": true,
+     "塔木德台灣大道館": true,
+     "雲端商務旅館": true,
+     "享得道HOTEL": false,
+     "悅樂旅店台中文心": true
+    },
+    "counted": 5,
+    "market": 119,
+    "avg": 23.8,
     "offBaseline": false
    }
   ]
