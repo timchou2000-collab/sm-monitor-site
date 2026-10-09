@@ -75,9 +75,9 @@ footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:v
   <div class="meta" style="margin:-4px 0 12px">
     七家逐日的「今天下訂人數」。<b>看的是各自跟自己一週均值的落差，不是絕對值</b> ——
     紅字 = 高於自己均值 15% 以上（旺，可撐價），藍字 = 低於 15% 以上（淡，考慮讓價）。
-    <span class="t">歷史只收<b>每天中午 12:00 那支排程</b>的數字 —— 熱度是當天累積數，晚上抓一定比中午高，
+    <span class="t">歷史只收<b>每天晚上 19:00 那支排程</b>的數字 —— 熱度是當天累積數，不同時刻抓的數字不能比，
     混在一起基準線就沒意義。上面按「立即抓取」隨時可以看即時數字，但不會寫進這張表。
-    日期標 <span style="color:#a9824b">*</span> 的欄不是中午抓的，跟其他欄不完全可比。
+    日期標 <span style="color:#a9824b">*</span> 的欄不是 19:00 抓的（含 10/9 以前中午 12:00 的舊資料），跟其他欄不完全可比。
     「—」滑過去會說明是沒掃到還是沒掛標籤。</span>
   </div>
   <div style="overflow-x:auto">
@@ -193,10 +193,10 @@ function renderHist(h){
   var head='<th>旅館</th>'+days.map(function(d){
     var dt=new Date(d.date+'T00:00:00');
     var hh=(d.generated||'').slice(11,16);
-    // 非中午抓的那幾欄標 *，因為熱度是當天累積數，時刻不同不能直接比
+    // 非 19:00 抓的那幾欄標 *，因為熱度是當天累積數，時刻不同不能直接比
     var off=d.offBaseline;
     return '<th class="n" title="擷取 '+esc(d.generated||'')+
-      (off?'　※ 不是中午 12:00 抓的，跟其他欄不完全可比':'')+'">'+
+      (off?'　※ 不是 19:00 抓的，跟其他欄不完全可比':'')+'">'+
       (dt.getMonth()+1)+'/'+dt.getDate()+(off?'<span style="color:#a9824b">*</span>':'')+
       '<br><span style="font-weight:400'+(off?';color:#a9824b':'')+'">'+
       WD[dt.getDay()]+(hh?' '+hh:'')+'</span></th>';
@@ -268,7 +268,7 @@ loadJSON('/agoda-heat.json','agoda_heat.json')
 loadJSON('/agoda-heat-history.json','agoda_heat_history.json')
   .then(renderHist).catch(function(){});
 
-/* 進頁面不再自動抓 —— 預設只顯示每天中午 12:00 那份快照，要新的自己按按鈕。
+/* 進頁面不再自動抓 —— 預設只顯示每天晚上 19:00 那份快照，要新的自己按按鈕。
    （舊的 ?run=1 網址還是能用，但只有明確帶 force 才會觸發，避免書籤誤觸。） */
 if(location.search.indexOf('run=force')>=0){ setTimeout(runNow,400); }
 </script>

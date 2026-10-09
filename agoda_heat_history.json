@@ -38,7 +38,7 @@
    "counted": 4,
    "market": 155,
    "avg": 38.8,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-20",
@@ -64,7 +64,7 @@
    "counted": 7,
    "market": 261,
    "avg": 37.3,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-21",
@@ -90,7 +90,7 @@
    "counted": 7,
    "market": 301,
    "avg": 43.0,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-22",
@@ -116,7 +116,7 @@
    "counted": 6,
    "market": 224,
    "avg": 37.3,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-23",
@@ -142,7 +142,7 @@
    "counted": 7,
    "market": 326,
    "avg": 46.6,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-24",
@@ -168,7 +168,7 @@
    "counted": 7,
    "market": 256,
    "avg": 36.6,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-25",
@@ -194,7 +194,7 @@
    "counted": 5,
    "market": 188,
    "avg": 37.6,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-26",
@@ -220,7 +220,7 @@
    "counted": 2,
    "market": 85,
    "avg": 42.5,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-27",
@@ -246,7 +246,7 @@
    "counted": 7,
    "market": 225,
    "avg": 32.1,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-28",
@@ -272,7 +272,7 @@
    "counted": 7,
    "market": 219,
    "avg": 31.3,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-29",
@@ -298,7 +298,7 @@
    "counted": 5,
    "market": 227,
    "avg": 45.4,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-09-30",
@@ -324,7 +324,7 @@
    "counted": 6,
    "market": 285,
    "avg": 47.5,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-01",
@@ -350,7 +350,7 @@
    "counted": 6,
    "market": 253,
    "avg": 42.2,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-02",
@@ -376,7 +376,7 @@
    "counted": 7,
    "market": 261,
    "avg": 37.3,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-03",
@@ -402,7 +402,7 @@
    "counted": 7,
    "market": 301,
    "avg": 43.0,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-04",
@@ -436,7 +436,7 @@
    "counted": 11,
    "market": 518,
    "avg": 47.1,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-05",
@@ -470,7 +470,7 @@
    "counted": 11,
    "market": 583,
    "avg": 53.0,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-06",
@@ -504,7 +504,7 @@
    "counted": 11,
    "market": 603,
    "avg": 54.8,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-07",
@@ -538,7 +538,7 @@
    "counted": 11,
    "market": 438,
    "avg": 39.8,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-08",
@@ -572,7 +572,7 @@
    "counted": 10,
    "market": 377,
    "avg": 37.7,
-   "offBaseline": false
+   "offBaseline": true
   },
   {
    "date": "2026-10-09",
@@ -606,7 +606,7 @@
    "counted": 5,
    "market": 119,
    "avg": 23.8,
-   "offBaseline": false
+   "offBaseline": true
   }
  ]
 }
