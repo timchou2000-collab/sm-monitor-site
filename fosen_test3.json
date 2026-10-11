@@ -1,7 +1,7 @@
 {
- "generated": "2026-10-10T09:45:01",
+ "generated": "2026-10-11T09:45:02",
  "plan": "_fosen_price_test3_20261008_2024.json",
- "today": "2026-10-10",
+ "today": "2026-10-11",
  "write_day": "2026-10-08",
  "rooms": [
   "A1B",
@@ -23,7 +23,7 @@
    "date": "2026-10-11",
    "dow": "日",
    "arm": "對照",
-   "lead": 1,
+   "lead": 0,
    "rooms": {
     "A1B": {
      "avail": 1,
@@ -31,7 +31,7 @@
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
      "avail": 8,
@@ -47,7 +47,7 @@
      "win": null,
      "sm": 3080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
      "avail": 16,
@@ -55,7 +55,7 @@
      "win": null,
      "sm": 2780,
      "paid": 1442,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
      "avail": 3,
@@ -71,7 +71,7 @@
    "date": "2026-10-12",
    "dow": "一",
    "arm": "對照",
-   "lead": 2,
+   "lead": 1,
    "rooms": {
     "A1B": {
      "avail": 2,
@@ -79,7 +79,7 @@
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
      "avail": 8,
@@ -87,7 +87,7 @@
      "win": null,
      "sm": 1680,
      "paid": 1361,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4B": {
      "avail": 46,
@@ -119,23 +119,23 @@
    "date": "2026-10-13",
    "dow": "二",
    "arm": "高",
-   "lead": 3,
+   "lead": 2,
    "rooms": {
     "A1B": {
-     "avail": 0,
-     "sold": 4,
+     "avail": 2,
+     "sold": 2,
      "win": null,
      "sm": 2480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
-     "avail": 8,
-     "sold": 1,
+     "avail": 5,
+     "sold": 4,
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4B": {
      "avail": 40,
@@ -143,7 +143,7 @@
      "win": null,
      "sm": 3480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
      "avail": 14,
@@ -151,10 +151,10 @@
      "win": null,
      "sm": 3180,
      "paid": 1766,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
-     "avail": 3,
+     "avail": 0,
      "sold": null,
      "win": null,
      "sm": 1680,
@@ -167,23 +167,23 @@
    "date": "2026-10-14",
    "dow": "三",
    "arm": "高",
-   "lead": 4,
+   "lead": 3,
    "rooms": {
     "A1B": {
-     "avail": 2,
-     "sold": 2,
+     "avail": 3,
+     "sold": 1,
      "win": null,
      "sm": 2480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
-     "avail": 9,
-     "sold": 1,
+     "avail": 7,
+     "sold": 3,
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4B": {
      "avail": 39,
@@ -191,18 +191,18 @@
      "win": null,
      "sm": 3480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
-     "avail": 13,
-     "sold": 2,
+     "avail": 12,
+     "sold": 3,
      "win": null,
      "sm": 3180,
      "paid": 1766,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
-     "avail": 1,
+     "avail": 0,
      "sold": null,
      "win": null,
      "sm": 1680,
@@ -215,7 +215,7 @@
    "date": "2026-10-15",
    "dow": "四",
    "arm": "對照",
-   "lead": 5,
+   "lead": 4,
    "rooms": {
     "A1B": {
      "avail": 4,
@@ -223,15 +223,15 @@
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
-     "avail": 8,
-     "sold": 0,
+     "avail": 7,
+     "sold": 1,
      "win": null,
      "sm": 1680,
      "paid": 1361,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4B": {
      "avail": 48,
@@ -239,18 +239,18 @@
      "win": null,
      "sm": 3080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
-     "avail": 15,
-     "sold": 0,
+     "avail": 14,
+     "sold": 1,
      "win": null,
      "sm": 2780,
      "paid": 1442,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
-     "avail": 5,
+     "avail": 1,
      "sold": null,
      "win": null,
      "sm": 1480,
@@ -263,15 +263,15 @@
    "date": "2026-10-18",
    "dow": "日",
    "arm": "中",
-   "lead": 8,
+   "lead": 7,
    "rooms": {
     "A1B": {
-     "avail": 5,
-     "sold": 2,
+     "avail": 4,
+     "sold": 3,
      "win": null,
      "sm": 2280,
      "paid": 1847,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
      "avail": 6,
@@ -282,20 +282,20 @@
      "note": "房量被調高(+1)"
     },
     "A4B": {
-     "avail": 34,
-     "sold": 3,
+     "avail": 33,
+     "sold": 4,
      "win": null,
      "sm": 3280,
      "paid": 1847,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
-     "avail": 8,
-     "sold": null,
+     "avail": 5,
+     "sold": 2,
      "win": null,
      "sm": 2980,
      "paid": 1604,
-     "note": "房量被調高(+1)"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
      "avail": 5,
@@ -311,7 +311,7 @@
    "date": "2026-10-19",
    "dow": "一",
    "arm": "高",
-   "lead": 9,
+   "lead": 8,
    "rooms": {
     "A1B": {
      "avail": 8,
@@ -319,23 +319,23 @@
      "win": null,
      "sm": 2480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A1C": {
-     "avail": 7,
-     "sold": 0,
+     "avail": 10,
+     "sold": null,
      "win": null,
      "sm": 2080,
      "paid": 1685,
-     "note": "窗口未完成"
+     "note": "房量被調高(+3)"
     },
     "A4B": {
-     "avail": 46,
-     "sold": 1,
+     "avail": 45,
+     "sold": 2,
      "win": null,
      "sm": 3480,
      "paid": 2009,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "A4C": {
      "avail": 17,
@@ -343,10 +343,10 @@
      "win": null,
      "sm": 3180,
      "paid": 1766,
-     "note": "窗口未完成"
+     "note": "窗口跨10/10改版"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 4,
      "sold": null,
      "win": null,
      "sm": 1680,
@@ -359,30 +359,30 @@
    "date": "2026-10-20",
    "dow": "二",
    "arm": "對照",
-   "lead": 10,
+   "lead": 9,
    "rooms": {
     "A1B": {
      "avail": 9,
      "sold": 0,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 7,
-     "sold": 0,
+     "avail": 8,
+     "sold": null,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
-     "note": "窗口未完成"
+     "paid": 1625,
+     "note": "房量被調高(+1)"
     },
     "A4B": {
-     "avail": 33,
-     "sold": 1,
+     "avail": 32,
+     "sold": 2,
      "win": null,
      "sm": 3080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -390,15 +390,15 @@
      "sold": 1,
      "win": null,
      "sm": 2780,
-     "paid": 1442,
+     "paid": 1722,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 5,
      "sold": null,
      "win": null,
      "sm": 1480,
-     "paid": 1199,
+     "paid": 1432,
      "note": "資料不足"
     }
    }
@@ -407,30 +407,30 @@
    "date": "2026-10-21",
    "dow": "三",
    "arm": "中",
-   "lead": 11,
+   "lead": 10,
    "rooms": {
     "A1B": {
      "avail": 9,
      "sold": 0,
      "win": null,
      "sm": 2280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 10,
-     "sold": 0,
+     "avail": 9,
+     "sold": 1,
      "win": null,
      "sm": 1880,
-     "paid": 1523,
+     "paid": 1819,
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 44,
-     "sold": 1,
+     "avail": 41,
+     "sold": 4,
      "win": null,
      "sm": 3280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -438,15 +438,15 @@
      "sold": 0,
      "win": null,
      "sm": 2980,
-     "paid": 1604,
+     "paid": 1916,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 5,
      "sold": null,
      "win": null,
      "sm": 1580,
-     "paid": 1280,
+     "paid": 1529,
      "note": "資料不足"
     }
    }
@@ -455,14 +455,14 @@
    "date": "2026-10-22",
    "dow": "四",
    "arm": "對照",
-   "lead": 12,
+   "lead": 11,
    "rooms": {
     "A1B": {
      "avail": 6,
      "sold": 0,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A1C": {
@@ -470,15 +470,15 @@
      "sold": 0,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 42,
-     "sold": 1,
+     "avail": 39,
+     "sold": 4,
      "win": null,
      "sm": 3080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -486,15 +486,15 @@
      "sold": 0,
      "win": null,
      "sm": 2780,
-     "paid": 1442,
+     "paid": 1722,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 5,
+     "avail": 4,
      "sold": null,
      "win": null,
      "sm": 1480,
-     "paid": 1199,
+     "paid": 1432,
      "note": "資料不足"
     }
    }
@@ -503,14 +503,14 @@
    "date": "2026-10-26",
    "dow": "一",
    "arm": "中",
-   "lead": 16,
+   "lead": 15,
    "rooms": {
     "A1B": {
      "avail": 10,
      "sold": 0,
      "win": null,
      "sm": 2280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
@@ -518,7 +518,7 @@
      "sold": 0,
      "win": null,
      "sm": 1880,
-     "paid": 1523,
+     "paid": 1819,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -526,7 +526,7 @@
      "sold": 1,
      "win": null,
      "sm": 3280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -534,15 +534,15 @@
      "sold": 0,
      "win": null,
      "sm": 2980,
-     "paid": 1604,
+     "paid": 1916,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 4,
      "sold": null,
      "win": null,
      "sm": 1580,
-     "paid": 1280,
+     "paid": 1529,
      "note": "資料不足"
     }
    }
@@ -551,14 +551,14 @@
    "date": "2026-10-27",
    "dow": "二",
    "arm": "中",
-   "lead": 17,
+   "lead": 16,
    "rooms": {
     "A1B": {
      "avail": 10,
      "sold": 0,
      "win": null,
      "sm": 2280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
@@ -566,7 +566,7 @@
      "sold": 0,
      "win": null,
      "sm": 1880,
-     "paid": 1523,
+     "paid": 1819,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -574,7 +574,7 @@
      "sold": 1,
      "win": null,
      "sm": 3280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -582,15 +582,15 @@
      "sold": 0,
      "win": null,
      "sm": 2980,
-     "paid": 1604,
+     "paid": 1916,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 5,
      "sold": null,
      "win": null,
      "sm": 1580,
-     "paid": 1280,
+     "paid": 1529,
      "note": "資料不足"
     }
    }
@@ -599,22 +599,22 @@
    "date": "2026-10-28",
    "dow": "三",
    "arm": "對照",
-   "lead": 18,
+   "lead": 17,
    "rooms": {
     "A1B": {
-     "avail": 6,
-     "sold": 0,
+     "avail": 7,
+     "sold": null,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
-     "note": "窗口未完成"
+     "paid": 2012,
+     "note": "房量被調高(+1)"
     },
     "A1C": {
      "avail": 12,
      "sold": 0,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -622,7 +622,7 @@
      "sold": 2,
      "win": null,
      "sm": 3080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -630,15 +630,15 @@
      "sold": 0,
      "win": null,
      "sm": 2780,
-     "paid": 1442,
+     "paid": 1722,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 5,
      "sold": null,
      "win": null,
      "sm": 1480,
-     "paid": 1199,
+     "paid": 1432,
      "note": "資料不足"
     }
    }
@@ -647,22 +647,22 @@
    "date": "2026-10-29",
    "dow": "四",
    "arm": "高",
-   "lead": 19,
+   "lead": 18,
    "rooms": {
     "A1B": {
-     "avail": 9,
-     "sold": 0,
+     "avail": 10,
+     "sold": null,
      "win": null,
      "sm": 2480,
-     "paid": 2009,
-     "note": "窗口未完成"
+     "paid": 2399,
+     "note": "房量被調高(+1)"
     },
     "A1C": {
      "avail": 11,
      "sold": 0,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -670,7 +670,7 @@
      "sold": 0,
      "win": null,
      "sm": 3480,
-     "paid": 2009,
+     "paid": 2399,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -678,15 +678,15 @@
      "sold": null,
      "win": null,
      "sm": 3180,
-     "paid": 1766,
+     "paid": 2109,
      "note": "房量被調高(+1)"
     },
     "ROH": {
-     "avail": 6,
+     "avail": 5,
      "sold": null,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "資料不足"
     }
    }
@@ -695,22 +695,22 @@
    "date": "2026-11-01",
    "dow": "日",
    "arm": "高",
-   "lead": 22,
+   "lead": 21,
    "rooms": {
     "A1B": {
      "avail": 10,
      "sold": 0,
      "win": null,
      "sm": 2480,
-     "paid": 2009,
+     "paid": 2399,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 13,
-     "sold": 0,
+     "avail": 12,
+     "sold": 1,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -718,7 +718,7 @@
      "sold": null,
      "win": null,
      "sm": 3480,
-     "paid": 2009,
+     "paid": 2399,
      "note": "房量被調高(+1)"
     },
     "A4C": {
@@ -726,7 +726,7 @@
      "sold": 0,
      "win": null,
      "sm": 3180,
-     "paid": 1766,
+     "paid": 2109,
      "note": "窗口未完成"
     },
     "ROH": {
@@ -734,7 +734,7 @@
      "sold": null,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "資料不足"
     }
    }
@@ -743,22 +743,22 @@
    "date": "2026-11-02",
    "dow": "一",
    "arm": "對照",
-   "lead": 23,
+   "lead": 22,
    "rooms": {
     "A1B": {
      "avail": 11,
      "sold": 0,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 13,
-     "sold": 0,
+     "avail": 12,
+     "sold": 1,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -766,7 +766,7 @@
      "sold": 0,
      "win": null,
      "sm": 3080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -774,7 +774,7 @@
      "sold": 0,
      "win": null,
      "sm": 2780,
-     "paid": 1442,
+     "paid": 1722,
      "note": "窗口未完成"
     },
     "ROH": {
@@ -782,7 +782,7 @@
      "sold": null,
      "win": null,
      "sm": 1480,
-     "paid": 1199,
+     "paid": 1432,
      "note": "資料不足"
     }
    }
@@ -791,22 +791,22 @@
    "date": "2026-11-03",
    "dow": "二",
    "arm": "中",
-   "lead": 24,
+   "lead": 23,
    "rooms": {
     "A1B": {
      "avail": 12,
      "sold": 0,
      "win": null,
      "sm": 2280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 7,
-     "sold": 0,
+     "avail": 6,
+     "sold": 1,
      "win": null,
      "sm": 1880,
-     "paid": 1523,
+     "paid": 1819,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -814,7 +814,7 @@
      "sold": 0,
      "win": null,
      "sm": 3280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A4C": {
@@ -822,7 +822,7 @@
      "sold": 0,
      "win": null,
      "sm": 2980,
-     "paid": 1604,
+     "paid": 1916,
      "note": "窗口未完成"
     },
     "ROH": {
@@ -830,7 +830,7 @@
      "sold": null,
      "win": null,
      "sm": 1580,
-     "paid": 1280,
+     "paid": 1529,
      "note": "資料不足"
     }
    }
@@ -839,22 +839,22 @@
    "date": "2026-11-04",
    "dow": "三",
    "arm": "高",
-   "lead": 25,
+   "lead": 24,
    "rooms": {
     "A1B": {
      "avail": 12,
      "sold": 0,
      "win": null,
      "sm": 2480,
-     "paid": 2009,
+     "paid": 2399,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 5,
-     "sold": 0,
+     "avail": 4,
+     "sold": 1,
      "win": null,
      "sm": 2080,
-     "paid": 1685,
+     "paid": 2012,
      "note": "窗口未完成"
     },
     "A4B": {
@@ -862,15 +862,15 @@
      "sold": 0,
      "win": null,
      "sm": 3480,
-     "paid": 2009,
+     "paid": 2399,
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 3,
-     "sold": 0,
+     "avail": 2,
+     "sold": 1,
      "win": null,
      "sm": 3180,
-     "paid": 1766,
+     "paid": 2109,
      "note": "窗口未完成"
     },
     "ROH": {
@@ -878,7 +878,7 @@
      "sold": null,
      "win": null,
      "sm": 1680,
-     "paid": 1361,
+     "paid": 1625,
      "note": "資料不足"
     }
    }
@@ -887,38 +887,38 @@
    "date": "2026-11-05",
    "dow": "四",
    "arm": "中",
-   "lead": 26,
+   "lead": 25,
    "rooms": {
     "A1B": {
-     "avail": 12,
-     "sold": 0,
+     "avail": 9,
+     "sold": 3,
      "win": null,
      "sm": 2280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 9,
-     "sold": 0,
+     "avail": 8,
+     "sold": 1,
      "win": null,
      "sm": 1880,
-     "paid": 1523,
+     "paid": 1819,
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 52,
-     "sold": 0,
+     "avail": 41,
+     "sold": 11,
      "win": null,
      "sm": 3280,
-     "paid": 1847,
+     "paid": 2206,
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 18,
-     "sold": 0,
+     "avail": 17,
+     "sold": 1,
      "win": null,
      "sm": 2980,
-     "paid": 1604,
+     "paid": 1916,
      "note": "窗口未完成"
     },
     "ROH": {
@@ -926,7 +926,7 @@
      "sold": null,
      "win": null,
      "sm": 1580,
-     "paid": 1280,
+     "paid": 1529,
      "note": "資料不足"
     }
    }
