@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-14T10:12:48",
+ "generated": "2026-10-14T10:32:21",
  "plan": "_fosen_price_test3_20261008_2024.json",
  "today": "2026-10-14",
  "write_day": "2026-10-08",
@@ -618,12 +618,12 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 11,
-     "sold": 3,
+     "avail": null,
+     "sold": null,
      "win": null,
      "sm": 3080,
      "paid": 2012,
-     "note": "窗口未完成"
+     "note": "資料不足"
     },
     "A4C": {
      "avail": 7,
@@ -890,12 +890,12 @@
    "lead": 22,
    "rooms": {
     "A1B": {
-     "avail": 8,
-     "sold": 4,
+     "avail": null,
+     "sold": null,
      "win": null,
      "sm": 2280,
      "paid": 2206,
-     "note": "窗口未完成"
+     "note": "資料不足"
     },
     "A1C": {
      "avail": 9,
@@ -906,12 +906,12 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 41,
-     "sold": 11,
+     "avail": null,
+     "sold": null,
      "win": null,
      "sm": 3280,
      "paid": 2206,
-     "note": "窗口未完成"
+     "note": "資料不足"
     },
     "A4C": {
      "avail": 18,
