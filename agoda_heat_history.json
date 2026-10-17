@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-16 22:43",
+ "updated": "2026-10-17 22:39",
  "baseLabel": "22:30",
  "targets": [
   "丰森酒店",
@@ -767,6 +767,40 @@
    "counted": 6,
    "market": 209,
    "avg": 34.8,
+   "offBaseline": false
+  },
+  {
+   "date": "2026-10-17",
+   "generated": "2026-10-17 22:39",
+   "values": {
+    "丰森酒店": 30,
+    "長榮桂冠酒店-台中": null,
+    "台中鳳凰酒店": null,
+    "新通豪大飯店": null,
+    "烏日璞旅": 90,
+    "春樹＋暮雲": 39,
+    "探索私旅": null,
+    "塔木德台灣大道館": 24,
+    "雲端商務旅館": null,
+    "享得道HOTEL": null,
+    "悅樂旅店台中文心": null
+   },
+   "found": {
+    "丰森酒店": true,
+    "長榮桂冠酒店-台中": false,
+    "台中鳳凰酒店": false,
+    "新通豪大飯店": true,
+    "烏日璞旅": true,
+    "春樹＋暮雲": true,
+    "探索私旅": false,
+    "塔木德台灣大道館": true,
+    "雲端商務旅館": false,
+    "享得道HOTEL": false,
+    "悅樂旅店台中文心": false
+   },
+   "counted": 4,
+   "market": 183,
+   "avg": 45.8,
    "offBaseline": false
   }
  ]
