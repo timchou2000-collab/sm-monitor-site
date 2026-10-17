@@ -163,7 +163,7 @@ function setStatus(t,err){var s=document.getElementById('status');s.textContent=
 function render(d){
   if(!d||!d.rows){return;}
   document.getElementById('meta').innerHTML =
-    '入住日 <b>'+esc(d.checkIn||'—')+'</b>（今晚）　擷取 <b>'+esc(d.generated||'—')+'</b>　'+
+    '查詢用入住日 <b>'+esc(d.checkIn||'—')+'</b>（只是讓房源出現，數字是飯店過去24小時預訂）　擷取 <b>'+esc(d.generated||'—')+'</b>　'+
     '命中 <b>'+(d.hit!=null?d.hit:'—')+'/'+(d.total||d.rows.length)+'</b> 家'+
     '<span class="t">（掃描 '+(d.scanned||0)+' 家、其中 '+(d.withBadge||0)+' 家有標籤）</span>';
   var mx=0;

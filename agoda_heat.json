@@ -1,61 +1,62 @@
 {
- "generated": "2026-10-17 22:39",
- "checkIn": "2026-10-17",
- "scanned": 73,
- "withBadge": 21,
- "hit": 4,
+ "generated": "2026-10-18 00:11",
+ "date": "2026-10-18",
+ "checkIn": "2026-10-25",
+ "scanned": 12,
+ "withBadge": 12,
+ "hit": 11,
  "total": 11,
  "rows": [
   {
    "label": "丰森酒店",
    "self": true,
-   "agodaName": "丰森酒店",
+   "agodaName": "丰森",
    "n": 30,
    "found": true
   },
   {
    "label": "長榮桂冠酒店-台中",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "長榮桂冠",
+   "n": 24,
+   "found": true
   },
   {
    "label": "台中鳳凰酒店",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "鳳凰",
+   "n": 25,
+   "found": true
   },
   {
    "label": "新通豪大飯店",
    "self": false,
-   "agodaName": "梨山飛燕城堡度假飯店",
-   "n": null,
+   "agodaName": "通豪",
+   "n": 33,
    "found": true
   },
   {
    "label": "烏日璞旅",
    "self": false,
    "agodaName": "璞旅",
-   "n": 90,
+   "n": 94,
    "found": true
   },
   {
    "label": "春樹＋暮雲",
    "self": false,
-   "agodaName": "春樹＋暮雲商旅",
-   "n": 39,
+   "agodaName": "春樹＋暮雲",
+   "n": 40,
    "found": true,
    "merged": true,
    "parts": [
     {
      "name": "春樹",
-     "n": 27
+     "n": 29
     },
     {
-     "name": "暮雲商旅",
-     "n": 12
+     "name": "暮雲",
+     "n": 11
     }
    ],
    "partsFound": 2
@@ -63,37 +64,37 @@
   {
    "label": "探索私旅",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "探索私旅",
+   "n": 31,
+   "found": true
   },
   {
    "label": "塔木德台灣大道館",
    "self": false,
    "agodaName": "台灣大道",
-   "n": 24,
+   "n": 23,
    "found": true
   },
   {
    "label": "雲端商務旅館",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "雲端商務",
+   "n": 16,
+   "found": true
   },
   {
    "label": "享得道HOTEL",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "享得道",
+   "n": 16,
+   "found": true
   },
   {
    "label": "悅樂旅店台中文心",
    "self": false,
-   "agodaName": null,
-   "n": null,
-   "found": false
+   "agodaName": "悅樂旅店台中文心",
+   "n": 8,
+   "found": true
   }
  ],
  "note": "Agoda 搜尋卡片的行銷熱度字樣，定義未公開，僅供相對比較，不等於實際進單數。",
