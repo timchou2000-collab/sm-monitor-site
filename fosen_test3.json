@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18T09:55:01",
+ "generated": "2026-10-18T15:06:25",
  "plan": "_fosen_price_test3_20261008_2024.json",
  "today": "2026-10-18",
  "write_day": "2026-10-08",
@@ -522,12 +522,12 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 23,
-     "sold": 7,
+     "avail": null,
+     "sold": null,
      "win": null,
      "sm": 3280,
      "paid": 2206,
-     "note": "窗口未完成"
+     "note": "資料不足"
     },
     "A4C": {
      "avail": 5,
