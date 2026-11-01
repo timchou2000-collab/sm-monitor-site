@@ -113,7 +113,18 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;">
     <div style="position:relative;width:100%;height:300px;"><canvas id="cmpChart" role="img" aria-label="中壢 Booking 同業比價未來 30 天折線圖，自家丰居中壢與賓利酒店、福容徠旅、旅居文旅比較">丰居中壢與同業未來 30 天最低價比較。</canvas></div>
   </div>
-  <div style="margin-top:8px;font-size:12px;color:var(--muted);">無痕抓取 · 2 大人 1 房 1 晚最低價 · TWD</div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);">無痕抓取 · 2 大人 1 房 1 晚最低價 · TWD · △ 連住價＝住 1 晚查不到（多半是限住 2 晚），改查 2 晚的每晚均價</div>
+</section>
+<section id="heatBox" style="margin:6px 0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+    <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:17px;color:var(--brand);">Trip 需求熱度 · 桃園</div>
+    <span id="heatMeta" style="color:var(--muted);font-size:12px;"></span>
+  </div>
+  <div id="heatLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;font-size:12px;color:var(--muted);"></div>
+  <div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 14px;">
+    <div id="heatGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;"></div>
+  </div>
+  <div style="margin-top:8px;font-size:12px;color:var(--muted);">來源：Trip eBooking 市場熱度「需求預測」（以丰居中壢帳號查，城市＝桃園）。數字越高需求越旺，等級切點由 Trip 提供。顯示未來 60 天。</div>
 </section>
 <section id="pickupBox" style="margin:6px 0 24px;">
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
@@ -526,11 +537,18 @@ function renderInvResult(res){
     var datasets=cols.map(function(c){
       var isOwn=(c===own);
       var color=isOwn?OWN_COLOR:COMP[(ci++)%COMP.length];
+      // 連住價（住 1 晚查不到、改查 2 晚 ÷2）：空心三角形標出
+      var isLos=p.rows.map(function(r){return !!(r.los2&&r.los2.indexOf(c)>=0);});
       return {label:c,
         data:p.rows.map(function(r){return (r.prices&&r.prices[c]!=null)?r.prices[c]:null;}),
+        los2:isLos,
         borderColor:color,backgroundColor:color,
+        pointStyle:isLos.map(function(x){return x?'triangle':'circle';}),
+        pointBackgroundColor:isLos.map(function(x){return x?'#fff':color;}),
         borderWidth:isOwn?2.8:1.6,borderDash:isOwn?[]:[5,4],
-        pointRadius:isOwn?2.4:0,pointHoverRadius:5,tension:.25,spanGaps:true,order:isOwn?1:2};
+        pointRadius:isLos.map(function(x){return x?6:(isOwn?2.4:0);}),
+        pointBorderWidth:isLos.map(function(x){return x?2:1;}),
+        pointHoverRadius:6,tension:.25,spanGaps:true,order:isOwn?1:2};
     });
     var leg=document.getElementById('cmpLegend'); ci=0;
     leg.innerHTML=cols.map(function(c){
@@ -538,19 +556,44 @@ function renderInvResult(res){
       var bar=isOwn?('<span style="width:16px;height:3px;background:'+color+';border-radius:2px;"></span>')
                    :('<span style="width:16px;height:0;border-top:2px dashed '+color+';"></span>');
       return '<span style="display:flex;align-items:center;gap:5px;'+(isOwn?'color:var(--brand);font-weight:700;':'')+'">'+bar+c+(isOwn?'（自家）':'')+'</span>';
-    }).join('');
+    }).join('')+(p.rows.some(function(r){return r.los2&&r.los2.length;})
+      ?'<span style="display:flex;align-items:center;gap:5px;">△ 連住價（住 1 晚查不到，改查 2 晚的每晚均價）</span>':'');
     new Chart(document.getElementById('cmpChart'),{
       type:'line',
       data:{labels:labels,datasets:datasets},
       options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
         plugins:{legend:{display:false},tooltip:{callbacks:{
-          label:function(c){return c.dataset.label+'：'+(c.parsed.y==null?'—':'\u0024'+c.parsed.y.toLocaleString('en-US'));}
+          label:function(c){var los=c.dataset.los2&&c.dataset.los2[c.dataIndex];
+            return c.dataset.label+'：'+(c.parsed.y==null?'—':'\u0024'+c.parsed.y.toLocaleString('en-US'))+(los?'（連住價・2 晚均價）':'');}
         }}},
         scales:{
           y:{grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',callback:function(v){return '\u0024'+v.toLocaleString('en-US');}}},
           x:{grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:15,maxRotation:60,minRotation:60,font:{size:11}}}}}
     });
   }).catch(function(){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';});
+})();
+</script>
+<script>
+(function(){
+  // Trip 需求熱度（桃園）：6 級色階，冷→熱
+  var COL=['#d9e4ef','#b9cfe3','#e8e1cf','#f2c48d','#e8894f','#c0392b'];
+  var TXT=['#3b4a5a','#3b4a5a','#5a5244','#5a3a12','#fff','#fff'];
+  fetch('trip_heat_zhongli.json?t='+Date.now()).then(function(r){return r.ok?r.json():null;}).then(function(h){
+    var meta=document.getElementById('heatMeta');
+    if(!h||!h.rows){if(meta)meta.textContent='（讀不到熱度資料）';return;}
+    meta.innerHTML='城市 <b>'+h.city+'</b>　·　更新 <b>'+(h.generated||'')+'</b>';
+    document.getElementById('heatLegend').innerHTML=h.levels.map(function(n,i){
+      return '<span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;border-radius:3px;background:'+COL[i]+';"></span>'+n+'</span>';}).join('');
+    var today=new Date(); today.setHours(0,0,0,0);
+    var rows=h.rows.filter(function(r){var d=new Date(r.date+'T00:00:00');return d>=today;}).slice(0,60);
+    document.getElementById('heatGrid').innerHTML=rows.map(function(r){
+      var wk=(r.weekday==='五'||r.weekday==='六');
+      return '<div title="'+r.date+'（'+r.weekday+'）'+r.levelName+' '+r.pop.toFixed(2)+'" style="background:'+COL[r.level]+';color:'+TXT[r.level]+
+        ';border-radius:6px;padding:5px 4px;text-align:center;line-height:1.25;'+(wk?'outline:2px solid rgba(29,59,52,.35);outline-offset:-2px;':'')+'">'+
+        '<div style="font-size:12px;font-weight:700;">'+r.date.slice(5).replace('-','/')+'</div>'+
+        '<div style="font-size:11px;">'+r.weekday+' · '+r.pop.toFixed(1)+'</div></div>';
+    }).join('');
+  }).catch(function(){var m=document.getElementById('heatMeta');if(m)m.textContent='（讀不到熱度資料）';});
 })();
 </script>
 </body>
