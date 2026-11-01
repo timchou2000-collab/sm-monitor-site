@@ -573,7 +573,7 @@ function renderInvResult(res){
         }}},
         scales:{
           y:{grid:{color:'#e4ddcf'},ticks:{color:'#8a8478',callback:function(v){return '\u0024'+v.toLocaleString('en-US');}}},
-          y2:{display:hasHeat,position:'right',min:0,max:24,grid:{display:false},ticks:{color:'#b0a898',stepSize:2,callback:function(v){return v<=10?v:'';}},title:{display:true,text:'Trip 熱度',color:'#b0a898'}},
+          y2:{display:hasHeat,position:'right',min:0,max:36,grid:{display:false},ticks:{color:'#b0a898',stepSize:2,callback:function(v){return v<=10?v:'';}},title:{display:true,text:'Trip 熱度',color:'#b0a898'}},
           x:{grid:{display:false},ticks:{color:'#8a8478',autoSkip:true,maxTicksLimit:15,maxRotation:60,minRotation:60,font:{size:11}}}}}
     });
   }).catch(function(){var m=document.getElementById('cmpMeta');if(m)m.textContent='（讀不到同業比價資料）';});
