@@ -1,7 +1,7 @@
 {
- "generated": "2026-10-31T09:55:01",
+ "generated": "2026-11-01T09:55:02",
  "plan": "_fosen_price_test3_20261008_2024.json",
- "today": "2026-10-31",
+ "today": "2026-11-01",
  "write_day": "2026-10-08",
  "rooms": [
   "A1B",
@@ -23,7 +23,7 @@
    "date": "2026-10-11",
    "dow": "日",
    "arm": "對照",
-   "lead": -20,
+   "lead": -21,
    "rooms": {
     "A1B": {
      "avail": 1,
@@ -71,7 +71,7 @@
    "date": "2026-10-12",
    "dow": "一",
    "arm": "對照",
-   "lead": -19,
+   "lead": -20,
    "rooms": {
     "A1B": {
      "avail": 2,
@@ -119,7 +119,7 @@
    "date": "2026-10-13",
    "dow": "二",
    "arm": "高",
-   "lead": -18,
+   "lead": -19,
    "rooms": {
     "A1B": {
      "avail": 2,
@@ -167,7 +167,7 @@
    "date": "2026-10-14",
    "dow": "三",
    "arm": "高",
-   "lead": -17,
+   "lead": -18,
    "rooms": {
     "A1B": {
      "avail": 6,
@@ -215,7 +215,7 @@
    "date": "2026-10-15",
    "dow": "四",
    "arm": "對照",
-   "lead": -16,
+   "lead": -17,
    "rooms": {
     "A1B": {
      "avail": 4,
@@ -263,7 +263,7 @@
    "date": "2026-10-18",
    "dow": "日",
    "arm": "中",
-   "lead": -13,
+   "lead": -14,
    "rooms": {
     "A1B": {
      "avail": 5,
@@ -311,7 +311,7 @@
    "date": "2026-10-19",
    "dow": "一",
    "arm": "高",
-   "lead": -12,
+   "lead": -13,
    "rooms": {
     "A1B": {
      "avail": 8,
@@ -359,7 +359,7 @@
    "date": "2026-10-20",
    "dow": "二",
    "arm": "對照",
-   "lead": -11,
+   "lead": -12,
    "rooms": {
     "A1B": {
      "avail": 7,
@@ -407,7 +407,7 @@
    "date": "2026-10-21",
    "dow": "三",
    "arm": "中",
-   "lead": -10,
+   "lead": -11,
    "rooms": {
     "A1B": {
      "avail": 6,
@@ -455,7 +455,7 @@
    "date": "2026-10-22",
    "dow": "四",
    "arm": "對照",
-   "lead": -9,
+   "lead": -10,
    "rooms": {
     "A1B": {
      "avail": 5,
@@ -503,7 +503,7 @@
    "date": "2026-10-26",
    "dow": "一",
    "arm": "中",
-   "lead": -5,
+   "lead": -6,
    "rooms": {
     "A1B": {
      "avail": 8,
@@ -551,7 +551,7 @@
    "date": "2026-10-27",
    "dow": "二",
    "arm": "中",
-   "lead": -4,
+   "lead": -5,
    "rooms": {
     "A1B": {
      "avail": 6,
@@ -599,7 +599,7 @@
    "date": "2026-10-28",
    "dow": "三",
    "arm": "對照",
-   "lead": -3,
+   "lead": -4,
    "rooms": {
     "A1B": {
      "avail": 4,
@@ -647,7 +647,7 @@
    "date": "2026-10-29",
    "dow": "四",
    "arm": "高",
-   "lead": -2,
+   "lead": -3,
    "rooms": {
     "A1B": {
      "avail": 6,
@@ -695,7 +695,7 @@
    "date": "2026-11-01",
    "dow": "日",
    "arm": "高",
-   "lead": 1,
+   "lead": 0,
    "rooms": {
     "A1B": {
      "avail": 7,
@@ -743,7 +743,7 @@
    "date": "2026-11-02",
    "dow": "一",
    "arm": "對照",
-   "lead": 2,
+   "lead": 1,
    "rooms": {
     "A1B": {
      "avail": 8,
@@ -791,44 +791,44 @@
    "date": "2026-11-03",
    "dow": "二",
    "arm": "中",
-   "lead": 3,
+   "lead": 2,
    "rooms": {
     "A1B": {
-     "avail": 8,
-     "sold": 4,
-     "win": null,
+     "avail": 7,
+     "sold": 5,
+     "win": 5,
      "sm": 2280,
      "paid": 2206,
-     "note": "窗口未完成"
+     "note": ""
     },
     "A1C": {
-     "avail": 10,
+     "avail": 9,
      "sold": null,
      "win": null,
      "sm": 1880,
      "paid": 1819,
-     "note": "房量被調高(+3)"
+     "note": "房量被調高(+2)"
     },
     "A4B": {
-     "avail": 43,
-     "sold": 0,
-     "win": null,
+     "avail": 40,
+     "sold": 3,
+     "win": 2,
      "sm": 3280,
      "paid": 2206,
-     "note": "窗口未完成"
+     "note": ""
     },
     "A4C": {
-     "avail": 12,
-     "sold": 0,
-     "win": null,
+     "avail": 11,
+     "sold": 1,
+     "win": 3,
      "sm": 2980,
      "paid": 1916,
-     "note": "窗口未完成"
+     "note": ""
     },
     "ROH": {
-     "avail": 1,
+     "avail": 0,
      "sold": null,
-     "win": null,
+     "win": 6,
      "sm": 1580,
      "paid": 1529,
      "note": "資料不足"
@@ -839,31 +839,31 @@
    "date": "2026-11-04",
    "dow": "三",
    "arm": "高",
-   "lead": 4,
+   "lead": 3,
    "rooms": {
     "A1B": {
-     "avail": 6,
-     "sold": 6,
+     "avail": 5,
+     "sold": 7,
      "win": null,
      "sm": 2480,
      "paid": 2399,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 7,
+     "avail": 6,
      "sold": null,
      "win": null,
      "sm": 2080,
      "paid": 2012,
-     "note": "房量被調高(+2)"
+     "note": "房量被調高(+1)"
     },
     "A4B": {
-     "avail": 24,
+     "avail": 22,
      "sold": null,
      "win": null,
      "sm": 3480,
      "paid": 2399,
-     "note": "房量被調高(+5)"
+     "note": "房量被調高(+3)"
     },
     "A4C": {
      "avail": 3,
@@ -887,7 +887,7 @@
    "date": "2026-11-05",
    "dow": "四",
    "arm": "中",
-   "lead": 5,
+   "lead": 4,
    "rooms": {
     "A1B": {
      "avail": null,
@@ -935,11 +935,11 @@
    "date": "2026-11-08",
    "dow": "日",
    "arm": "中",
-   "lead": 8,
+   "lead": 7,
    "rooms": {
     "A1B": {
-     "avail": 9,
-     "sold": 2,
+     "avail": 8,
+     "sold": 3,
      "win": null,
      "sm": 2280,
      "paid": 2206,
@@ -954,8 +954,8 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 48,
-     "sold": 6,
+     "avail": 47,
+     "sold": 7,
      "win": null,
      "sm": 3280,
      "paid": 2206,
@@ -983,19 +983,19 @@
    "date": "2026-11-09",
    "dow": "一",
    "arm": "中",
-   "lead": 9,
+   "lead": 8,
    "rooms": {
     "A1B": {
-     "avail": 9,
-     "sold": 2,
+     "avail": 8,
+     "sold": 3,
      "win": null,
      "sm": 2280,
      "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 6,
-     "sold": 4,
+     "avail": 5,
+     "sold": 5,
      "win": null,
      "sm": 1880,
      "paid": 1819,
@@ -1031,19 +1031,19 @@
    "date": "2026-11-10",
    "dow": "二",
    "arm": "中",
-   "lead": 10,
+   "lead": 9,
    "rooms": {
     "A1B": {
-     "avail": 8,
-     "sold": 2,
+     "avail": 7,
+     "sold": 3,
      "win": null,
      "sm": 2280,
      "paid": 2206,
      "note": "窗口未完成"
     },
     "A1C": {
-     "avail": 8,
-     "sold": 2,
+     "avail": 7,
+     "sold": 3,
      "win": null,
      "sm": 1880,
      "paid": 1819,
@@ -1079,11 +1079,11 @@
    "date": "2026-11-11",
    "dow": "三",
    "arm": "對照",
-   "lead": 11,
+   "lead": 10,
    "rooms": {
     "A1B": {
-     "avail": 6,
-     "sold": 2,
+     "avail": 5,
+     "sold": 3,
      "win": null,
      "sm": 2080,
      "paid": 2012,
@@ -1127,7 +1127,7 @@
    "date": "2026-11-12",
    "dow": "四",
    "arm": "對照",
-   "lead": 12,
+   "lead": 11,
    "rooms": {
     "A1B": {
      "avail": 4,
@@ -1154,8 +1154,8 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 1,
-     "sold": 8,
+     "avail": 0,
+     "sold": 9,
      "win": null,
      "sm": 2780,
      "paid": 1722,
@@ -1175,7 +1175,7 @@
    "date": "2026-11-15",
    "dow": "日",
    "arm": "對照",
-   "lead": 15,
+   "lead": 14,
    "rooms": {
     "A1B": {
      "avail": 3,
@@ -1194,8 +1194,8 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 45,
-     "sold": 4,
+     "avail": 40,
+     "sold": 9,
      "win": null,
      "sm": 3080,
      "paid": 2012,
@@ -1223,7 +1223,7 @@
    "date": "2026-11-16",
    "dow": "一",
    "arm": "高",
-   "lead": 16,
+   "lead": 15,
    "rooms": {
     "A1B": {
      "avail": 7,
@@ -1250,15 +1250,15 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 13,
-     "sold": 5,
+     "avail": 12,
+     "sold": 6,
      "win": null,
      "sm": 3180,
      "paid": 2109,
      "note": "窗口未完成"
     },
     "ROH": {
-     "avail": 3,
+     "avail": 2,
      "sold": null,
      "win": null,
      "sm": 1680,
@@ -1271,7 +1271,7 @@
    "date": "2026-11-17",
    "dow": "二",
    "arm": "對照",
-   "lead": 17,
+   "lead": 16,
    "rooms": {
     "A1B": {
      "avail": 6,
@@ -1298,8 +1298,8 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 16,
-     "sold": 1,
+     "avail": 15,
+     "sold": 2,
      "win": null,
      "sm": 2780,
      "paid": 1722,
@@ -1319,7 +1319,7 @@
    "date": "2026-11-18",
    "dow": "三",
    "arm": "高",
-   "lead": 18,
+   "lead": 17,
    "rooms": {
     "A1B": {
      "avail": 3,
@@ -1367,7 +1367,7 @@
    "date": "2026-11-19",
    "dow": "四",
    "arm": "中",
-   "lead": 19,
+   "lead": 18,
    "rooms": {
     "A1B": {
      "avail": 5,
@@ -1415,7 +1415,7 @@
    "date": "2026-11-22",
    "dow": "日",
    "arm": "中",
-   "lead": 22,
+   "lead": 21,
    "rooms": {
     "A1B": {
      "avail": 11,
@@ -1463,7 +1463,7 @@
    "date": "2026-11-23",
    "dow": "一",
    "arm": "對照",
-   "lead": 23,
+   "lead": 22,
    "rooms": {
     "A1B": {
      "avail": 9,
@@ -1490,8 +1490,8 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 6,
-     "sold": 12,
+     "avail": 7,
+     "sold": 11,
      "win": null,
      "sm": 2780,
      "paid": 1722,
@@ -1511,7 +1511,7 @@
    "date": "2026-11-24",
    "dow": "二",
    "arm": "高",
-   "lead": 24,
+   "lead": 23,
    "rooms": {
     "A1B": {
      "avail": 8,
@@ -1538,8 +1538,8 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 9,
-     "sold": 8,
+     "avail": 10,
+     "sold": 7,
      "win": null,
      "sm": 3180,
      "paid": 2109,
@@ -1559,11 +1559,11 @@
    "date": "2026-11-25",
    "dow": "三",
    "arm": "中",
-   "lead": 25,
+   "lead": 24,
    "rooms": {
     "A1B": {
-     "avail": 9,
-     "sold": 1,
+     "avail": 7,
+     "sold": 3,
      "win": null,
      "sm": 2280,
      "paid": 2206,
@@ -1578,12 +1578,12 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 49,
+     "avail": 50,
      "sold": null,
      "win": null,
      "sm": 3280,
      "paid": 2206,
-     "note": "房量被調高(+2)"
+     "note": "房量被調高(+3)"
     },
     "A4C": {
      "avail": 15,
@@ -1607,11 +1607,11 @@
    "date": "2026-11-26",
    "dow": "四",
    "arm": "高",
-   "lead": 26,
+   "lead": 25,
    "rooms": {
     "A1B": {
-     "avail": 5,
-     "sold": 2,
+     "avail": 3,
+     "sold": 4,
      "win": null,
      "sm": 2480,
      "paid": 2399,
@@ -1626,12 +1626,12 @@
      "note": "窗口未完成"
     },
     "A4B": {
-     "avail": 41,
+     "avail": 42,
      "sold": null,
      "win": null,
      "sm": 3480,
      "paid": 2399,
-     "note": "房量被調高(+11)"
+     "note": "房量被調高(+12)"
     },
     "A4C": {
      "avail": 8,
@@ -1655,7 +1655,7 @@
    "date": "2026-11-29",
    "dow": "日",
    "arm": "高",
-   "lead": 29,
+   "lead": 28,
    "rooms": {
     "A1B": {
      "avail": 11,
@@ -1682,8 +1682,8 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 14,
-     "sold": 1,
+     "avail": 12,
+     "sold": 3,
      "win": null,
      "sm": 3180,
      "paid": 2109,
@@ -1703,7 +1703,7 @@
    "date": "2026-11-30",
    "dow": "一",
    "arm": "對照",
-   "lead": 30,
+   "lead": 29,
    "rooms": {
     "A1B": {
      "avail": 11,
@@ -1758,7 +1758,8 @@
    "2026-10-28",
    "2026-10-29",
    "2026-11-01",
-   "2026-11-02"
+   "2026-11-02",
+   "2026-11-03"
   ],
   "arms": {
    "對照": {
@@ -1773,15 +1774,15 @@
     "revenue": 76423.0
    },
    "中": {
-    "days": 3,
+    "days": 4,
     "sold": {
-     "A1B": 5,
+     "A1B": 10,
      "A1C": 12,
-     "A4B": 0,
-     "A4C": 1,
-     "ROH": 12
+     "A4B": 2,
+     "A4C": 4,
+     "ROH": 18
     },
-    "revenue": 53122.0
+    "revenue": 83486.0
    },
    "高": {
     "days": 2,
