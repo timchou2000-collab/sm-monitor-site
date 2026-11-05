@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-05T09:55:01",
+ "generated": "2026-11-05T10:38:48",
  "plan": "_fosen_price_test3_20261008_2024.json",
  "today": "2026-11-05",
  "write_day": "2026-10-08",
@@ -1106,12 +1106,12 @@
      "note": "窗口未完成"
     },
     "A4C": {
-     "avail": 18,
+     "avail": 12,
      "sold": null,
      "win": null,
      "sm": 2780,
      "paid": 1722,
-     "note": "房量被調高(+7)"
+     "note": "房量被調高(+1)"
     },
     "ROH": {
      "avail": 2,
