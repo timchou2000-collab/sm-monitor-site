@@ -1,13 +1,13 @@
 {
- "generated": "2026-11-11 08:30",
+ "generated": "2026-11-12 08:33",
  "city": "台北",
  "source": "Trip eBooking 市場熱度（需求預測，以西門雲町旅店帳號查）",
  "threshold": [
-  3.99,
-  4.55,
-  5.11,
-  5.67,
-  6.23,
+  4.0,
+  4.56,
+  5.12,
+  5.68,
+  6.24,
   10.35
  ],
  "levels": [
@@ -20,79 +20,72 @@
  ],
  "rows": [
   {
-   "date": "2026-11-11",
-   "weekday": "三",
-   "pop": 5.19,
-   "level": 3,
-   "levelName": "高於平均"
-  },
-  {
    "date": "2026-11-12",
    "weekday": "四",
-   "pop": 5.37,
+   "pop": 5.41,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-13",
    "weekday": "五",
-   "pop": 5.76,
+   "pop": 5.69,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-11-14",
    "weekday": "六",
-   "pop": 5.9,
+   "pop": 5.91,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-11-15",
    "weekday": "日",
-   "pop": 5.46,
+   "pop": 5.5,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-16",
    "weekday": "一",
-   "pop": 5.34,
+   "pop": 5.33,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-17",
    "weekday": "二",
-   "pop": 5.24,
+   "pop": 5.3,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-18",
    "weekday": "三",
-   "pop": 5.29,
+   "pop": 5.27,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-19",
    "weekday": "四",
-   "pop": 5.57,
+   "pop": 5.58,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-20",
    "weekday": "五",
-   "pop": 5.96,
+   "pop": 5.97,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-11-21",
    "weekday": "六",
-   "pop": 6.22,
+   "pop": 6.15,
    "level": 4,
    "levelName": "高"
   },
@@ -106,7 +99,7 @@
   {
    "date": "2026-11-23",
    "weekday": "一",
-   "pop": 5.37,
+   "pop": 5.44,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -120,175 +113,175 @@
   {
    "date": "2026-11-25",
    "weekday": "三",
-   "pop": 5.33,
+   "pop": 5.37,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-26",
    "weekday": "四",
-   "pop": 5.5,
+   "pop": 5.51,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-11-27",
    "weekday": "五",
-   "pop": 5.91,
+   "pop": 5.92,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-11-28",
    "weekday": "六",
-   "pop": 6.51,
+   "pop": 6.49,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2026-11-29",
    "weekday": "日",
-   "pop": 5.9,
+   "pop": 5.91,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-11-30",
    "weekday": "一",
-   "pop": 5.16,
+   "pop": 5.19,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-01",
    "weekday": "二",
-   "pop": 5.07,
+   "pop": 5.08,
    "level": 2,
    "levelName": "低於平均"
   },
   {
    "date": "2026-12-02",
    "weekday": "三",
-   "pop": 5.15,
+   "pop": 5.23,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-03",
    "weekday": "四",
-   "pop": 5.23,
+   "pop": 5.37,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-04",
    "weekday": "五",
-   "pop": 5.64,
+   "pop": 5.61,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-05",
    "weekday": "六",
-   "pop": 6.11,
+   "pop": 6.15,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-12-06",
    "weekday": "日",
-   "pop": 5.74,
-   "level": 4,
-   "levelName": "高"
+   "pop": 5.67,
+   "level": 3,
+   "levelName": "高於平均"
   },
   {
    "date": "2026-12-07",
    "weekday": "一",
-   "pop": 5.53,
+   "pop": 5.52,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-08",
    "weekday": "二",
-   "pop": 5.39,
+   "pop": 5.35,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-09",
    "weekday": "三",
-   "pop": 5.4,
+   "pop": 5.39,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-10",
    "weekday": "四",
-   "pop": 5.65,
+   "pop": 5.62,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-11",
    "weekday": "五",
-   "pop": 6.49,
+   "pop": 6.37,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2026-12-12",
    "weekday": "六",
-   "pop": 6.22,
-   "level": 4,
-   "levelName": "高"
+   "pop": 7.1,
+   "level": 5,
+   "levelName": "非常高"
   },
   {
    "date": "2026-12-13",
    "weekday": "日",
-   "pop": 5.4,
+   "pop": 5.42,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-14",
    "weekday": "一",
-   "pop": 5.35,
+   "pop": 5.36,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-15",
    "weekday": "二",
-   "pop": 5.36,
+   "pop": 5.37,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-16",
    "weekday": "三",
-   "pop": 5.4,
+   "pop": 5.41,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-17",
    "weekday": "四",
-   "pop": 5.54,
+   "pop": 5.55,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-18",
    "weekday": "五",
-   "pop": 6.0,
+   "pop": 6.02,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-12-19",
    "weekday": "六",
-   "pop": 6.45,
+   "pop": 6.48,
    "level": 5,
    "levelName": "非常高"
   },
@@ -302,56 +295,56 @@
   {
    "date": "2026-12-21",
    "weekday": "一",
-   "pop": 5.59,
+   "pop": 5.58,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-22",
    "weekday": "二",
-   "pop": 5.62,
+   "pop": 5.61,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2026-12-23",
    "weekday": "三",
-   "pop": 5.68,
-   "level": 4,
-   "levelName": "高"
+   "pop": 5.67,
+   "level": 3,
+   "levelName": "高於平均"
   },
   {
    "date": "2026-12-24",
    "weekday": "四",
-   "pop": 5.89,
+   "pop": 5.87,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-12-25",
    "weekday": "五",
-   "pop": 6.38,
+   "pop": 6.36,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2026-12-26",
    "weekday": "六",
-   "pop": 6.68,
+   "pop": 6.69,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2026-12-27",
    "weekday": "日",
-   "pop": 5.83,
+   "pop": 5.81,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2026-12-28",
    "weekday": "一",
-   "pop": 5.76,
+   "pop": 5.74,
    "level": 4,
    "levelName": "高"
   },
@@ -435,14 +428,14 @@
   {
    "date": "2027-01-09",
    "weekday": "六",
-   "pop": 5.54,
+   "pop": 5.55,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-01-10",
    "weekday": "日",
-   "pop": 5.16,
+   "pop": 5.17,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -484,7 +477,7 @@
   {
    "date": "2027-01-16",
    "weekday": "六",
-   "pop": 5.68,
+   "pop": 5.69,
    "level": 4,
    "levelName": "高"
   },
@@ -526,7 +519,7 @@
   {
    "date": "2027-01-22",
    "weekday": "五",
-   "pop": 5.67,
+   "pop": 5.66,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -561,21 +554,21 @@
   {
    "date": "2027-01-27",
    "weekday": "三",
-   "pop": 5.49,
+   "pop": 5.48,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-01-28",
    "weekday": "四",
-   "pop": 5.56,
+   "pop": 5.55,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-01-29",
    "weekday": "五",
-   "pop": 5.59,
+   "pop": 5.58,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -603,28 +596,28 @@
   {
    "date": "2027-02-02",
    "weekday": "二",
-   "pop": 5.58,
+   "pop": 5.59,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-03",
    "weekday": "三",
-   "pop": 5.74,
+   "pop": 5.75,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2027-02-04",
    "weekday": "四",
-   "pop": 5.89,
+   "pop": 5.9,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2027-02-05",
    "weekday": "五",
-   "pop": 6.18,
+   "pop": 6.19,
    "level": 4,
    "levelName": "高"
   },
@@ -645,28 +638,28 @@
   {
    "date": "2027-02-08",
    "weekday": "一",
-   "pop": 7.04,
+   "pop": 7.02,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2027-02-09",
    "weekday": "二",
-   "pop": 7.15,
+   "pop": 7.12,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2027-02-10",
    "weekday": "三",
-   "pop": 6.96,
+   "pop": 6.94,
    "level": 5,
    "levelName": "非常高"
   },
   {
    "date": "2027-02-11",
    "weekday": "四",
-   "pop": 6.63,
+   "pop": 6.62,
    "level": 5,
    "levelName": "非常高"
   },
@@ -680,21 +673,21 @@
   {
    "date": "2027-02-13",
    "weekday": "六",
-   "pop": 5.74,
+   "pop": 5.72,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2027-02-14",
    "weekday": "日",
-   "pop": 5.55,
+   "pop": 5.54,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-15",
    "weekday": "一",
-   "pop": 5.51,
+   "pop": 5.5,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -708,7 +701,7 @@
   {
    "date": "2027-02-17",
    "weekday": "三",
-   "pop": 5.6,
+   "pop": 5.59,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -729,7 +722,7 @@
   {
    "date": "2027-02-20",
    "weekday": "六",
-   "pop": 5.79,
+   "pop": 5.8,
    "level": 4,
    "levelName": "高"
   },
@@ -750,42 +743,42 @@
   {
    "date": "2027-02-23",
    "weekday": "二",
-   "pop": 5.35,
+   "pop": 5.36,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-24",
    "weekday": "三",
-   "pop": 5.34,
+   "pop": 5.35,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-25",
    "weekday": "四",
-   "pop": 5.35,
+   "pop": 5.36,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-26",
    "weekday": "五",
-   "pop": 5.42,
+   "pop": 5.43,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-27",
    "weekday": "六",
-   "pop": 5.51,
+   "pop": 5.52,
    "level": 3,
    "levelName": "高於平均"
   },
   {
    "date": "2027-02-28",
    "weekday": "日",
-   "pop": 5.31,
+   "pop": 5.32,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -827,14 +820,14 @@
   {
    "date": "2027-03-06",
    "weekday": "六",
-   "pop": 6.03,
+   "pop": 6.04,
    "level": 4,
    "levelName": "高"
   },
   {
    "date": "2027-03-07",
    "weekday": "日",
-   "pop": 5.27,
+   "pop": 5.26,
    "level": 3,
    "levelName": "高於平均"
   },
@@ -856,6 +849,13 @@
    "date": "2027-03-10",
    "weekday": "三",
    "pop": 5.22,
+   "level": 3,
+   "levelName": "高於平均"
+  },
+  {
+   "date": "2027-03-11",
+   "weekday": "四",
+   "pop": 5.42,
    "level": 3,
    "levelName": "高於平均"
   }
